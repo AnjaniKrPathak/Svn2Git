@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.core.InsuranceCompanies"
+		table="healthplandetail">
+		<id name="id" type="int" column="HealthplanDetailID">
+			<generator class="increment" />
+		</id>
+
+		<property name="companyName" type="java.lang.String">
+			<column name="Name" />
+		</property>
+      <!--  <property name="healPlanDetailID" type="int">
+			<column name="HealthplanDetailID" />
+		</property> -->
+		
+		<property name="address1" type="java.lang.String">
+			<column name="Address1" />
+		</property>
+		<property name="address2" type="java.lang.String">
+			<column name="Address2" />
+		</property>
+		<property name="city" type="java.lang.String">
+			<column name="City" />
+		</property>
+		<property name="state" type="java.lang.String">
+			<column name="State" />
+		</property>
+		<property name="country" type="java.lang.String">
+			<column name="Country" />
+		</property>
+		<property name="zip" type="java.lang.String">
+			<column name="Zip" />
+		</property>
+		<property name="zip4" type="java.lang.String">
+			<column name="Zip4" />
+		</property>
+		<property name="phone" type="java.lang.String">
+			<column name="Phone" />
+		</property>
+		
+	</class>
+</hibernate-mapping>

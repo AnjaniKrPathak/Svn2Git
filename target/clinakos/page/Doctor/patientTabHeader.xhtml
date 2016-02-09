@@ -1,0 +1,566 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+ <h:head>
+
+    
+     <!-- main styles -->
+            <link rel="stylesheet" href="../../CSS/style.css" />
+       <!-- New Menu Style Template designed by A S Jha for Clinakos  -->
+		  <link rel="stylesheet" href="../../MenuTemplate/nav_style.css"></link>
+		  <link type="text/css" rel="stylesheet" href="tabmenu/subModal.css" />
+		  <script src="tabmenu/common.js" type="text/javascript"></script>
+	<script src="tabmenu/subModal.js" type="text/javascript"></script>
+	<script src="tabmenu/labSubModel.js" type="text/javascript"></script>
+	
+		  
+		    <script language="javascript">
+		   
+  function showMySubmenu(id)
+  { 
+  var submenuId="submenu"+id;
+  document.getElementById(submenuId).style.display="block";
+  }
+   function hideMySubmenu()
+  {
+	   
+	   document.getElementById('submenu1').style.display="none";
+	   document.getElementById('submenu2').style.display="none";
+ 	 document.getElementById('submenu3').style.display="none";
+ 	 document.getElementById('submenu4').style.display="none";
+	   document.getElementById('submenu5').style.display="none";
+	 document.getElementById('submenu6').style.display="none";
+	 
+  }
+   
+   function globalInit()
+	{
+	   roleBasedSecurity();
+	}
+   function roleBasedSecurity(){
+	    var overView= '${userManageBean.rolePrivillegeUtil.isEnable('overview_dashboard')}';
+	    var medication= '${userManageBean.rolePrivillegeUtil.isEnable('medication')}';
+	    var pharmacotherpyClinic= '${userManageBean.rolePrivillegeUtil.isEnable('pharmacotherpyClinic')}';
+	    var careAnalytics= '${userManageBean.rolePrivillegeUtil.isEnable('careAnalytics')}';
+	    var devices= '${userManageBean.rolePrivillegeUtil.isEnable('devices')}';
+	    var mas= '${userManageBean.rolePrivillegeUtil.isEnable('mas')}';
+	    var reports='${userManageBean.rolePrivillegeUtil.isEnable('reports')}';
+	    
+	    
+	    if(overView=="true"){
+	   document.getElementById('overview').style.display='block';
+	    }
+	    else{
+	    document.getElementById('overview').style.display='none';
+		    }
+	    
+	   if(medication=="true"){
+	 	   document.getElementById('medication').style.display='block';
+	 	    }
+	 	    else{
+	 	    document.getElementById('medication').style.display='none';
+	 		    }
+	    
+	   if(pharmacotherpyClinic=="true"){
+	 	   document.getElementById('pharmacotherpyClinic').style.display='block';
+	 	    }
+	 	    else{
+	 	    document.getElementById('pharmacotherpyClinic').style.display='none';
+	 		    }
+	    
+	   if(careAnalytics=="true"){
+	 	   document.getElementById('careAnalytics').style.display='block';
+	 	    }
+	 	    else{
+	 	    document.getElementById('careAnalytics').style.display='none';
+	 		    }
+	    
+	   if(devices=="true"){
+	 	   document.getElementById('devices').style.display='block';
+	 	    }
+	 	    else{
+	 	    document.getElementById('devices').style.display='none';
+	 		    }
+	    
+	   if(mas=="true"){
+	 	   document.getElementById('mas').style.display='block';
+	 	    }
+	 	    else{
+	 	    document.getElementById('mas').style.display='none';
+	 		    }
+	   if(reports=='true'){
+		   document.getElementById('reports').style.display='block';
+	   }
+	   else {
+	 	   document.getElementById('reports').style.display='none';
+	     }
+	    
+		    
+
+	   }
+  </script>
+</h:head>
+<!--<h:body bgcolor="blue">-->
+<!-- <body  onload="changeHIndex();" class="full_width"> -->
+<body  onload="globalInit();" class="full_width">
+<!-- <h:form id="HomeMenuForm" prependId="false"> -->
+<div id="headerTop">
+<table width="100%" id="dummytable">
+  <tr>
+    <td>
+<img src="../../Images/Clinakos_Logo.png" alt="Clinakos" width="172" height="32" style="margin-left: 10px" />
+
+ </td>
+ <td align="right">
+  <table >
+   <tr>
+     <td align="right">
+       <table >
+				<tr>
+				  <td valign="top"> 
+				  
+				  	<p:inputText type="text" id="searchKey" styleClass="inputBox" placeholder=" Search by  Id /Last Name / First Name " rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"
+				  					value="#{dashBoardManageBean.userDetailBeforeSearch.searchKey}" size="55" style="border-radius:0px;height:18px;width:240px" onfocus="hideDDLDiv()" >
+				  					</p:inputText>
+				  						<p:inputText type="text" id="searchKeyForPharamRole" styleClass="inputBox" placeholder=" Search by Id " rendered="#{(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"
+				  					value="#{dashBoardManageBean.userDetailBeforeSearch.searchKey}" size="55" style="border-radius:0px;height:18px;width:240px" onfocus="hideDDLDiv()" >
+				  					</p:inputText>
+				  					
+				</td>
+				<td valign="top">
+				<!-- <p:commandButton value="V"  style="background: transparent;border: none; margin:0px 0px 0px -30px" onclick="showpDDLDiv();"></p:commandButton> -->
+					<div style="background: transparent;border: none;font-size:10px;font-weight:bold;cursor:pointer; margin:8px 0px 0px -20px" onclick="showpDDLDiv();">
+					</div>
+				</td>
+				<td>
+				 <!-- update=":patientSearch" -->
+				<p:commandButton icon="ui-icon-search"  style="height:28px; width:30px;cursor:pointer;margin-left:-10px;" update=":patientSearch"
+									action="#{dashBoardManageBean.searchPatientNew}" oncomplete="searchPatient.show();"></p:commandButton>
+				  <!--  <img src="../../Images/zoom_256.bmp" height="28px" width="30px" style="cursor:pointer;margin-left:-10px;" onclick="showList();" ></img> -->
+			    </td>
+			   
+			</tr>
+			
+			</table>
+     </td>
+     <td>
+     <a id="menu11a" href="#" style="border:none;background:transparent;" title="Order Prescriptions">
+	 <img src="images/eprescribe.jpg" height="24px" width="19px" onclick="initPopUp();showPopWin('modelcontent.jsf', 1000, 528, true);"/> 
+	  </a>
+	  </td>
+	  <td>
+       <a id="menu11a1" href="#" style="border:none;background:transparent;" title="Order Labs">   
+       <!-- <h:commandLink >
+       <f:param name="labIntegration" value="labIntegrationData"></f:param>  -->
+     
+      <!--  <input type="hidden" name="labIntegration" value="labIntegrationData" />  -->
+	 <img src="images/lab_icon_image.jpg" height="24px" width="19px" onclick="initLabPopUp();showLabPopWin('lab_model_content.jsf', 1000, 528, null);"/>
+	
+	   <!--  </h:commandLink>   -->
+	   </a>  
+	</td> 
+	 <td> 
+      <a id="menu11b" href="visitSummary.jsf" style="border:none;background:transparent;" title="Visit Summary">
+    
+						    <img src="images/vs_icon.jpg" height="24px" width="19px" onclick="#{dashBoardManageBean.setVisitSummaryIndex()}" alt="" id="admin_icon"/>
+						    
+	  </a>
+	</td> 
+      <td> 
+      <a id="menu11b" href="#" style="border:none;background:transparent;">
+    
+						    <a href="AdminUI.jsf" title="Settings"><img src="images/admin_icon.bmp" height="24px" width="19px" alt="" id="admin_icon"/></a>
+	  </a>
+	</td> 
+	  <td> 
+      <a id="menu11c" href="#" style="border:none;background:transparent;">	
+						   <!--  <a href="doctorProfile.jsf" title="Home"><img src="images/home_icon.bmp" height="24px" width="19px"   alt="" id="home_icon"/></a> -->
+						    <p:commandLink action="#{dashBoardManageBean.redirectToParticularAnalyticsURL}">
+  <p:graphicImage id="homeId"
+            value="images/home_icon.bmp"
+           height="24px" width="19px">
+  </p:graphicImage>
+</p:commandLink>
+	  </a>
+     </td>
+     <td style="min-width:111px">
+   <table>
+     <tr>
+      <td valign="top"> 
+					 <img src="../../Images/user_icon.png" alt="" height="25px" /> 
+					
+	  </td>
+	  <td>
+		
+			      <p:menuButton  value="#{userManageBean.logedFirstName} "  autoDisplay="false" iconPos="right" style="margin-left:-4px">
+      				    <p:menuitem icon="ui-icon-person" value="#{userManageBean.logedFirstName} #{userManageBean.logedLastName}" url="#" style="background-color:transparent"/>
+          					  <p:separator style="height:1px;" />
+        			    <p:menuitem icon="ui-icon-power" value="Log Out" url="#{request.contextPath}/j_spring_security_logout" style="background-color:transparent"/>
+       					
+      			 	 </p:menuButton>
+	   </td>
+     </tr>
+   </table>
+			 
+	</td>
+   </tr> 
+  </table>
+ </td>
+  
+  <td width="2.5%"></td>
+</tr>
+<tr height="6px"><td></td></tr>
+</table>
+</div>
+<div id="menu">
+    <ul class="menu">
+     <li><a href="#" class="parent" id="overview">
+               <span onmouseover="showMySubmenu(1);"  onmousedown="hideMySubmenu();">Overview <img src="../../MenuTemplate/images/dropdown.png"></img></span></a>
+               
+            <ul id="submenu1" style="display:none;">
+           
+               <li>							
+										   <p:commandLink id="sitem3" action="#{patientMedicineManageBean.clearPreviousValues}" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('overview_dashboard')}">
+										  <span style="font-size:12px;font-family:verdana,helvetica,serif">Dashboard</span>
+										 </p:commandLink>
+										
+										</li>	
+										
+										 									
+										<li>
+										
+										<p:commandLink id="sitem2" action="#{dashBoardManageBean.setDiagnosesIndex}"  rendered="#{userManageBean.rolePrivillegeUtil.isEnable('overview_profile')}">
+										<span style="font-size:12px;font-family:verdana,helvetica,serif">#{msg.patientIntakelbl}</span>
+										</p:commandLink>
+										
+										</li>
+										
+										
+										<li>
+										<p:commandLink id="sitem20" action="#{dashBoardManageBean.setEditPatientIndex}" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('overview_editPatient')}">
+										<span style="font-size:12px;font-family:verdana,helvetica,serif">Edit Patient Detail</span>
+										</p:commandLink>
+										
+										</li>
+										
+            </ul>
+        </li>
+       
+            <li><a href="#" class="parent" id="medication">
+               <span onmouseover="showMySubmenu(2);"  onmousedown="hideMySubmenu();">Medication <img src="../../MenuTemplate/images/dropdown.png"></img></span></a>
+             <ul id="submenu2" style="display:none;">
+             
+               <li>
+										 
+										   <p:commandLink id="btn7" icon=" ui-icon-home" actionListener="#{dashBoardManageBean.setMedIndex}" action="go_to_Medication"
+										  style="background-color:transparent;" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('medication_medication')}">
+										 <span style="font-size:12px;font-family:verdana,helvetica,serif">Medication</span>
+										 </p:commandLink>
+										
+										</li>
+											<li>
+										 
+										   <p:commandLink id="adherence_history_id" icon=" ui-icon-home"  action="go_to_adherence_history"
+										  style="background-color:transparent;">
+										 <span style="font-size:12px;font-family:verdana,helvetica,serif">Adherence History</span>
+										 </p:commandLink>
+										
+										</li>
+										<li>
+										 
+										   <p:commandLink id="interaction_history_id" icon=" ui-icon-home"  action="go_to_interaction_history"
+										  style="background-color:transparent;">
+										 <span style="font-size:12px;font-family:verdana,helvetica,serif">Interaction History</span>
+										 </p:commandLink>
+										
+										</li>
+										
+									
+										
+										<h:panelGroup >										
+										<li>
+										
+										<p:commandLink id="sitem2Med" action="go_to_doctor_virtual_pill_box" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('medication_virtualPillBox')}">
+										<span style="font-size:12px;font-family:verdana,helvetica,serif">Virtual Pill Box</span>
+										</p:commandLink>
+										
+										</li>
+										</h:panelGroup>
+            </ul>
+        </li>
+       
+        
+        
+        <h:panelGroup rendered="#{userManageBean.rolePrivillegeUtil.isEnable('map')}" >
+                     <li ><a href="#"><span onmouseover="hideMySubmenu();" >
+                                   
+                                      <p:commandLink id="btn8"   actionListener="#{dashBoardManageBean.setgenmedplanIndex}" action="go_to_generalmedactionplan"     
+										 style="margin-top:0px;background-color:transparent;"  >
+										 <span style="font-size:12px;font-family:verdana,helvetica,serif">Med Action Plan</span>
+										 </p:commandLink>
+										 
+</span></a></li>
+</h:panelGroup>
+  <h:panelGroup rendered="#{userManageBean.rolePrivillegeUtil.isEnable('pharmacotherpyClinic')}" >
+           <li><a href="#" class="parent" id="pharmacotherpyClinic">
+               <span onmouseover="showMySubmenu(3);"  onmousedown="hideMySubmenu();">Pharmacotherapy Clinics<img src="../../MenuTemplate/images/dropdown.png"></img></span></a>
+            <ul id="submenu3" style="display:none;">
+                 <li>
+                                       
+									     <p:commandLink id="sitem4" actionListener="#{dashBoardManageBean.setPMIndex}" action="#{dashBoardManageBean.gotoPMRPage}" 
+									     rendered="#{userManageBean.rolePrivillegeUtil.isEnable('pharmacotherpyClinic_clinicOverview')}">
+									        <span style="font-size:12px;font-family:verdana,helvetica,serif">Clinic Overview</span>
+									     </p:commandLink>
+									     
+									    </li>										
+										<li>
+										
+										  <p:commandLink id="sitem5" actionListener="#{dashBoardManageBean.setAPMIndex}" action="#{dashBoardManageBean.gotoanticoagPage}"
+										 rendered="#{userManageBean.rolePrivillegeUtil.isEnable('pharmacotherpyClinic_anticoag')}">
+										   <span style="font-size:12px;font-family:verdana,helvetica,serif">Anticoagulation</span>
+										  </p:commandLink>
+										  
+										</li>
+										<li>
+										
+										   <p:commandLink id="sitem6" actionListener="#{dashBoardManageBean.setpsyphoramIndex}" action="go_to_psychopharm"
+										  rendered="#{userManageBean.rolePrivillegeUtil.isEnable('pharmacotherpyClinic_psychopharam')}" >
+										    <span style="font-size:12px;font-family:verdana,helvetica,serif">Psychopharm</span>
+										   </p:commandLink>
+										   
+										</li>
+										<li>
+										
+										   <p:commandLink id="sitem7" actionListener="#{dashBoardManageBean.setspecialtydrugIndex}" action="go_to_specialtydrug" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('pharmacotherpyClinic_specialityDrug')}">
+										   
+										    <span style="font-size:12px;font-family:verdana,helvetica,serif">Speciality Drug</span>
+										   </p:commandLink>
+										  
+										</li>
+            </ul>
+        </li>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{userManageBean.rolePrivillegeUtil.isEnable('pharmacogenomics')}">
+                           <li><a href="#"><span onmouseover="hideMySubmenu();">
+                                        
+                                         <p:commandLink id="btn9"    actionListener="#{dashBoardManageBean.setpharmacogenoIndex}" action="go_to_PharmacogenomicProfile"
+										  style="margin-top:0px;background-color:transparent;font-family:verdana,helvetica,serif"
+										  >
+										 <span style="font-size:12px;font-family:verdana,helvetica,serif">Pharmacogenomics</span>
+										 </p:commandLink>
+										
+</span></a></li>
+</h:panelGroup>
+<h:panelGroup rendered="#{userManageBean.rolePrivillegeUtil.isEnable('careAnalytics')}" >
+         <li><a href="#" class="parent" id="careAnalytics">
+               <span onmouseover="showMySubmenu(4);"  onmousedown="hideMySubmenu();">Care Analytics<img src="../../MenuTemplate/images/dropdown.png"></img></span></a>
+            <ul id="submenu4" style="display:none;">
+               <li>                    
+									     <p:commandLink id="sitem8" action="#{dashBoardManageBean.setCAIndex}"
+									      rendered="#{userManageBean.rolePrivillegeUtil.isEnable('careAnalytics_gapsInCare')}">
+									        <span style="font-size:12px;font-family:verdana,helvetica,serif">Gaps in Care</span>
+									     </p:commandLink>
+									     
+									    </li>
+            </ul>
+        </li>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{userManageBean.rolePrivillegeUtil.isEnable('devices')}">
+		  <li><a href="#" class="parent" id="devices">
+               <span onmouseover="showMySubmenu(5);"  onmousedown="hideMySubmenu();">Devices<img src="../../MenuTemplate/images/dropdown.png"></img></span></a>
+            <ul id="submenu5" style="display:none;">
+               <li>                     
+									     <p:commandLink id="sitem9" action="#{dashBoardManageBean.setePIndex}"
+									      rendered="#{userManageBean.rolePrivillegeUtil.isEnable('devices_anticoagInr')}">
+									        <span style="font-size:12px;font-family:verdana,helvetica,serif">Fitness Activities</span>
+									     </p:commandLink>
+									     
+									    </li>										
+										<li>
+										
+										  <p:commandLink id="sitem10" actionListener="#{dashBoardManageBean.setbPIndex}" action="go_to_bloodpressure"
+										   rendered="#{userManageBean.rolePrivillegeUtil.isEnable('devices_bloodPressure')}">
+										   <span style="font-size:12px;font-family:verdana,helvetica,serif">Nutrition</span>
+										  </p:commandLink>
+										  
+										</li>
+										<li>
+										
+										   <p:commandLink id="sitem11" actionListener="#{dashBoardManageBean.setglucoseIndex}" action="go_to_diabetes"
+										   rendered="#{userManageBean.rolePrivillegeUtil.isEnable('devices_glucose')}">
+										    <span style="font-size:12px;font-family:verdana,helvetica,serif">Diabetes Measurement</span>
+										   </p:commandLink>
+										   
+										</li> 
+										<li>
+										
+										   <p:commandLink id="sitem12" actionListener="#{dashBoardManageBean.pulseIndex}" action="go_to_pulse"
+										   rendered="#{userManageBean.rolePrivillegeUtil.isEnable('devices_pulse')}">
+										    <span style="font-size:12px;font-family:verdana,helvetica,serif">Routine Activities</span>
+										   </p:commandLink>
+										   
+										</li>
+										<li>
+										
+										   <p:commandLink id="sitem13" actionListener="#{dashBoardManageBean.temperatureIndex}" action="go_to_temperature"
+										   rendered="#{userManageBean.rolePrivillegeUtil.isEnable('devices_temprature')}">
+										    <span style="font-size:12px;font-family:verdana,helvetica,serif">Biometric Measurements</span>
+										   </p:commandLink>
+										  
+										</li>
+										<li>
+										
+										   <p:commandLink id="sitem14" actionListener="#{dashBoardManageBean.weightIndex}" action="go_to_weight"
+										   rendered="#{userManageBean.rolePrivillegeUtil.isEnable('devices_weight')}">
+										    <span style="font-size:12px;font-family:verdana,helvetica,serif">Weight</span>
+										   </p:commandLink>
+										   
+										</li>
+										<li>
+										
+										 <p:commandLink id="sitem17" actionListener="#{dashBoardManageBean.sleepIndex}" action="go_to_sleep"
+										   rendered="#{userManageBean.rolePrivillegeUtil.isEnable('devices_weight')}">
+										    <span style="font-size:12px;font-family:verdana,helvetica,serif">Sleep</span>
+										   </p:commandLink>
+										   
+										   </li>
+										   <li>
+										   
+										 <p:commandLink id="sitem18" actionListener="#{dashBoardManageBean.tobaccoIndex}" action="go_to_tobacco"
+										   rendered="#{userManageBean.rolePrivillegeUtil.isEnable('devices_weight')}">
+										    <span style="font-size:12px;font-family:verdana,helvetica,serif">Tobacco Cessation</span>
+										   </p:commandLink>
+										  
+										   </li>
+										
+            </ul>
+        </li> 
+        </h:panelGroup>
+        <h:panelGroup rendered="#{userManageBean.rolePrivillegeUtil.isEnable('labResult')}">
+         <li><a href="#"><span onmouseover="hideMySubmenu();">
+                                     
+                                       <p:commandLink id="btn4" actionListener="#{dashBoardManageBean.setLabResultIndex}" action="go_to_LabResult"  
+										 style="margin-top:0px;background-color:transparent;"  >
+										 <span style="font-size:12px;font-family:verdana,helvetica,serif">Lab Result</span>
+										 </p:commandLink>
+										 
+                      </span></a></li>
+                   </h:panelGroup>
+                     <h:panelGroup rendered="#{userManageBean.rolePrivillegeUtil.isEnable('priceOptimizer')}">
+                         <li><a href="#"><span onmouseover="hideMySubmenu();">
+                                     
+                                       <p:commandLink id="btn5" actionListener="#{dashBoardManageBean.setDPOIndex}" action="#{dashBoardManageBean.setDPOptimizerIndex}"  
+										 style="margin-top:0px;background-color:transparent;" 
+										   >
+										 <span style="font-size:12px;font-family:verdana,helvetica,serif">Price Optimizer</span>
+										 </p:commandLink>
+										 
+                   </span></a></li>
+                   </h:panelGroup>
+
+                        <li style="margin: 0"><a href="#"><span onmouseover="hideMySubmenu();">
+                        
+                                    <p:commandLink id="btn6" action="#{dashBoardManageBean.setCareTeamIndex}"  
+										 style="margin-top:0px;background-color:transparent;" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('careTeam')}" >
+										 <span style="font-size:12px;font-family:verdana,helvetica,serif">Care Team</span>
+								   </p:commandLink>
+								   
+            </span></a></li>
+          <h:panelGroup rendered="#{userManageBean.rolePrivillegeUtil.isEnable('mas')}" >
+            <li><a href="#" class="parent" id="mas">
+               <span onmouseover="showMySubmenu(6);"  onmousedown="hideMySubmenu();">Encounter Summary<img src="../../MenuTemplate/images/dropdown.png"></img></span></a>
+               
+            <ul id="submenu6" style="display:none;">
+              <li>                      
+                                       
+									     <p:commandLink id="sitem15" actionListener="#{dashBoardManageBean.setVisitSummaryIndex}" action="go_to_visitSummary_page"
+									     rendered="#{userManageBean.rolePrivillegeUtil.isEnable('mas_todayHistory')}">
+									        <span style="font-size:12px;font-family:verdana,helvetica,serif">Today's Encounter</span>
+									     </p:commandLink>
+									    
+									    </li>										
+										<li>
+										
+										  <p:commandLink id="sitem16" actionListener="#{dashBoardManageBean.setVHistory}" action="go_to_visithistory"
+										 rendered="#{userManageBean.rolePrivillegeUtil.isEnable('mas_history')}" >
+										   <span style="font-size:12px;font-family:verdana,helvetica,serif">History</span>
+										  </p:commandLink>
+										 
+										</li>
+               </ul>
+          </li>
+          </h:panelGroup>
+          <h:panelGroup rendered="#{userManageBean.rolePrivillegeUtil.isEnable('reports')}"  >
+          <li>
+             <a href="#" class="parent" id="reports">
+               <span onmouseover="showMySubmenu(7);"  onmousedown="hideMySubmenu();">Reports<img src="../../MenuTemplate/images/dropdown.png"></img></span></a>
+               <ul id="submenu7" style="display:none;">
+                <li>
+                
+                   <p:commandLink id="sitem19"  action="go_to_patient_letter_report" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('reports_patient_letter')}" >
+					
+					 <span style="font-size:12px;font-family:verdana,helvetica,serif">Patient Letter</span>
+				    </p:commandLink>
+				
+                </li>
+                <li>
+                
+                   <p:commandLink id="sitem21"  action="go_to_med_action_plan_report"  rendered="#{userManageBean.rolePrivillegeUtil.isEnable('reports_medAction_plan')}">
+					
+					 <span style="font-size:12px;font-family:verdana,helvetica,serif">Med Action Plan</span>
+				    </p:commandLink>
+				    
+                </li>
+                <li>
+               
+                   <p:commandLink id="sitem22"  action="go_to_current_medication_list_report" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('reports_current_medications')}">
+					
+					 <span style="font-size:12px;font-family:verdana,helvetica,serif">Current Medication List</span>
+				    </p:commandLink>
+				   
+                </li>
+                
+                <li>
+                
+                   <p:commandLink id="sitem23"  action="go_to_provider_letter_report" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('reports_provider_letter')}">
+					
+					 <span style="font-size:12px;font-family:verdana,helvetica,serif">Provider Letter</span>
+				    </p:commandLink>
+				    
+                </li>
+                 <li>
+                 
+                   <p:commandLink id="sitem24"  action="go_to_provider_referral_letter_report" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('reports_provider_referal_letter')}">
+					
+					 <span style="font-size:12px;font-family:verdana,helvetica,serif">Provider Referral Letter</span>
+				    </p:commandLink>
+				    
+                </li>
+                
+                
+                
+                
+                
+               
+               </ul>
+          
+          </li>
+          </h:panelGroup>
+        
+    </ul>
+</div>
+<!-- </h:form> -->
+</body>
+<!--  </h:body>-->
+</html>
+
+
+
+

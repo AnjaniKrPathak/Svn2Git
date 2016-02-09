@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body onload="#{patientMedicineManageBean.resetVirtualPillBoxList()}">
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+			<script type="text/javascript" language="javascript">
+			$(document).ready(function() {
+		        noBack();
+		   });
+
+		   function noBack() {
+			   window.location.hash="no-back-button";
+				window.location.hash="Again-No-back-button";//again because google chrome don't insert first hash into history
+				window.onhashchange=function(){window.location.hash="";} 
+		       }
+</script>
+		</h:head>
+
+		<p:layout fullPage="true">
+		
+		
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" collapsible="true" size="93"
+				minSize="60">
+
+				<ui:include src="../Doctor/doctorHeader.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+
+				<ui:include src="../core/footer.xhtml"></ui:include>
+
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<ui:include src="doctor_profile_leftmenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center">
+			
+					<!--  <div align="center"><p:graphicImage url="images/commingSoon.jpg"></p:graphicImage></div>  -->
+					<!--  <fieldset id="virtualPillBoxTab" class="fieldContent"> -->
+					<!-- <legend class="titleBar"><b>Virtual Pill Box</b></legend>  -->
+
+				
+					 <table width="100%">
+						<tr>
+						  <td>
+						  <p:accordionPanel dynamic="true" activeIndex="1">
+						<p:tab
+							title="#{dashBoardManageBean.userLoginDetail.firstName} #{dashBoardManageBean.userLoginDetail.lastName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}">
+
+							<ui:include src="../Doctor/patientDetailsHeader.xhtml"></ui:include>
+						</p:tab>
+					</p:accordionPanel>
+						  </td>
+						</tr>
+					</table>
+					
+					 <table width="100%" style="margin-top: 10px;" class="secContentBorder" cellpadding="0" cellspacing="0">
+
+					  <tr>
+					    <td class="secHeadPart"> Virtual Pill Box</td>
+					   </tr>
+					   <tr>
+					     <td class="secContentBorder">
+					   <h:form >
+						<p:dataTable id="medications"
+							value="#{patientMedicineManageBean.patVirtualPillBoxListForDoctor}"
+							var="patientMedList" 
+							emptyMessage=" #{msg.noMedFound} " 
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							 width="80px"
+							 scrollable="true" scrollHeight="400">
+
+
+							<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.drug} " />
+								</f:facet>
+								<div align="left">
+								<h:outputText value="#{patientMedList.drugs}" /></div>
+							</p:column>
+							
+							
+							<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.morning} " />
+								</f:facet>
+								<h:outputText value="" />
+							 <center> <!-- <p:graphicImage url="../../Images/MedicineImage/#{patientMedList.morning}" rendered="#{!(patientMedList.morning eq null)}"
+									styleClass="image_border_rec"></p:graphicImage>  -->
+								<!-- <ui:repeat var="list" value="#{patientMedicineManageBean.patVirtualPillBoxListForDoctor}" size="#{patientMedList.unit}"> -->
+								 <p:graphicImage value="/Images/Dynamic/?file=#{patientMedList.medicineImageId}.jpg" styleClass="image_border_rec" rendered="#{!((patientMedList.morning eq null) || (patientMedList.medicineImageId.length() eq null))}">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								   <br/>
+								  </p:graphicImage>
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.morning eq null) and !(patientMedList.dosageForm eq 'drops') and !(patientMedList.dosageForm eq 'liquid') and !(patientMedList.dosageForm eq 'solution') and !(patientMedList.dosageForm eq 'suspension') }">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								      <br/>
+								   
+									<div class="defaultMed"  >
+									<h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.morning eq null) and !(patientMedList.dosageForm eq 'drops') and !(patientMedList.dosageForm eq 'liquid') and !(patientMedList.dosageForm eq 'solution') and !(patientMedList.dosageForm eq 'suspension')}" 
+									/> 
+									</div>
+									</p:panel>
+									
+									<p:graphicImage value="/Images/dropper.png"  rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.morning eq null) and (patientMedList.dosageForm eq 'drops')}"
+													style="height :50px;width: 70px;">
+										<h:outputText value="#{patientMedList.unit}"></h:outputText>
+									</p:graphicImage>
+									
+									<p:graphicImage value="/Images/spoon.jpg"  rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.morning eq null) and (patientMedList.byRoute eq 'oral' and (patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')))}"
+													style="height :50px;width: 70px;">
+										<h:outputText value="#{patientMedList.unit}"></h:outputText>
+									</p:graphicImage>
+									
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.morning eq null) and !(patientMedList.dosageForm eq 'drops') and ((patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')) and !(patientMedList.byRoute eq 'oral'))}">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								       <br/>
+									<div class="defaultMed"  >
+									<h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.morning eq null) and !(patientMedList.dosageForm eq 'drops') and ((patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')) and !(patientMedList.byRoute eq 'oral'))}" 
+									/> 
+									</div>
+									</p:panel>									
+									
+									<!-- </ui:repeat> -->
+									</center> 
+							</p:column>
+
+
+							<p:column  >
+								<f:facet name="header">
+									<h:outputText value="#{msg.afternoon}" />
+								</f:facet>
+						<!-- 	<h:outputText value="#{patientMedList.afternoon}" /> -->
+							 <center>
+							 <!-- <ui:repeat var="list" value="#{patientMedicineManageBean.patVirtualPillBoxListForDoctor}" size="#{patientMedList.unit}"> -->
+							 <p:graphicImage url="/Images/Dynamic/?file=#{patientMedList.medicineImageId}.jpg" 
+							 rendered="#{!((patientMedList.afternoon eq null) || (patientMedList.medicineImageId.length() eq null))}"
+									id="aftNoon" styleClass="image_border_rec">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								        <br/>
+									<p:droppable for="aftNoon" tolerance="touch" onDrop="handleDrop"></p:droppable>
+									</p:graphicImage>
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.afternoon eq null) and !(patientMedList.dosageForm eq 'drops') and !(patientMedList.dosageForm eq 'liquid')  and !(patientMedList.dosageForm eq 'solution') and !(patientMedList.dosageForm eq 'suspension')}">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								     <br/>
+									<div class="defaultMed">
+									<h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.afternoon eq null) and !(patientMedList.dosageForm eq 'drops') and !(patientMedList.dosageForm eq 'liquid')  and !(patientMedList.dosageForm eq 'solution') and !(patientMedList.dosageForm eq 'suspension')}" 
+									/>  
+									</div>
+									</p:panel> 
+									
+									<p:graphicImage value="/Images/dropper.png"  rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.afternoon eq null) and (patientMedList.dosageForm eq 'drops')}"
+													style="height :50px;width: 70px;">
+										<h:outputText value="#{patientMedList.unit}"></h:outputText>
+									</p:graphicImage>
+									
+									<p:graphicImage value="/Images/spoon.jpg"  rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.afternoon eq null) and (patientMedList.byRoute eq 'oral' and (patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')))}"
+													style="height :50px;width: 70px;">
+										<h:outputText value="#{patientMedList.unit}"></h:outputText>
+									</p:graphicImage>
+									
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.afternoon eq null) and !(patientMedList.dosageForm eq 'drops') and ((patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')) and !(patientMedList.byRoute eq 'oral'))}">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								       <br/>
+									<div class="defaultMed"  >
+									<h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.morning eq null) and !(patientMedList.dosageForm eq 'drops') and ((patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')) and !(patientMedList.byRoute eq 'oral'))}" 
+									/> 
+									</div>
+									</p:panel>
+									<!-- </ui:repeat> -->
+									</center>
+							</p:column>
+
+							<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.evening}" />
+								</f:facet>
+								 <center>
+								 <!-- <ui:repeat var="list" value="#{patientMedicineManageBean.patVirtualPillBoxListForDoctor}" size="#{patientMedList.unit}"> -->
+								 <p:graphicImage url="/Images/Dynamic/?file=#{patientMedList.medicineImageId}.jpg" rendered="#{!((patientMedList.evening eq null) || (patientMedList.medicineImageId.length() eq null))}"
+									id="evenings" styleClass="image_border_rec">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								     <br/>
+									<p:draggable for="evenings" revert="true"></p:draggable>
+									</p:graphicImage>
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.evening eq null) and !(patientMedList.dosageForm eq 'drops') and !(patientMedList.dosageForm eq 'liquid')  and !(patientMedList.dosageForm eq 'solution') and !(patientMedList.dosageForm eq 'suspension')}">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								      <br/>
+									<div class="defaultMed">
+									<h:outputText value="#{patientMedList.drugs} #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.evening eq null) and !(patientMedList.dosageForm eq 'drops') and !(patientMedList.dosageForm eq 'liquid')  and !(patientMedList.dosageForm eq 'solution') and !(patientMedList.dosageForm eq 'suspension')}" /> 
+									</div>
+									</p:panel>
+									
+									<p:graphicImage value="/Images/dropper.png"  rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.evening eq null) and (patientMedList.dosageForm eq 'drops')}"
+													style="height :50px;width: 70px;">
+										<h:outputText value="#{patientMedList.unit}"></h:outputText>
+									</p:graphicImage>
+									
+									<p:graphicImage value="/Images/spoon.jpg"  rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.evening eq null) and (patientMedList.byRoute eq 'oral' and (patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')))}"
+													style="height :50px;width: 70px;">
+										<h:outputText value="#{patientMedList.unit}"></h:outputText>
+									</p:graphicImage>
+									
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.evening eq null) and !(patientMedList.dosageForm eq 'drops') and ((patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')) and !(patientMedList.byRoute eq 'oral'))}">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								       <br/>
+									<div class="defaultMed"  >
+									<h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.morning eq null) and !(patientMedList.dosageForm eq 'drops') and ((patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')) and !(patientMedList.byRoute eq 'oral'))}" 
+									/> 
+									</div>
+									</p:panel>
+									<!-- </ui:repeat> -->
+									</center> 
+							</p:column>
+
+							<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.bedtime}" />
+								</f:facet>
+							 <center>
+							 <!-- <ui:repeat var="list" value="#{patientMedicineManageBean.patVirtualPillBoxListForDoctor}" size="#{patientMedList.unit}"> -->
+							 <p:graphicImage url="/Images/Dynamic/?file=#{patientMedList.medicineImageId}.jpg" rendered="#{!(patientMedList.night eq null || patientMedList.medicineImageId.length() eq null)}"
+									styleClass="image_border_rec">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								     <br/></p:graphicImage>
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.night eq null) and !(patientMedList.dosageForm eq 'drops') and !(patientMedList.dosageForm eq 'liquid')  and !(patientMedList.dosageForm eq 'solution') and !(patientMedList.dosageForm eq 'suspension')}" >
+								      <h:outputText value="#{patientMedList.unit}"/>
+								    <br/>
+									<div class="defaultMed">
+								  <h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.night eq null) and !(patientMedList.dosageForm eq 'drops') and !(patientMedList.dosageForm eq 'liquid')  and !(patientMedList.dosageForm eq 'solution') and !(patientMedList.dosageForm eq 'suspension')}"  />
+								</div>
+								</p:panel>
+								
+								<p:graphicImage value="/Images/dropper.png"  rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.night eq null) and (patientMedList.dosageForm eq 'drops')}"
+													style="height :50px;width: 70px;">
+										<h:outputText value="#{patientMedList.unit}"></h:outputText>
+									</p:graphicImage>
+									
+									<p:graphicImage value="/Images/spoon.jpg"  rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.night eq null) and (patientMedList.byRoute eq 'oral' and (patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')))}"
+													style="height :50px;width: 70px;">
+										<h:outputText value="#{patientMedList.unit}"></h:outputText>
+									</p:graphicImage>
+									
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.night eq null) and !(patientMedList.dosageForm eq 'drops') and ((patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')) and !(patientMedList.byRoute eq 'oral'))}">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								       <br/>
+									<div class="defaultMed"  >
+									<h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.morning eq null) and !(patientMedList.dosageForm eq 'drops') and ((patientMedList.dosageForm eq 'liquid' or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')) and !(patientMedList.byRoute eq 'oral'))}" 
+									/> 
+									</div>
+									</p:panel>
+								<!-- </ui:repeat> -->
+									</center>
+							</p:column>
+
+						<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.specialcase}" />
+								</f:facet>
+								<!-- <h:outputText value="#{patientMedList.otherTime}" /> -->
+								 <center>
+								 <p:graphicImage url="/Images/Dynamic/?file=#{patientMedList.medicineImageId}.jpg" rendered="#{!(patientMedList.otherTime eq null || patientMedList.medicineImageId.length() eq null)}"
+									styleClass="image_border_rec">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								     <br/>
+									</p:graphicImage> 
+									<p:panel rendered="#{(((patientMedList.medicineImageId.length() eq null)  and !(patientMedList.dosageForm eq 'drops') and !(patientMedList.dosageForm eq 'liquid')  and !(patientMedList.dosageForm eq 'solution') and !(patientMedList.dosageForm eq 'suspension'))  and 
+															(!(patientMedList.otherTime eq null) or (patientMedList.prn)))}">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								    <br/>
+									<div class="defaultMed">
+									<h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(((patientMedList.medicineImageId.length() eq null)  and !(patientMedList.dosageForm eq 'drops') and !(patientMedList.dosageForm eq 'liquid')  and !(patientMedList.dosageForm eq 'solution') and !(patientMedList.dosageForm eq 'suspension')) and 
+															(!(patientMedList.otherTime eq null) or (patientMedList.prn)))}" /> 	
+									</div>
+									</p:panel>
+									
+									<p:graphicImage value="/Images/dropper.png"  rendered="#{(((patientMedList.medicineImageId.length() eq null) and (patientMedList.dosageForm eq 'drops') and !(patientMedList.dosageForm eq 'liquid')) and
+																								(!(patientMedList.otherTime eq null) or (patientMedList.prn)))}" style="height :50px;width: 70px;">
+										<h:outputText value="#{patientMedList.unit} "></h:outputText>
+									</p:graphicImage>
+									
+									<p:graphicImage value="/Images/spoon.jpg"  rendered="#{(((patientMedList.medicineImageId.length() eq null) and (patientMedList.byRoute eq 'oral') and  ((patientMedList.dosageForm eq 'liquid') or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension'))) and
+																							(!(patientMedList.otherTime eq null) or (patientMedList.prn)))}" style="height :50px;width: 70px;">
+										<h:outputText value=" #{patientMedList.unit}"></h:outputText>
+									</p:graphicImage>									
+									
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.otherTime eq null) and !(patientMedList.dosageForm eq 'drops') and ((patientMedList.dosageForm eq 'liquid'  or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension')) and !(patientMedList.byRoute eq 'oral'))}">
+								      <h:outputText value="#{patientMedList.unit}"/>
+								     <br/>
+									<div class="defaultMed"  >
+									<h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.otherTime eq null) and !(patientMedList.dosageForm eq 'drops') and ((patientMedList.dosageForm eq 'liquid'  or (patientMedList.dosageForm eq 'solution') or (patientMedList.dosageForm eq 'suspension'))and !(patientMedList.byRoute eq 'oral'))}" 
+									/> 
+									</div>
+									</p:panel>		
+									
+									</center>
+							</p:column>
+						</p:dataTable>
+						</h:form>
+						</td>
+					 </tr>
+					</table> 
+					
+					
+					 
+						<!-- </fieldset>  -->
+</p:layoutUnit>
+		</p:layout>
+
+			
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+		
+	</f:view>
+</h:body>
+</html>
+

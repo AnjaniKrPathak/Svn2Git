@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 27, 2013 11:51:05 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.ProcedureResultHistory"
+		table="procedure_result_history" >
+		<id name="id" type="int">
+			<column name="procedure_result_history_id" />
+			<generator class="increment" />
+		</id>
+		<property name="result" type="java.lang.Double">
+			<column name="result" />
+		</property>
+		<property name="comments" type="java.lang.String">
+			<column name="comments" />
+		</property>
+		<property name="resultStatus" type="java.lang.String">
+			<column name="result_status" />
+		</property>
+		<property name="dateOrdered" type="java.util.Date">
+			<column name="date_ordered" />
+		</property>
+		<property name="dateResult" type="java.util.Date">
+			<column name="date_result" />
+		</property>
+		<property name="providerId" type="int">
+		    <column name="provider_id"></column>
+		</property>
+		 <property name="doctorId" type="int">
+		    <column name="doctor_id"></column>
+		</property> 
+		<property name="patientId" type="int">
+		    <column name="user_id"></column>
+		</property>
+		<property name="laboratoryName" type="java.lang.String">
+			<column name="laboratory_name" />
+		</property>
+		
+		<property name="labName" type="java.lang.String">
+			<column name="lab_type" />
+		</property>
+		
+		<!--Added By Anjani for WebServices Lab Integration   -->
+		
+		<!-- <property name="refrenceRange" type="java.lang.String">
+			<column name="refrence_range" />
+		</property> 
+		
+		<property name="labRange" type="java.lang.String">
+			<column name="lab_in_range" />
+		</property>
+		<property name="labUnit" type="java.lang.String">
+			<column name="lab_unit" />
+		</property>
+		<property name="labName" type="java.lang.String">
+			<column name="lab_test_name" />
+		</property> -->
+		
+		<!-- <many-to-one name="procedureType" column="procedure_order_id"
+			class="com.clinakos.data.model.patient.ProcedureOrder" not-null="true"/> --> 
+
+          <!-- Commented By Anjani -->
+          
+         <!--  <property name="labUnit" type="java.lang.String">
+			<column name="lab_unit" />
+		</property> -->
+          
+		 <many-to-one name="procedureType" class="com.clinakos.data.model.patient.ProcedureType" fetch="join" cascade="all">
+			<column name="procedure_type_id"/>
+		</many-to-one>   
+		
+		<!-- <many-to-one name="userLoginDetail"
+			class="com.clinakos.data.model.patient.UserLoginDetail" fetch="join" >
+			<column name="doctor_id" />
+		</many-to-one> --> 
+		
+		
+		
+		
+	</class>
+</hibernate-mapping>

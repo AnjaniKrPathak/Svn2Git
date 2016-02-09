@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 18, 2013 2:29:48 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.PatientMedicineNotes"
+		table="patient_medicine_notes">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="increment" />
+		</id>
+		<property name="patientId" type="int">
+			<column name="user_id" />
+		</property>
+		<property name="drugName" type="java.lang.String">
+			<column name="drug_name" />
+		</property>
+		<property name="notes" type="java.lang.String">
+			<column name="notes" />
+		</property>
+		<property name="date" type="java.util.Date">
+			<column name="date" />
+		</property>
+			 <property name="patientEducation" type="java.lang.String">
+			<column name="patient_education" />
+		</property>
+		
+	</class>
+</hibernate-mapping>

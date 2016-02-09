@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 19, 2014 1:28:54 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.validic.ValidicSleep" table="validic_sleep">
+        <id name="id" type="int" access="field">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="_id" type="java.lang.String">
+            <column name="validic_sleep_id" />
+        </property>
+        <property name="clinakosUserId" type="java.lang.String">
+            <column name="clinakos_user_id" />
+        </property>
+        <property name="timestamp" type="java.lang.String">
+            <column name="timestamp" />
+        </property>
+        <property name="utc_offset" type="java.lang.String">
+            <column name="utc_offset" />
+        </property>
+        <property name="total_sleep" type="double">
+            <column name="total_sleep" />
+        </property>
+        <property name="awake" type="double">
+            <column name="awake" />
+        </property>
+        <property name="deep" type="double">
+            <column name="deep" />
+        </property>
+        <property name="light" type="double">
+            <column name="light" />
+        </property>
+        <property name="rem" type="double">
+            <column name="rem" />
+        </property>
+        <property name="times_woken" type="double">
+            <column name="times_woken" />
+        </property>
+        <property name="source" type="java.lang.String">
+            <column name="source" />
+        </property>
+        <property name="source_name" type="java.lang.String">
+            <column name="source_name" />
+        </property>
+        <property name="last_updated" type="java.lang.String">
+            <column name="last_updated" />
+        </property>
+        <property name="activityId" type="java.lang.String">
+            <column name="activity_id" />
+        </property>
+        
+        <property name="user_id" type="java.lang.String">
+            <column name="validic_user_id" />
+        </property>
+    </class>
+</hibernate-mapping>

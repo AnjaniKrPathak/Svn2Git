@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.PatientMedicationHistory"
+		table="patient_medication_data_history">
+		<id name="id" type="int" column="id">
+			<generator class="increment" />
+		</id>
+
+		<property name="patientId" type="int">
+			<column name="user_id" />
+		</property>
+
+		<property name="providerId" type="int">
+			<column name="provider_id" />
+		</property>
+
+
+		<property name="drugs" type="java.lang.String">
+			<column name="drugs" />
+		</property>
+
+		 <property name="strength" type="java.lang.String">
+			<column name="strength" />
+		</property>
+
+	<!-- 	<property name="signature" type="java.lang.String">
+			<column name="sig" />
+		</property> -->
+
+		<property name="quantity" type="java.lang.String">
+			<column name="quantity" />
+		</property>
+
+
+		<property name="reffils" type="int">
+			<column name="refills" />
+		</property>
+
+		<property name="startDate" type="java.util.Date">
+			<column name="start_date" />
+		</property>
+
+		<property name="lastFillDate" type="java.util.Date">
+			<column name="last_fill_date" />
+		</property>
+		<property name="pharmacyName" type="java.lang.String">
+			<column name="pharmacy_name" />
+		</property>
+		<property name="medicineStatus" type="java.lang.String">
+			<column name="cause_of_add_meds" />
+		</property>
+		
+		<property name="direction" type="java.lang.String">
+			<column name="direction" />
+		</property>
+		
+		<property name="prescriberID" type="int">
+			<column name="prescriberID" />
+		</property>
+		
+		<property name="drugId" type="java.lang.Double">
+			<column name="drugId" />
+		</property>
+		
+		<property name="drugNameId" type="java.lang.Double">
+			<column name="drugNameId" />
+		</property>
+		
+		<property name="dataProvider" type="java.lang.String">
+			<column name="dataProvider" />
+		</property>
+		
+		
+		
+		<property name="notes" type="java.lang.String">
+			<column name="notes" />
+		</property>
+		<property name="unit" type="java.lang.String">
+			<column name="unit" />
+		</property>
+		
+		<property name="unitDetail" type="java.lang.String">
+			<column name="unit_detail" />
+		</property>
+		
+		<property name="byRoute" type="java.lang.String">
+			<column name="byRoute" />
+		</property>
+		<property name="dosageForm" type="java.lang.String">
+			<column name="dosage_form" />
+		</property>
+		<property name="prescriptionGuid" type="java.lang.String">
+			<column name="prescription_guid" />
+		</property>
+		
+		
+		<property name="prescriberName" type="java.lang.String">
+			<column name="prescriber_name" />
+		</property>
+		
+		<property name="prescriptionStatus" type="java.lang.String">
+			<column name="prescription_status" />
+		</property>
+		
+		
+		<property name="flagForVisit" type="java.lang.Boolean">
+			<column name="flag_for_visit" />
+		</property>
+		
+		<property name="prescriptionSubStatus" type="java.lang.String">
+			<column name="prescription_subStatus" />
+		</property>
+		
+		<property name="actionDate" type="java.util.Date">
+			<column name="action_date" />
+		</property>
+		
+
+	<property name="dateTimeZoneForCompare" type="java.lang.String">
+			<column name="date_time_zone_for_compare" />
+		</property>
+	</class>
+</hibernate-mapping>

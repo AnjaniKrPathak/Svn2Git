@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 14 Oct, 2014 12:54:24 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.ContraindicatedMedItems" table="contraindicated_child_meds">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="parentMedObj" class="com.clinakos.data.model.patient.ContraindicatedMeds" fetch="select">
+            <column name="contraindicated_parent_meds_id" />
+        </many-to-one>
+        <property name="childMedName" type="java.lang.String">
+            <column name="child_med_name" />
+        </property>
+    </class>
+</hibernate-mapping>

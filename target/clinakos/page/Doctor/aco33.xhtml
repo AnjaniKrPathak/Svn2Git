@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body>
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+			<script type="text/javascript" language="javascript">
+			$(document).ready(function() {
+		        noBack();
+		   });
+
+		   function noBack() {
+			   window.location.hash="no-back-button";
+				window.location.hash="Again-No-back-button";//again because google chrome don't insert first hash into history
+				window.onhashchange=function(){window.location.hash="";} 
+		       }
+		    </script>
+		    
+		  <!--  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+			<script type="text/javascript" src="../../JavaScript/gauge_common.js"></script>
+	 
+			<script>
+							
+					
+				var gauges = [];
+				
+				function createGauge(name, label, min, max)
+				{
+					var config = 
+					{
+						size: 220,
+						label: label,
+						min: undefined != min ? min : 0,
+						max: undefined != max ? max : 100,
+						minorTicks: 5
+					}
+					
+					var range = config.max - config.min;
+					config.yellowZones =[{from: 60, to:80}] ;//[{ from: config.min + range*0.75, to: config.min + range*0.9 }];
+					config.redZones = [{from: 00, to:60}] ;//[{ from: config.min + range*0.9, to: config.max }];
+					config.greenZones = [{from: 80, to:100}] ;
+					
+					gauges[name] = new Gauge(name + "GaugeContainer", config);
+					gauges[name].render();
+				}
+				
+				function createGauges()
+				{
+					createGauge("measure28", "ACO 28");
+					createGauge("measure30","ACO 30");
+				}
+				
+				function updateGauges()
+				{
+					for (var key in gauges)
+					{
+						var measure28 = getACO28Value(gauges[key])
+						gauges[key].redraw(measure28);
+						
+					}
+					
+				}
+				 function updateACO30Gauge()
+				{
+					for (var aco30 in gauges)
+					{
+						var measure30 = getACO30Value(gauges[aco30])
+						gauges[aco30].redraw(measure30);
+					}
+					
+				} 
+				
+				function getACO28Value(gauge)
+				{
+					var aco28PatCount = #{reportManageBean.measure28Value}; 
+					
+					return aco28PatCount; //gauge.config.min - overflow + (gauge.config.max - gauge.config.min + overflow*2) *  Math.random();
+				}
+				function getACO30Value(gauge)
+				{
+                   var aco30PatCount=#{reportManageBean.measure30Value};
+                  
+                   return aco30PatCount;
+				}
+				
+				function initialize()
+				{
+					createGauges();
+					
+					updateGauges();
+					// setInterval(updateGauges, 1000);
+					
+					
+					
+				}
+				 function initializeACO30()
+				{
+					
+					 updateACO30Gauge();
+					
+				}
+			</script>
+			 -->
+			 
+			 <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script type='text/javascript'>
+      google.load('visualization', '1', {packages:['gauge']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['ACO 14', #{reportManageBean.measure14Value}],
+          ['ACO 15', #{reportManageBean.measure15Value}],
+          ['ACO 26', #{reportManageBean.measure26Value}],
+          ['ACO 28', #{reportManageBean.measure28Value}],
+          ['ACO 29', #{reportManageBean.measure29Value}],
+          ['ACO 30', #{reportManageBean.measure30Value}],
+          ['ACO 32', #{reportManageBean.measure32Value}],
+          ['ACO 33', #{reportManageBean.measure33Value}],
+          
+         
+        ]);
+
+        var options = {
+        		 width: 1000, height: 220,
+                 redFrom: 80,  redTo:100,
+                 greenFrom: 00, greenTo: 60,
+                 yellowFrom:60, yellowTo: 80,
+           
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('aco_measure_gauge_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+			
+
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" collapsible="true" size="85"
+				minSize="60">
+
+				<ui:include src="../Doctor/doctorheader2.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+
+				<ui:include src="../core/footer.xhtml"></ui:include>
+
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<ui:include src="doctor_profile_leftmenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center">
+			
+					<!-- <div align="center"><p:graphicImage url="images/commingSoon.jpg"></p:graphicImage></div> -->
+					<!-- <fieldset class="fieldContent" >
+					<legend class="titleBar"> ACO Measure Gauge Chart </legend> -->
+					<table width="100%" class="secContentBorder" cellpadding="0" cellspacing="0">
+					  <tr>
+					     <td class="secHeadPart">ACO Measure Chart</td>
+					  </tr>
+					  <tr class="secContentBorder">
+					    <td >
+					       <h:form id="measrueChartFrm">
+					
+					
+					<table>
+					<tr  >
+					 <td >
+					 
+					 <div id='aco_measure_gauge_chart_div'  ></div>
+					 </td>
+					</tr>
+					<tr>
+					 <td>
+					   <p:commandButton value="Call ACO Measure Master" actionListener="#{reportManageBean.callACOMeasure28}" ajax="false" update=":measrueChartFrm" ></p:commandButton>
+					   
+					 </td>
+					</tr>
+					</table>
+					
+					 
+					<!-- <table>
+					 <tr>
+					  <td>
+					  <span id="measure28GaugeContainer" style="height:230px;margin-top:200px;"></span>
+					  </td>
+					  <td>
+					   <span id="measure30GaugeContainer" style="height:230px;margin-top:200px;"></span>
+					   </td>
+					  <td>
+					  <p:commandButton value="Call ACO Measure28 Proc" actionListener="#{reportManageBean.callACOMeasure28}" ajax="false" update=":measrueChartFrm"></p:commandButton>
+					  </td>
+					 </tr>
+					</table> -->
+					</h:form>
+					    </td>
+					  </tr>
+					</table>
+					
+					<!-- </fieldset>
+					   -->
+					
+                 
+					
+					
+					
+					
+					
+        </p:layoutUnit>
+		</p:layout>
+
+			
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+		
+	</f:view>
+</h:body>
+<script type="text/javascript">
+//initialize tab menu, by passing in ID of UL
+initialize();
+
+initializeACO30();
+		
+</script>
+<script type="text/javascript">
+//initialize tab menu, by passing in ID of UL
+/* initializeACO30(); */
+</script>
+ <script src="http://d3js.org/d3.v2.min.js"></script>
+</html>
+

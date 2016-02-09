@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body>
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+			<script type="text/javascript" language="javascript">
+			$(document).ready(function() {
+		     //   noBack();
+		        document.getElementById("validicBiometricMeasurementFrm:hiddenBtnId").click();
+		   });
+
+		   function noBack() {
+			   window.location.hash="no-back-button";
+				window.location.hash="Again-No-back-button";//again because google chrome don't insert first hash into history
+				window.onhashchange=function(){window.location.hash="";} 
+		       }
+		   function openDeviceApps(xhr, status, args){
+				console.log("Open Device App Method Fired "+args.url_val);
+			//	device_panel_id.show();
+			//deviceAppsWidgetVar.show();
+			//document.getElementById("validicBiometricMeasurementFrm:link_url_id").click();
+			 	var url_data=args.url_val;
+			 	window.open(url_data, "_blank", 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=720,height=420,top=200%,left=250%'); 
+				}
+</script>
+		</h:head>
+
+		<p:layout fullPage="true">
+		
+		
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="112" minSize="60">
+				<ui:include src="doctorHeader.xhtml" />
+			</p:layoutUnit>
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+
+				<ui:include src="../core/footer.xhtml"></ui:include>
+
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				  <ui:include src="anticoagleftmenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center">
+			<ui:include src="/page/core/blockDialog.xhtml">
+				
+				</ui:include>
+			<h:form id="validicBiometricMeasurementFrm">
+			<p:commandButton action="#{validicRestManagedBean.latestValidicData}" update="biometric_measurement_id" id="hiddenBtnId" style="display:none" >
+			<f:setPropertyActionListener target="#{validicRestManagedBean.validicDevices.biometric}" value="true"></f:setPropertyActionListener>
+			</p:commandButton>
+			 	<p:commandButton value="Connect To Devices"  actionListener="#{validicRestManagedBean.loadDeviceApps}"  oncomplete="openDeviceApps(xhr, status, args);" style="float:right"></p:commandButton>
+				<!-- <p:panel visible="false" widgetVar="device_panel_id" id="device_id"> -->
+			<!-- 	<p:lightBox widgetVar="deviceAppsWidgetVar" iframe="true" iframeTitle="Clinakos Device Integration" visible="false" height="480px" width="1020px" style="float:right">
+				 <h:outputLink value="#{validicRestManagedBean.deviceResponse}" title="Devices Details" id="link_url_id" style="display:none">
+					<h:outputText value="Device Details"></h:outputText>
+				</h:outputLink> 
+				
+				
+				
+				</p:lightBox>	 -->
+				<!-- </p:panel> -->
+				<p:commandButton value="Sync To Clinakos" action="#{validicRestManagedBean.latestValidicData}" update="biometric_measurement_id" onstart="blockPage.show();" oncomplete="blockPage.hide();">
+				<f:setPropertyActionListener target="#{validicRestManagedBean.validicDevices.biometric}" value="true"></f:setPropertyActionListener>
+				</p:commandButton>
+			<!-- <table>
+					 <tr>
+					  <td>
+					   <h:outputText value="Start Date"/>
+					  </td>
+					  <td>
+					  <p:calendar value="#{validicRestManagedBean.validicBiometricmeasurement.startDate}" />
+					  </td>
+					  <td>
+					   <h:outputText value="End Date"/>
+					  </td>
+					  <td>
+					   <p:calendar value="#{validicRestManagedBean.validicBiometricmeasurement.endDate}"/>
+					  </td>
+					  <td>
+					   <h:outputText value="Source Name "/>
+					  </td>
+					  <td>
+					  <p:selectOneMenu value="#{validicRestManagedBean.validicBiometricmeasurement.source_name}" >
+					 <f:selectItem itemLabel="Select Source Name" itemValue=""/>
+					 <f:selectItems value="#{validicRestManagedBean.validicBiometricMeasurementSourceNameList}" ></f:selectItems>
+					</p:selectOneMenu>
+					  </td>
+					  <td>
+					   <p:commandButton value="Get Weight Data" actionListener="#{validicRestManagedBean.getFilterValidicBiometricMeasurementData}" update="validicBiometricMeasurementDataTab"></p:commandButton>
+					  </td>
+					  <td>
+					   <p:commandButton value="Velocity Test " actionListener="#{validicRestManagedBean.velocityTest}"></p:commandButton>
+					  
+					 </td> 
+					   <td>
+					     <p:commandButton value="Test Proc" actionListener="#{validicRestManagedBean.testProcedure}"></p:commandButton>
+					  </td>
+					 </tr>
+					
+					</table> -->
+					<br/>
+				<p:panel id="biometric_measurement_id">
+			   <p:dataTable id="validicBiometricMeasurementDataTab" value="#{validicRestManagedBean.userBiometricMeasurements}" var="valdicBioMetrMeasr">
+					 <p:column headerText="#{msg.blood_calcium}">
+					  <h:outputText value="#{valdicBioMetrMeasr.blood_calcium}">
+					  <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.blood_chromium}">
+					  <h:outputText value="#{valdicBioMetrMeasr.blood_chromium}">
+					    <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.blood_folic_acid}">
+					  <h:outputText value="#{valdicBioMetrMeasr.blood_folic_acid}">
+					    <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.blood_magnesium}">
+					  <h:outputText value="#{valdicBioMetrMeasr.blood_magnesium}">
+					    <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.creatine_kinase}">
+					  <h:outputText value="#{valdicBioMetrMeasr.creatine_kinase}">
+					    <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.systolic}">
+					  <h:outputText value="#{valdicBioMetrMeasr.systolic}">
+					    <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.diastolic}">
+					  <h:outputText value="#{valdicBioMetrMeasr.diastolic}">
+					    <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.resting_heartrate}">
+					  <h:outputText value="#{valdicBioMetrMeasr.resting_heartrate}">
+					    <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.testosterone}">
+					  <h:outputText value="#{valdicBioMetrMeasr.testosterone}">
+					    <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.total_cholesterol}">
+					  <h:outputText value="#{valdicBioMetrMeasr.total_cholesterol}">
+					    <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.tsh}">
+					  <h:outputText value="#{valdicBioMetrMeasr.tsh}">
+					    <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.hscrp}">
+					  <h:outputText value="#{valdicBioMetrMeasr.hscrp}">
+					    <f:convertNumber pattern="#{msg.decimal_pattern}" />
+					  </h:outputText>
+					 </p:column>
+					 <p:column headerText="#{msg.source_name}">
+					  <h:outputText value="#{valdicBioMetrMeasr.source_name}"/>
+					 </p:column>
+					<p:column headerText="#{msg.timestamp}">
+					 <h:outputText value="#{valdicBioMetrMeasr.timestamp}">
+					 <f:convertDateTime pattern="yyyy-MM-dd"/>
+					 </h:outputText>
+					</p:column>
+					</p:dataTable>
+					</p:panel>
+					</h:form>
+					
+            </p:layoutUnit>
+		</p:layout>
+
+			
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+		
+	</f:view>
+</h:body>
+</html>
+

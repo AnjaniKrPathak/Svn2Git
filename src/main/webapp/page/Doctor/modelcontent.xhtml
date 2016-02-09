@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+<h:head>
+	<meta http-Equiv="Cache-Control" Content="no-cache"/>
+    <meta http-Equiv="Pragma" Content="no-cache"/>
+    <meta http-Equiv="Expires" Content="0"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<script language="javascript">
+	function doOnClick() {
+		document.getElementById("abc").click();
+		document.submitForm.submit();
+	    
+	}
+	function wait()
+	{
+		setTimeout(doOnClick,5000);
+	}
+	
+	</script>
+	
+		<style type="text/css">
+.box_scale {
+              width:300px;
+             height:300px;
+  -webkit-transform: scale(0.1);  /* Saf3.1+, Chrome */
+     -moz-transform: scale(0.1);  /* FF3.5+ */
+      -ms-transform: scale(0.1);  /* IE9 */
+       -o-transform: scale(0.1);  /* Opera 10.5+ */
+          transform: scale(0.1);
+             filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+                     M11=0.9999619230641713, M12=-0.008726535498373935, M21=0.008726535498373935, M22=0.9999619230641713,SizingMethod='auto expand');
+}
+</style>
+
+	
+</h:head>
+
+<h:body onload="wait()">
+<h:form id="ePrescribe" style="display:none">
+		<table align="center">
+			<tr>
+				<td><h:outputText
+						value="#{msg.doyouwanttomakethefollowingprecriptions}"
+						style="font-size:9px;font-family: verdana;font-weight: bold " />
+
+				</td>
+			</tr>
+
+		</table>
+	<h:inputHidden value="#{patientMedicineManageBean.exitLocationForEPrescribe}" /> 
+	
+		<p:dataTable scrollable="true" scrollHeight="106"
+			value="#{patientMedicineManageBean.medicineListForEprescribe}"
+			var="modify" emptyMessage="#{msg.noMedFound}">
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="#{msg.med} " style="font-size:9px;"/>
+				</f:facet>
+				<h:outputText value="#{modify.drugs} " />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="#{msg.dose}" style="font-size:9px;"/>
+				</f:facet>
+				<h:outputText value="#{modify.strengths}" />
+			</p:column>
+
+			<p:column style="text-align:center;">
+				<f:facet name="header">
+					<h:outputText value="#{msg.units}" style="font-size:9px;"/>
+				</f:facet>
+				<h:outputText value=" #{modify.quantity} " />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="#{msg.regimen}" style="font-size:9px;"/>
+				</f:facet>
+				<h:outputText value="#{modify.directions}" />
+			</p:column>
+
+			<!-- <p:column>
+				<f:facet name="header">
+					<h:outputText value="#{msg.pharmacy}" style="font-size:9px;"/>
+				</f:facet>
+				<h:outputText value="#{modify.drugs}" />
+			</p:column> -->
+
+			<p:column style="text-align:center;">
+				<f:facet name="header">
+					<h:outputText value="#{msg.refills}" style="font-size:9px;"/>
+				</f:facet>
+				<h:outputText value="#{modify.reffils} " />
+			</p:column>
+		</p:dataTable>
+		<br></br>
+		  <!-- <p:commandButton id="abc" value="ePrescribe3"    actionListener="#{patientMedicineManageBean.saveValueForIntegration}" style="display: none" /> -->
+	</h:form>
+
+
+<div id="ePrescribe">
+<form id="submitform" name="info" method="post" action="#{webservices.webserviceUrl}">
+
+<input id="abc" type="submit" value="eprescribe" style="display: none;"></input>
+
+
+
+ 
+<h:outputText value="Please wait while New crop data and Clinakos data is Synchronized. You will be automatically redirected to newcrop.." style="color:#005E86;"/>
+<br/>
+<center><h:outputText value="*(This is for testing purpose and will remove after)" style="color:red;"/></center>
+	             
+            <textarea id="RxInput" name="RxInput" rows="33" cols="79">
+   #{patientMedicineManageBean.fullEprescribeXmlSummary} 
+  
+			</textarea>
+</form>
+</div>
+</h:body>
+
+</html>

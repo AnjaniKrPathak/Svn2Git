@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body onload="#{dashBoardManageBean.setallergyIndex()}">
+
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+				
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="112" minSize="60">
+				<ui:include src="doctorHeader.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			  <p:layoutUnit id="left" position="west" size="168" closable="false"
+				collapsible="true" header="Summary" minSize="150">
+				  <ui:include src="docMenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+			
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center" resizable="true">
+				<!-- <ui:include src="../Doctor/patientTabHeader.xhtml"></ui:include> -->
+				
+				<p:accordionPanel dynamic="true" activeIndex="1">
+						<p:tab
+							title="#{dashBoardManageBean.userLoginDetail.firstName} #{dashBoardManageBean.userLoginDetail.lastName} #{dashBoardManageBean.userLoginDetail.age} YO #{dashBoardManageBean.userLoginDetail.gender}">
+							<ui:include src="../Doctor/patientDetailsHeader.xhtml"></ui:include>
+						</p:tab>
+					</p:accordionPanel>
+					
+					
+						<h:form id="allergyInformation"> 
+						
+						<p:growl id="messageUpdate"   redisplay="false" style="color:red;margin:8px;" showSummary="true" showDetail="true" autoUpdate="true" closable="true" life="3000"/> 
+				
+				 
+						<table align="right">
+						
+							<tr>
+                          <td>
+									<p:commandButton value="#{msg.add}"  actionListener="#{patientMedicineManageBean.searchAllergyRefresh}"
+									update=":masterAllergyID"   
+					                />
+					
+								</td>
+							</tr>
+						</table>
+					<table width="100%">
+					 <tr>
+				      <td>
+				      <fieldset class="dataField" style=" min-height:150px; " >
+				      <legend class="legendField">#{msg.patientalergydetail}</legend>
+					<p:dataTable id="patientAllergy" value="#{patientMedicineManageBean.patientAllergyList}" var="patAllergy"  rowIndexVar="rowNum"
+						binding="#{patientMedicineManageBean.allergyDataTableBinding}" emptyMessage="#{msg.noMedFound}">
+					
+						  <p:column headerText="#{msg.alrgyNm}">
+						  		<h:outputText value="#{patAllergy.allergyName}" />
+						  </p:column>
+						  
+						  <p:column headerText="#{msg.alrgyServty}">
+						  		<h:outputText value="#{patAllergy.allergySeverity}" />
+						  </p:column>
+						  
+						  <p:column headerText="Allergy Notes">
+						  		<h:outputText value="#{patAllergy.allergyNotes}" />
+						  </p:column>
+						  
+						  
+						  <p:column headerText="On Set Date">
+						  		<div align="right"><h:outputText value="#{patAllergy.onSetDate}" >
+						  		 <f:convertDateTime pattern="MM/dd/yyyy" timeZone="#{userManageBean.loggedUsertimeZone}" dateStyle="full" type="date"/>
+						  		 </h:outputText></div>
+						  </p:column>
+						  
+						  
+						  <p:column headerText="#{msg.action}">
+						  
+								
+								<div align="center"><p:commandButton icon="ui-icon-close" title="#{msg.delete}" style="height:15px;" 
+								actionListener="#{patientMedicineManageBean.setidtodeletePatientAllergy}"
+											 oncomplete="deleteAllergy.show();"
+											 process="@form" update=":allergyInformation:patientAllergy">
+										<f:param name="rowIdForAllergyList" value="#{rowNum}"></f:param>
+										<f:param name="allergyId" value="#{patAllergy.compositeAllergyId}"></f:param>
+						
+								</p:commandButton>
+								<p:commandButton icon="ui-icon-pencil" title="#{msg.edit}" style="height:15px;" 
+								        actionListener="#{patientMedicineManageBean.setidtodeletePatientAllergy}"
+										oncomplete="dlg_editAllergy.show();" update=":dlg_id_editAllergy">
+											 
+										<f:param name="rowIdForAllergyList" value="#{rowNum}"></f:param>
+										<f:param name="allergyId" value="#{patAllergy.compositeAllergyId}"></f:param>
+										<f:param name="allergy" value="#{patAllergy.allergyName}"></f:param>
+								</p:commandButton></div>
+						  </p:column>
+					</p:dataTable>
+					</fieldset>
+					</td>
+				   </tr>
+				</table>
+			</h:form>	
+			
+ <!--  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Edit Allergy dialog box >>>>>>>>>>>>>>>>>>>>>.  -->	
+ 		
+			  <p:dialog id="dlg_id_editAllergy" widgetVar="dlg_editAllergy" width="320" closable="false" 
+			  			modal="true" appendToBody="true" hideEffect="fold" header="Allergy Edit">
+			    <h:form> 
+			        <table>
+			        <tr>
+			           <td> 
+					    	<h:outputText value="#{msg.allergy}" />
+					    </td>
+			           <td> 
+					    	<h:outputText value="#{patientMedicineManageBean.patientAllergy.allergyName}" style="font-weight:bold;"/>
+					    </td>
+			        </tr>
+                     <tr>
+					 	<td>  
+						   <h:outputText value="#{msg.severity}"  style="font-size:10px" />
+						</td> 
+						<td>
+						  <p:selectOneMenu value="#{patientMedicineManageBean.patientAllergy.allergySeverity}" 
+						    	style="width:140px;'">
+						     <f:selectItem itemLabel="#{patientMedicineManageBean.patientAllergy.allergySeverity}" 
+						     	itemValue="#{patientMedicineManageBean.patientAllergy.allergySeverity}"/>
+							 <f:selectItem itemLabel="#{msg.mid}" itemValue="#{msg.mid}"/>
+							 <f:selectItem itemLabel="#{msg.modarate}" itemValue="#{msg.modarate}"/>
+							 <f:selectItem itemLabel="#{msg.severe}" itemValue="#{msg.severe}"/>
+						  </p:selectOneMenu>
+						</td>
+					 </tr>
+					 <tr>
+					 	<td>
+					 		<h:outputText value="Allergy Notes" />
+					 	</td>
+					 	
+					 	<td>
+					 		<!-- <p:inputText id="editNotes" value="#{patientMedicineManageBean.patientAllergy.allergyNotes}" >
+					 			<p:ajax update="editNotes"></p:ajax>
+					 		</p:inputText> -->
+					 		<p:inputTextarea  id="editNotes"  value="#{patientMedicineManageBean.patientAllergy.allergyNotes}"  cols="20" rows="3">
+											<p:ajax update="editNotes"></p:ajax> 
+								</p:inputTextarea>
+					 	</td>
+					 	
+					 	
+					 	
+					 </tr>
+					 
+					 <tr>
+					 	<td> 
+					    	<h:outputText value="date" />
+					    </td>
+		           		
+		           		<td> 
+					    	<!-- <h:outputText value="#{patientMedicineManageBean.patientAllergy.onSetDate}" style="font-weight:bold;"/> -->
+					    	 <p:growl id="growl" showDetail="true"/>  
+					    	<p:calendar  value="#{patientMedicineManageBean.patientAllergy.onSetDate}" showOn="button" navigator="true" >  
+								        <p:ajax event="dateSelect"  update="growl" />  
+								    </p:calendar> 
+					    </td>
+					 </tr>
+					 <tr>
+					   <td>     
+		 			      <p:commandButton value="#{msg.save}" actionListener="#{patientMedicineManageBean.editAllergyRow}" 
+		 			            oncomplete="dlg_editAllergy.hide();" ajax="false"/>
+		 			   </td>
+				       <td>
+				          <p:commandButton value="#{msg.cancel}"  oncomplete="dlg_editAllergy.hide();"/>
+				       </td>      
+					 </tr>
+				  </table>
+			    </h:form>
+			  </p:dialog>
+			
+<!--  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Delete allergy dialog box >>>>>>>>>>>>>>>>>>>>>.  -->						
+					
+					<p:dialog widgetVar="deleteAllergy" id="deleteAllergyDetails" header="Are you Sure you want to delete?" message="Are you Sure you want to delete?"
+                    			 width="260" closable="false" modal="true" appendToBody="true" hideEffect="fold">
+                    	<h:form>		 
+					        <h:panelGroup layout="block" style="text-align: center">
+					            <p:commandButton value="Yes" process="@this" actionListener="#{patientMedicineManageBean.deleteAllergyRow}" update=":allergyInformation:patientAllergy"  oncomplete="deleteAllergy.hide();"  />
+					            <p:commandButton value="No"  oncomplete="deleteAllergy.hide();" />
+					        </h:panelGroup>
+					    </h:form>
+   					 </p:dialog>
+			
+			
+<!--  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Add dialog box >>>>>>>>>>>>>>>>>>>>>.  -->	
+				
+				<p:dialog id="allergyIdDetails" header="#{msg.allergy}" widgetVar="masterAllergy" modal="true" appendToBody="true" hideEffect="fold" resizable="true"
+					dynamic="false" width="600" position="430,100">
+					
+				 <h:form id="masterAllergyID">	
+					
+					<table>
+					<tr>
+					<td>
+							<h:outputText value="#{msg.allergy}" style="font-size:10px;" />
+						</td>
+				
+						<td>
+							<p:inputText value="#{patientMedicineManageBean.patientAllergy.allergyName}" id="allergyDeatils"  >
+	 						
+	 							<p:ajax update="allergyDeatils"></p:ajax> 
+	 						</p:inputText>
+	 						<p:watermark value="#{msg.searchAllergy}" for="allergyDeatils"></p:watermark> 
+					
+				
+						
+						</td>
+						 <td align="left">
+							 <p:commandButton value="#{msg.search}" action="#{patientMedicineManageBean.searchMasterAllergyData}"  id="searchmasterallergyId"
+								immediate="true" update=":masterAllergyID"  ajax="true"/> 
+						 </td> 
+						 
+						 <td>
+						 		<h:outputText value="Date" />
+						 </td>
+						 
+						 <td>
+						 		<!-- p:calendar pattern="MM/dd/yyyy" id="dateUpdate"  showOn="button" navigator="true" 
+										value="#{patientMedicineManageBean.patientAllergy.onSetDate}" >
+										
+										
+								 <p:ajax update="dateUpdate"></p:ajax> 
+						</p:calendar> -->
+						
+						 <p:growl id="growl" showDetail="true"/>  
+  
+								    <p:calendar  value="#{patientMedicineManageBean.patientAllergy.onSetDate}" showOn="button" navigator="true" >  
+								        <p:ajax event="dateSelect"  update="growl" />  
+								    </p:calendar>  
+						 </td>
+					</tr>
+					
+					<tr>
+						 <td>
+							<h:outputText value="#{msg.severity}"  style="font-size:10px" />
+						</td>
+						
+						 <td >
+							 <p:selectOneMenu value="#{patientMedicineManageBean.patientAllergy.allergySeverity}" style="width:140px;'">
+							
+								 <f:selectItem itemLabel="#{msg.mid}" itemValue="#{msg.mid}"/>
+								 <f:selectItem itemLabel="#{msg.modarate}" itemValue="#{msg.modarate}"/>
+								 <f:selectItem itemLabel="#{msg.severe}" itemValue="#{msg.severe}"/>
+							 	<p:ajax update="searchmasterallergyId" ajax="true"></p:ajax> 
+							 </p:selectOneMenu>
+						 </td>
+						
+						 <td></td>
+						
+						<!--  <td width="300px"></td>	 -->
+						
+					
+							
+						<td><h:outputText value="Allergy Notes" /></td>
+							<td>
+								
+								<!-- <p:inputText  id="notes" value="#{patientMedicineManageBean.patientAllergy.allergyNotes}">
+									<p:ajax update="notes"></p:ajax>
+								</p:inputText> -->
+								
+								
+								<p:inputTextarea  id="notes"  value="#{patientMedicineManageBean.patientAllergy.allergyNotes}"  cols="20" rows="3">
+											<p:ajax update="notes"></p:ajax> 
+								</p:inputTextarea>
+							</td>
+						</tr>
+						
+					</table>
+					
+					<table align="center">
+							<tr >
+							<td >
+								<p:commandButton value="#{msg.submit}"   action="#{patientMedicineManageBean.searchPatientAllergyDetail}"  
+									rendered="#{patientMedicineManageBean.patientAllergy.allergyName ne ''}" 
+									immediate="true"  update=":masterAllergyID:allergydetail,:allergyInformation:patientAllergy"   oncomplete="masterAllergy.hide();" 
+									disabled="#{patientMedicineManageBean.patientAllergy.allergySeverity.isEmpty()}" ajax="true"  >
+								</p:commandButton> 
+						
+							</td >
+							
+							<!-- <td >
+								<p:commandButton value="#{msg.cancel}" onclick="masterAllergy.hide()"></p:commandButton>
+							</td> -->
+						
+						</tr>
+					
+					</table>
+					
+					
+		              <p:dataTable value="#{patientMedicineManageBean.allergyMasterList}" var="mstrAllergy"   id="allergydetail"
+				 			binding="#{patientMedicineManageBean.allergyMasterDatatable}"  paginatorAlwaysVisible="true" paginator="true" rowsPerPageTemplate="20" 
+							rows="15"  paginatorPosition="bottom" resizableColumns="true" 
+							draggableColumns="true" emptyMessage="#{msg.noMedFound}" >
+				 			
+				 			
+				  	<p:column headerText="#{msg.allergyname}" >
+				  			<p:commandLink  value="#{mstrAllergy.allergyName}" actionListener="#{patientMedicineManageBean.findAllergyName}" 
+				  					update=":allergyIdDetails"  style="text-decoration:underline;"  >
+				  				
+				  			<!-- <h:outputText value="#{mstrAllergy.allergyName}" /> -->
+				  			</p:commandLink>
+				    </p:column>
+				    
+				 
+				  
+				 </p:dataTable>
+			</h:form>	
+		</p:dialog>
+				
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+		</p:layout>
+
+	</f:view>
+
+</h:body>
+</html>

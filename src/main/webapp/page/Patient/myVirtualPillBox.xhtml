@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body>
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<p:layoutUnit position="north"  size="85" minSize="60">
+				<ui:include src="patientHeader.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<ui:include src="my_medication_leftmenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center">
+				<!-- <p:tabView dynamic="true" id="myvirtualPillBoxTab" >
+					<p:tab title="My Virtual Pill Box"> -->
+					<!-- <fieldset id="myvirtualPillBoxTab" class="fieldContent">
+					<legend class="titleBar"><b>My Virtual Pill Box</b></legend> -->
+				<table style="min-height:165px;width: 100%">
+						  <tr >
+						    <td class="secHeadPart">My Virtual Pill Box</td>
+						  </tr>
+						  <tr>
+						    <td class="secContentBorder" valign="top">
+						<!--      rows="12"
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								paginatorPosition="bottom" -->
+					   <h:form >
+						<p:dataTable id="medications"
+							value="#{patientMedicineManageBean.patientMedicationVirtualPillBox}"
+							var="patientMedList" paginatorAlwaysVisible="false"
+							emptyMessage=" #{msg.noMedFound} " paginator="false" rows="12"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							paginatorPosition="bottom" resizableColumns="true" width="80px"
+							 scrollable="true" scrollHeight="455">
+
+
+							<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.drug} " />
+								</f:facet>
+								<div align="left">
+								<h:outputText value="#{patientMedList.drugs}" /></div>
+							</p:column>
+							
+							<!-- <p:column>
+							 <f:facet name="header">
+							  <h:outputText value="MedicineImageId" />
+							 </f:facet>
+							<h:outputText value="#{patientMedList.medicineImageId}" />
+							</p:column> -->
+
+							<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.morning} " />
+								</f:facet>
+								<!-- <h:outputText value="" /> -->
+							 <center> <!-- <p:graphicImage url="../../Images/MedicineImage/#{patientMedList.morning}" rendered="#{!(patientMedList.morning eq null)}"
+									styleClass="image_border_rec"></p:graphicImage>  -->
+								
+								  <p:graphicImage value="/Images/Dynamic/?file=#{patientMedList.medicineImageId}.jpg" styleClass="image_border_rec" rendered="#{!(patientMedList.morning eq null || patientMedList.medicineImageId.length() eq null)}"/>
+									
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.morning eq null)}">
+									<div class="defaultMed"  >
+									<h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.morning eq null)}" 
+									/> 
+									</div>
+									</p:panel>
+									</center> 
+									
+							</p:column>
+
+
+							<p:column  >
+								<f:facet name="header">
+									<h:outputText value="#{msg.afternoon}" />
+								</f:facet>
+							<!-- <h:outputText value="#{patientMedList.afternoon}" /> -->
+							<center>
+							 <p:graphicImage url="/Images/Dynamic/?file=#{patientMedList.medicineImageId}.jpg" rendered="#{!(patientMedList.afternoon eq null || (patientMedList.medicineImageId.length() eq null))}"
+									id="aftNoon" styleClass="image_border_rec">
+									<p:droppable for="aftNoon" tolerance="touch" onDrop="handleDrop"></p:droppable>
+									</p:graphicImage> 
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.afternoon eq null)}">
+									<div class="defaultMed">
+									<h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.afternoon eq null)}" 
+									/>  
+									</div>
+									</p:panel> 
+									</center>
+							</p:column>
+
+							<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.evening}" />
+								</f:facet>
+								 <center><p:graphicImage url="/Images/Dynamic/?file=#{patientMedList.medicineImageId}.jpg" rendered="#{!(patientMedList.evening eq null || patientMedList.medicineImageId eq null) }"
+									id="evenings" styleClass="image_border_rec">
+									<p:draggable for="evenings" revert="true"></p:draggable>
+									</p:graphicImage>
+									
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.evening eq null)}">
+									<div class="defaultMed">
+									<h:outputText value="#{patientMedList.drugs}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.evening eq null)}" /> 
+									<h:outputText value="  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.evening eq null)}" />
+									</div>
+									</p:panel>
+									
+									</center> 
+							</p:column>
+
+							<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.bedtime}" />
+								</f:facet>
+								<center>
+							 <p:graphicImage url="/Images/Dynamic/?file=#{patientMedList.medicineImageId}.jpg" rendered="#{!(patientMedList.night eq null || patientMedList.medicineImageId.length() eq null)}"
+									styleClass="image_border_rec"></p:graphicImage> 
+							 <p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.night eq null)}" >
+									<div class="defaultMed">
+								  <h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.night eq null)}"  />
+								</div>
+								</p:panel>	
+								</center>	
+							</p:column>
+
+						<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.specialcase}" />
+								</f:facet>
+								<!-- <h:outputText value="#{patientMedList.otherTime}" /> -->
+								<center>
+								 <p:graphicImage url="/Images/Dynamic/?file=#{patientMedList.medicineImageId}.jpg" rendered="#{!(patientMedList.otherTime eq null || patientMedList.medicineImageId.length() eq null)}"
+									styleClass="image_border_rec"></p:graphicImage> 
+									
+									<p:panel rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.otherTime eq null)}">
+									<div class="defaultMed">
+									<h:outputText value="#{patientMedList.drugs}  #{patientMedList.strengths}" rendered="#{(patientMedList.medicineImageId.length() eq null) and !(patientMedList.otherTime eq null)}" /> 	
+									</div>
+									</p:panel>
+									</center>
+							</p:column>
+						</p:dataTable>
+						</h:form>
+					</td>
+					</tr>
+					</table>
+						<!-- </fieldset>	 -->
+						<!-- </p:tab>
+						</p:tabView> -->
+			</p:layoutUnit>
+
+
+
+
+
+
+
+
+
+
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+		</p:layout>
+
+	</f:view>
+
+</h:body>
+</html>

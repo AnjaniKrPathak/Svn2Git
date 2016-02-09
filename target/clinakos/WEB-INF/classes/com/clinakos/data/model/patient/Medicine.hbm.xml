@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 8th, 2013 2:07:02 PM by gopal krishna jha -->
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.Medicine" table="medicine_details">
+		<id name="id">
+			<column name="id" />
+			<generator class="increment" />
+		</id>
+
+		<property name="medicinName">
+			<column name="medicine_name" />
+		</property>
+
+		<property name="clinicName">
+			<column name="clinic_name" />
+		</property>
+		<property name="flagForMedActionPlan" type="boolean">
+			<column name="flag_for_med_action_plan" />
+		</property>
+		<property name="flagForDoseCalculator" type="boolean">
+			<column name="flag_for_dose_calculator" />
+		</property>
+
+
+
+	</class>
+</hibernate-mapping>

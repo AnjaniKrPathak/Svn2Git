@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 30 Oct, 2015 2:27:42 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.core.AuditPatientDeactivation" table="audit_patient_deactivation">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <property name="patientId" type="int">
+            <column name="patient_id" />
+        </property>
+        <property name="providerId" type="int">
+            <column name="provider_id" />
+        </property>
+        <property name="userId" type="int">
+            <column name="user_id" />
+        </property>
+        <property name="deactivatedDate" type="java.util.Date">
+            <column name="deactivation_date" />
+        </property>
+    </class>
+</hibernate-mapping>

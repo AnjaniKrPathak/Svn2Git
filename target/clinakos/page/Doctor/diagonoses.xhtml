@@ -1,0 +1,1122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body onload="#{dashBoardManageBean.setDiagnoseIndex()}">
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			
+			
+			<script type="text/javascript">  
+               function handleComplete(xhr, status, args) {  
+	               if(args.validationFailed==false) {  
+                       //  $("#allergyIdDetails").show();
+    	                  masterAllergy.show();
+                          }   
+                       else {  
+    	                     //$("#allergyIdDetails").hide();  
+                          masterAllergy.hide();
+                     }  
+                    }  
+
+
+
+               function showMe (it, box) {
+ 				  var vis = (box.checked) ? "block" : "none";
+ 				  document.getElementById(it).style.display = vis;
+ 				}
+				
+               function hidediv(it, box) {
+					var vis = (box.checked) ? "none" : "block";
+					  document.getElementById(it).style.display = vis;
+					}
+				
+				var styledTooltip = {
+				        width: {
+				            min: 0,
+				            max: 450
+				        },
+				        padding: 3,
+				        background: '#e4e7ff',
+				        color: '000044',
+				        textAlign: 'left',
+				        border: {
+				            width: 1,
+				            radius: 5,
+				            color: '#333333'
+				        },
+				        name: 'blue'
+				    };
+				
+				
+           </script>
+		</h:head>
+
+		<p:layout fullPage="true">
+		
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="93" minSize="60">
+				<ui:include src="doctorHeader.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<ui:include src="docMenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+			<br />
+			<br />
+			<br />
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center">
+				<!--  <ui:include src="../Doctor/patientTabHeader.xhtml"></ui:include>-->
+				
+					<p:accordionPanel dynamic="true" activeIndex="1">
+						<p:tab >
+						<f:facet name="title">
+						<h:outputText value="#{dashBoardManageBean.userLoginDetail.userId} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}"  rendered="#{userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header')}"></h:outputText>
+						<h:outputText value="#{dashBoardManageBean.userLoginDetail.firstName} #{dashBoardManageBean.userLoginDetail.lastName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"/>
+						</f:facet>
+						
+							<p:outputPanel deferred="true" >
+							<ui:include src="../Doctor/patientDetailsHeader.xhtml"></ui:include>
+							</p:outputPanel>
+						</p:tab>
+					</p:accordionPanel>
+				
+				<h:form  id="diagnosisformId">
+				
+	          
+					
+			<p:growl id="messageUpdate" style="color:red;margin:8px;" redisplay="false"  life="3000"/>
+					<div align="right" style="margin-top:5px;">
+						<table width="100%" class="contentTextPan" >
+							<tr>
+							 
+			                 
+			                  
+								<td align="right">
+								 <p:commandButton value="Add Vitals" onclick="addPatientVital.show();"/>
+								<p:commandButton value="#{msg.adddia}"
+										update=":searchdiagosisPopUpFormId"
+										onclick="searchDiagnosisPopUp.show()" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('profile_addDiagnosis')}"/>
+										 <p:commandButton
+										value="#{msg.add}"
+										actionListener="#{patientMedicineManageBean.searchAllergyRefresh}"
+										update=":masterAllergyID" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('profile_addAllergy')}"/>
+										</td>
+							</tr>
+						</table>
+					</div>
+
+				</h:form>
+			<table width="100%"  cellpadding="0" cellspacing="0">
+			  <tr>
+			    <td class="secHeadPart">
+			      Demographics
+			    </td>
+			  </tr>
+			   <tr >
+			    <td class="secContentBorder">
+			    <table  class="contentTextPan"> 
+							<tr>
+								<td class="contentTextPan">
+									<h:outputText value="Patient Id :" style="font-weight:bold;"/>&nbsp;
+									<h:outputText value="#{dashBoardManageBean.userLoginDetail.userId} " />
+								</td>
+								
+								<td class="contentTextPan">
+									<h:outputText value="Patient Name :" style="font-weight:bold;"/>&nbsp;
+									<h:outputText value="#{dashBoardManageBean.userLoginDetail.firstName} 
+											#{dashBoardManageBean.userLoginDetail.middleName} #{dashBoardManageBean.userLoginDetail.lastName}" />
+								</td>
+								
+								<td class="contentTextPan">
+									<h:outputText value="Gender :" style="font-weight:bold;"/>&nbsp;
+									<h:outputText value="#{dashBoardManageBean.userLoginDetail.gender} " />
+								</td>
+								
+								
+							</tr>
+							
+							<tr>
+							
+								<!-- <td >
+									<h:outputText value="Date Of Birth : " styleClass="outputtext"/>
+									<h:outputText value="#{dashBoardManageBean.userLoginDetail.dateOfBirth} ">
+									 <f:convertDateTime pattern="#{msg.dateFormat}" /> </h:outputText>
+								</td>
+								 -->
+								 
+								 <td class="contentTextPan"><h:outputText value="#{msg.DOB} :"
+																	style="font-weight:bold;"/>&nbsp;
+					
+							          <h:outputText
+										value="#{dashBoardManageBean.userLoginDetail.dateOfBirth}">
+										 <f:convertDateTime pattern="#{msg.dateFormat}" /> 
+				
+							</h:outputText>
+							
+						</td>
+								<td class="contentTextPan">
+									<h:outputText value="Phone Number :" style="font-weight:bold;"/>
+									<h:outputText value="#{dashBoardManageBean.userLoginDetail.phoneNumber} " />
+								</td>
+								
+								<td class="contentTextPan">
+									<h:outputText value="Address :" style="font-weight:bold;"/>&nbsp;
+									<h:outputText value="#{dashBoardManageBean.userLoginDetail.doorNo} 
+										#{dashBoardManageBean.userLoginDetail.street} #{dashBoardManageBean.userLoginDetail.city} #{dashBoardManageBean.userLoginDetail.state}
+										#{dashBoardManageBean.userLoginDetail.country} #{dashBoardManageBean.userLoginDetail.pincode}" />
+								</td>
+								
+								
+							 </tr>
+						</table>
+			    </td> 
+			  </tr>
+			 </table>
+			<br/>
+			<h:form id="patVitalFrm">
+			<!-- <p:panel id="panel_vital"> -->
+			<table  width="100%" cellpadding="0" cellspacing="0"> 
+			  <tr>
+			    <td class="secHeadPart">
+			      #{msg.vitals}
+			    </td>
+			  </tr>
+			  <tr align="right">
+			  
+			  </tr>
+			  <tr>
+			    <td class="secContentBorder">
+			    <table  class="contentTextPan" width="100%">
+			    <tr>
+			     <td>
+			      <h:outputText value="#{msg.height} :" style="font-weight:bold;"/>&nbsp;
+			      <h:outputText value="#{dashBoardManageBean.patientVitalDisplayOnPatientIntake.height.replaceAll('\\.',' ft ')} '' "/>
+			      
+			     </td>
+			     
+			     <td class="contentTextPan">
+			      <h:outputText value="#{msg.weight} :" style="font-weight:bold;"/>&nbsp;
+			      <h:outputText value="#{dashBoardManageBean.patientVitalDisplayOnPatientIntake.weight} Kg"/>
+			     </td>
+			     
+			     <td class="contentTextPan">
+			       <h:outputText value="#{msg.temperature} :" style="font-weight:bold;"/>&nbsp;
+			       <h:outputText value="#{dashBoardManageBean.patientVitalDisplayOnPatientIntake.temperature} F"/>
+			     </td>
+			     
+			    </tr>
+			    <tr>
+			    
+			     <td class="contentTextPan">
+			      <h:outputText value="#{msg.pulse} :" style="font-weight:bold;"/>&nbsp;
+			     <h:outputText value="#{dashBoardManageBean.patientVitalDisplayOnPatientIntake.pulse}"/>&nbsp;&nbsp;
+			     </td>
+			    
+			     
+			     
+			     
+			     <td class="contentTextPan">
+			      <h:outputText value="#{msg.systolic} :" style="font-weight:bold;"/>&nbsp;
+			       <h:outputText value="#{dashBoardManageBean.patientVitalDisplayOnPatientIntake.systolic} mm Hg"/>
+			     </td>
+			     
+			     <td class="contentTextPan">
+			      <h:outputText value="#{msg.diastolic} :" style="font-weight:bold;"/>&nbsp;
+			       <h:outputText value="#{dashBoardManageBean.patientVitalDisplayOnPatientIntake.diastolic} mm Hg"/>
+			     </td>
+			     
+			     
+			    </tr>
+			    <tr>
+			     <td class="contentTextPan">
+			      <h:outputText value="#{msg.respiration} :" style="font-weight:bold;"/>&nbsp;
+			       <h:outputText value="#{dashBoardManageBean.patientVitalDisplayOnPatientIntake.respiration}"/>
+			     </td>
+			    </tr>
+			    </table>
+			    </td>
+			    </tr>
+			    </table>
+			    <!-- </p:panel> -->
+			    </h:form>
+			    
+			    <!-- <table width="100%">
+			     <tr>
+			    <td class="secHeadPart">
+			    Devices
+			    </td>
+			  </tr>
+			  <tr class="secContentBorder">
+			   <td>
+			  <table width="100%" class="contentTextPan">
+			   <tr>
+			   <td>
+			   <p:dataTable value="">
+			    <p:column headerText="#{msg.device_name}">
+			     <h:outputText value="Glucomometer"></h:outputText>
+			    </p:column>
+			    <p:column headerText="#{msg.source_name}">
+			     <h:outputText value="Fitbit"/>
+			    </p:column>
+			   </p:dataTable>
+			   </td>
+			   </tr>
+			  </table>
+			   </td>
+			  </tr>
+			  
+			    
+			    </table> -->
+			    
+			    
+			
+			
+						
+			<!-- 
+			</fieldset> -->
+
+					<!--         Diagnoses Data Table Start From Here     -->
+
+		        <!--  <fieldset    class="dataField"  id="fieldsetId" style="min-height:75px;overflow:auto;width:98%; border: solid 1px #DDDDDD;">
+							<legend class="legendField">#{msg.diagnoses}</legend> -->
+				<!-- 	<table><tr><td>    </td></tr></table> -->
+						 <!-- <table width="100%">
+							<tr>
+								<td align="center" width="50%"><b> #{msg.icd_10} </b></td>
+								<td align="center" width="50%"><b> #{msg.icd_9} </b></td>
+							</tr>
+							<tr>
+								<td valign="top"><p:dataTable
+										value="#{patientManageBean.patientICD_10DiagnosisList}"
+										id="diagonosisICD_10" var="icd_1oDiago" 
+										  scrollable="true" scrollHeight="400">
+										  
+										<p:column sortBy="#{icd_1oDiago.icdId}" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.icd_10_code}" />
+											</f:facet>
+											<h:outputText value="#{icd_1oDiago.icdId}" />
+										</p:column>
+										<p:column sortBy="#{icd_1oDiago.code}" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.name1}" />
+											</f:facet>
+											<h:outputText value="#{icd_1oDiago.code}" />
+										</p:column>
+										<p:column sortBy="#{icd_1oDiago.date}" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.date}" />
+											</f:facet>
+											<h:outputText value="#{icd_1oDiago.date}">
+												<f:convertDateTime pattern="#{msg.dateFormat}" />
+											</h:outputText>
+										</p:column>
+										
+										
+										<p:column sortBy="#{icd_1oDiago.userLoginDetail.firstName}  #{icd_1oDiago.userLoginDetail.lastName}" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.doctor}" />
+											</f:facet>
+											<h:outputText
+												value="#{icd_1oDiago.userLoginDetail.firstName}  #{icd_1oDiago.userLoginDetail.lastName}" />
+										</p:column>
+									</p:dataTable> <p:blockUI block="diagonosisICD_10" trigger="diagonosisICD_10">  
+                               LOADING ...<br />
+										<p:graphicImage value="./../../Images/ajax_loader.gif"
+											width="40" height="40" />
+									</p:blockUI></td>
+									
+								<td valign="top"><p:dataTable
+										value="#{patientManageBean.patientICD_9DiagnosiosList}"
+										var="diagonosisICD_9" paginatorAlwaysVisible="false"
+										 scrollable="true" scrollHeight="400"
+										id="diagonosisICD_9">
+										<p:column sortBy="#{diagonosisICD_9.icdId}">
+											<f:facet name="header">
+												<h:outputText value="#{msg.icd_9_code}" />
+											</f:facet>
+											<h:outputText value="#{diagonosisICD_9.icdId}" />
+										</p:column>
+										<p:column sortBy="#{diagonosisICD_9.code}" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.name1}" />
+											</f:facet>
+											<h:outputText value="#{diagonosisICD_9.code}" />
+										</p:column>
+										<p:column sortBy="#{diagonosisICD_9.date}" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.date}" />
+											</f:facet>
+											<h:outputText value="#{diagonosisICD_9.date}">
+											<f:convertDateTime pattern="#{msg.dateFormat}" />
+											</h:outputText>
+										</p:column>
+										
+										
+										<p:column sortBy="#{diagonosisICD_9.userLoginDetail.firstName}  #{diagonosisICD_9.userLoginDetail.lastName}" style="text-align:center;"  width="7px">
+											<f:facet name="header">
+												<h:outputText value="#{msg.doctor}" />
+											</f:facet>
+											<h:outputText
+												value="#{diagonosisICD_9.userLoginDetail.firstName}  #{diagonosisICD_9.userLoginDetail.lastName}" />
+										</p:column>
+									</p:dataTable> <p:blockUI block="diagonosisICD_9" trigger="diagonosisICD_9">  
+                               LOADING ...<br />
+										<p:graphicImage value="./../../Images/ajax_loader.gif"
+											width="40" height="40" />
+									</p:blockUI></td>
+							</tr>
+							               
+  
+						</table> -->
+			<table width="100%" style="margin-top:10px" class="secContentBorder" cellpadding="0" cellspacing="0">
+			  <tr>
+			    <td class="secHeadPart">#{msg.diagnoses}</td>
+			  </tr>
+			  <tr class="secContentBorder">
+			   <td>
+			   <p:dataTable
+							value="#{patientManageBean.patientICDDiagnosisList}"
+							id="diagonosisICD" var="icd_1oDiago" binding="#{patientManageBean.diagnosesdatatable}" 
+							 lazy="true" emptyMessage="#{msg.noMedFound}" rows="5"
+							 paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+										  
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg.icd_10_code}" />
+											</f:facet>
+											<div align="left">
+											<h:outputText value="#{icd_1oDiago.icdId}" />
+											<!-- <h:outputText value="#{icd_1oDiago.id}" /> -->
+											</div>
+										</p:column>
+										
+										<p:column sortBy="#{icd_1oDiago.codeDescription}" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.name1}" />
+											</f:facet>
+											<h:outputText value="#{icd_1oDiago.codeDescription}" />
+										</p:column>
+										<p:column >
+										<f:facet name="header">
+										 <h:outputText value="Source" />
+										 </f:facet>
+										 <h:outputText value="#{icd_1oDiago.icdCodeType}" />
+										</p:column>
+										
+										<p:column sortBy="#{icd_1oDiago.date}" style="text-align:center;" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.date}" />
+											</f:facet>
+											<div align="center"><h:outputText value="#{icd_1oDiago.date}">
+												<f:convertDateTime pattern="#{msg.dateFormat}" />
+											</h:outputText></div>
+										</p:column>
+										
+										
+										<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg.doctor}" />
+											</f:facet>
+											<div align="left">
+											<h:outputText value="Dr." rendered="#{icd_1oDiago.doctorId ne 0}"></h:outputText>
+											<h:outputText
+												value=" #{icd_1oDiago.docFirstName} #{icd_1oDiago.docmiddleName} #{icd_1oDiago.docLastName}" /></div>
+										</p:column> 
+										
+										<p:column >
+										<f:facet name="header">
+										<h:outputText value="#{msg.action}" />
+										</f:facet>
+								<div align="center"><p:commandLink 
+								oncomplete="deletediagnosis.show();" 	
+									actionListener="#{patientManageBean.deletePatientDiagnosis}"  update=":searchdiagosisPopUpFormId" ajax="true">
+									<h:graphicImage value="./../../Images/delIcon.jpg" 
+									                   width="25px" height="20px" id="deleteDiagnoses"/>
+									                   <p:tooltip for="deleteDiagnoses">
+									                   	<h:outputText value="#{msg.delete}" />
+									                   </p:tooltip>
+									     <f:param name="dbId"  value="#{icd_1oDiago.id}"></f:param>
+										<f:param name="rowIdFordiagnosisList" value="#{icd_1oDiago.icdId}"></f:param>
+										<f:param name="idValue" value="#{icd_1oDiago.icdId}"></f:param>
+						                       <f:param name="codeValue" value="#{icd_1oDiago.code}"></f:param>
+						                       <f:param name="codedescription" value="#{icd_1oDiago.codeDescription}"></f:param>
+								</p:commandLink>
+								
+								
+								
+								<!-- <p:commandButton icon="ui-icon-pencil" title="#{msg.edit}" style="height:15px;" 
+								oncomplete="editDiagnosisDetail.show();" 	
+									actionListener="#{patientManageBean.deletePatientDiagnosis}"  update=":dlg_id_editdiagnosis" ajax="true">
+										<f:param name="rowIdFordiagnosisList" value="#{icd_1oDiago.icdId}"></f:param>
+										<f:param name="idValue" value="#{icd_1oDiago.icdId}"></f:param>
+						                       <f:param name="codeValue" value="#{icd_1oDiago.code}"></f:param>
+								</p:commandButton> -->
+								</div>
+							</p:column>
+					 </p:dataTable>
+						<!--  <p:blockUI block="diagonosisICD" trigger="diagonosisICD">  
+                   				 LOADING ...<br />
+							<p:graphicImage value="./../../Images/ajax_loader.gif"
+									width="40" height="40" />
+						</p:blockUI> -->
+			   </td>
+			  </tr>
+			</table>			
+						
+                 <!--  </fieldset> -->
+			
+			
+			<h:form id="allergyInformation" prependId="false"> 
+						
+						<p:growl id="messageUpdate"   redisplay="false" style="color:red;margin:8px;" showSummary="true" showDetail="true" autoUpdate="true" closable="true" life="3000"/> 
+					
+					
+					
+					
+					<table width="100%" style="margin-top:10px" class="secContentBorder" cellpadding="0" cellspacing="0">
+					 <tr>
+				      <td class="secHeadPart">#{msg.patientalergydetail}</td>
+				      </tr>
+				      <tr class="secContentBorder">
+				       <td>
+				      <!-- <fieldset class="dataField" style=" min-height:150px; " >
+				      <legend class="legendField">#{msg.patientalergydetail}</legend> -->
+					<p:dataTable id="patientAllergy" value="#{patientMedicineManageBean.patientAllergyList}" var="patAllergy"  rowIndexVar="rowNum"
+						binding="#{patientMedicineManageBean.allergyDataTableBinding}"  lazy="true" emptyMessage="#{msg.noMedFound}" 
+						rows="5"
+							 paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+					
+						  <p:column headerText="#{msg.alrgyNm}">
+						  		<div align="left">
+						  		<h:outputText value="#{patAllergy.allergyName}" /></div>
+						  </p:column>
+						  
+						  <p:column headerText="#{msg.alrgyServty}">
+						  		<div align="left">
+						  		<h:outputText value="#{patAllergy.allergySeverity}" /></div>
+						  </p:column>
+						  
+						  <p:column headerText="Allergy Notes">
+						  		<div align="left">
+						  		<h:outputText value="#{patAllergy.allergyNotes}" /></div>
+						  </p:column>
+						  
+						  
+						  <p:column headerText="On Set Date">
+						  		<div align="center">
+						  		<h:outputText value="#{patAllergy.onSetDate}" >
+						  		 <f:convertDateTime pattern="MM/dd/yyyy" />
+						  		 </h:outputText></div>
+
+						  </p:column>
+						  
+						  
+						 <p:column style="width:10%;">
+			                    <f:facet name="header">
+				                   <h:outputText value="#{msg.action}" />
+			                    </f:facet>
+								
+								<div align="center">
+								<p:commandLink  
+								        actionListener="#{patientMedicineManageBean.setidtodeletePatientAllergy}"
+										oncomplete="dlg_editAllergy.show();" update=":dlg_id_editAllergy">
+										<h:graphicImage value="./../../Images/editIcon.jpg" 
+									                   width="25px" height="20px" id="editAllergy"/>
+									                   <p:tooltip for="editAllergy">
+									                   	<h:outputText value="#{msg.edit}" />
+									                   </p:tooltip>
+											 
+										<f:param name="rowIdForAllergyList" value="#{rowNum}"></f:param>
+										<f:param name="allergyId" value="#{patAllergy.compositeAllergyId}"></f:param>
+										<f:param name="allergy" value="#{patAllergy.allergyName}"></f:param>
+								</p:commandLink>
+								
+								<p:spacer width="10px;"></p:spacer>
+								
+								<p:commandLink   
+								actionListener="#{patientMedicineManageBean.setidtodeletePatientAllergy}"
+											 oncomplete="deleteAllergy.show();"
+											 process="@form" update=":allergyInformation:patientAllergy">
+											 <h:graphicImage value="./../../Images/delIcon.jpg" 
+									                   width="25px" height="20px" id="deleteAllergy"/>
+									                   <p:tooltip for="deleteAllergy">
+									                   	<h:outputText value="#{msg.delete}" />
+									                   </p:tooltip>
+										<f:param name="rowIdForAllergyList" value="#{rowNum}"></f:param>
+										<f:param name="allergyId" value="#{patAllergy.compositeAllergyId}"></f:param>
+										<f:param name="allergy" value="#{patAllergy.allergyName}"></f:param>
+						
+								</p:commandLink>
+								</div>
+						  </p:column>
+					</p:dataTable>
+					<!-- </fieldset> -->
+					</td>
+				   </tr>
+				</table>
+			</h:form>
+			
+			<!-- <table width="100%" style="margin-top:10px" class="secContentBorder" cellpadding="0" cellspacing="0">
+			  <tr>
+			    <td class="secHeadPart">#{msg.socila_history}</td>
+			  </tr>
+			  <tr class="secContentBorder">
+			   <td>
+			   <table>
+			    <tr>
+			     <td>
+			      <h:outputText value="#{msg.do_you_smoke} :"/>
+			      
+			     </td>
+			    </tr>
+			   </table>
+			   </td>
+			   </tr>
+			   </table> -->
+			
+			
+<!-- 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>pop up for diagnosis>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+			
+			
+				<p:dialog id="searchdiagnosisPopUpId" header="#{msg.diagnosis}" widgetVar="searchDiagnosisPopUp" modal="true" appendTo="@(body)" hideEffect="fold" resizable="true"
+					dynamic="false" width="600" height="475" position="300,100"  draggable="false">
+				 <h:form id="searchdiagosisPopUpFormId">	
+					<table>
+					
+					<tr>
+						<td> <p:selectOneRadio id="options"
+							value="#{patientManageBean.selectIntervention}">
+							<f:selectItem itemLabel="Search According Diagnosis Name" itemValue="1" />
+							<f:selectItem itemLabel="Search According ICD Code" itemValue="2" noSelectionOption="false"/>
+							
+						</p:selectOneRadio> 
+						
+						<!-- 	<input type="radio" name="c1" checked="checked" onclick="hidediv('div2', this)"/>Search According Diagnosis Name
+            				<input type="radio" name="c1" onclick="showMe('div2', this)"/>Search According Icd_Code -->
+						<!-- <h:outputText id="aaa" value="#{patientMedicineManageBean.showRxTab}" /> -->
+						</td>
+					</tr>
+					</table>
+					
+				
+					<table>
+					  <tr>
+					    <td>
+							<h:outputText value="#{msg.diagnosisname} :" style="font-size:10px;" />
+						</td>
+						<td align="left">
+							<p:inputText size="55"  value="#{patientManageBean.userInputForIcdDiagnosisSearchTable}" id="codeForSearch"  >
+	 						
+	 						 <p:ajax update="codeForSearch"></p:ajax>  
+	 						</p:inputText>
+	 						<p:watermark value="#{msg.diagnosiname} According Name and ICD Code" for="codeForSearch"></p:watermark> 
+						</td>
+						
+						<!-- <td>
+							<h:outputText value="icd_code :" style="font-size:10px;" />
+						</td>
+						<td align="right">
+							<p:inputText value="#{patientManageBean.userInputForIcdCode}" id="codeForSearch1"  >
+	 						
+	 						 <p:ajax update="codeForSearch1"></p:ajax>  
+	 						</p:inputText>
+	 						<p:watermark value="icd_code" for="codeForSearch1"></p:watermark> 
+						</td> -->
+						</tr>
+						
+						<tr>
+						<td>
+							<h:outputText value="#{msg.select_icd_Format} :" style="font-size:10px;" />
+						</td>
+						<td>
+						  <p:selectOneMenu id="icd_drpDown" value="#{patientManageBean.selectedIcdFormat}" immediate="true"
+		                        required="true" style="width:137px;">
+								 <f:selectItem itemLabel="#{msg.icd9}" itemValue="#{msg.icd9}" />
+								 <f:selectItem itemLabel="#{msg.icd10}" itemValue="#{msg.icd10}" />
+							 <p:ajax update="icd_drpDown"/>
+							</p:selectOneMenu>
+						</td>
+						</tr>
+						
+						<tr>
+						 <td colspan="2" align="left">
+							 <p:commandButton value="#{msg.search}" actionListener="#{patientManageBean.searchMasterDiagnosisData}" 
+								 update="searchdiagosisPopUpFormId:panel_dignosis"/> 
+						 	<p:commandButton value="#{msg.cancel}" actionListener="#{patientManageBean.cleanDiagnosisForm}" ajax="false"/> 
+						</td>
+						</tr>
+					</table>
+				<p:outputPanel id="panel_dignosis">
+		          <p:outputPanel id="panel_icd10dignosis" rendered="#{patientManageBean.selectedIcdFormat eq 'ICD10'}"> 
+		           <p:dataTable value="#{patientManageBean.dignosisdetailsList}" var="searchDiagnosis"  id="searchdatatable"
+	 			       binding="#{patientManageBean.searchDiagnosisDataTable}" 
+							  scrollable="true" resizableColumns="false" scrollHeight="280" lazy="true" emptyMessage="#{msg.noMedFound}">
+							
+							<f:facet name="header">
+           									 ICD 10 Details
+       						 </f:facet>
+							
+				  		<p:column headerText="Short Description " width="2%">
+				  			<p:commandLink value="#{searchDiagnosis.shortDesc}" action="#{patientManageBean.findDiagnosisName}" style="text-decoration:underline;" update=":diagonosisICD" ajax="true" oncomplete="searchDiagnosisPopUp.hide();"/>
+				    	</p:column>
+				    	
+				    	<p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="Long Description" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.longDesc}" />
+					</p:column>
+					
+				    	<p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="ICD Code" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.formattedDxCode}" />
+					</p:column>
+					
+				  </p:dataTable>
+				 </p:outputPanel>
+				 <p:outputPanel id="panel_icd9dignosis" rendered="#{patientManageBean.selectedIcdFormat eq 'ICD9'}">
+				   <p:dataTable value="#{patientManageBean.icd9DiagnosisList}" var="searchDiagnosis"  id="searchicd9datatable"
+	 			         binding="#{patientManageBean.icd9DiagnosisTable}" 
+							  scrollable="true" resizableColumns="false" scrollHeight="280" lazy="true" emptyMessage="#{msg.noMedFound}">
+							<f:facet name="header">
+           									 ICD 9 Details
+       						 </f:facet>
+							
+							
+				  	<p:column headerText="Short Description" width="2%">
+				  			<p:commandLink value="#{searchDiagnosis.shortDescription}" action="#{patientManageBean.setIcd9DiagnosisName}" style="text-decoration:underline;" update=":diagonosisICD" ajax="true" oncomplete="searchDiagnosisPopUp.hide();" />
+				    </p:column>
+				    
+				    <p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="Long Description" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.longDiscription}" />
+					</p:column>
+				    
+				    <p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="ICD Code" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.formatedCode}" />
+					</p:column>
+				  </p:dataTable>
+			    </p:outputPanel>
+			   </p:outputPanel>
+			</h:form>	
+		</p:dialog>
+		
+
+		
+		
+<!--   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>DeletedialogBox>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			
+		
+					<p:dialog widgetVar="deletediagnosis" dynamic="true" id="deletediagnosisDetails" header="#{msg.deletemsg}" message="#{msg.deletemsg}"
+                    			 width="260" closable="false" modal="true" appendTo="@(body)" hideEffect="fold">
+                    	<h:form >	
+                    	<h:outputText styleClass="outputtext"  value="#{patientManageBean.patientDiagnosesDetails.codeDescription}"/>
+                    	 <p:growl id="growl" showDetail="true"/>  	 
+					        <h:panelGroup layout="block" style="text-align: center">
+					        
+					            <p:commandButton value="Yes"  actionListener="#{patientManageBean.deleteDiagnosisRow}"   oncomplete="deletediagnosis.hide();" update=":diagonosisICD,:deletediagnosisDetails"  style="text-decoration:underline;"  ajax="true"  />
+					            <p:commandButton value="No" oncomplete="deletediagnosis.hide();" update=":deletediagnosisDetails"/>
+					        </h:panelGroup>
+					    </h:form>
+   					 </p:dialog>
+   					 
+   		<!-- 		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.editDiagnosislogBox >>>>>>>>>>>> -->
+	
+		
+			  <p:dialog id="dlg_id_editdiagnosis" widgetVar="editDiagnosisDetail" width="320" closable="false" 
+			  			modal="true" appendTo="@(body)" hideEffect="fold" header="Diagnosis Edit">
+			    <h:form> 
+			        <table>
+			        <tr>
+			           <td> 
+					    	<h:outputText value="#{msg.name1}" />
+					    </td>
+			           <td> 
+					    	<h:outputText value="#{patientManageBean.patientDiagnosesDetails.code}" style="font-weight:bold;"/>
+					    </td>
+			        </tr>
+                     <tr>
+					 	<td>  
+						   <h:outputText value="#{msg.icd_10_code}"  style="font-size:10px" />
+						</td> 
+						<td>
+						
+						<h:inputText value="#{patientManageBean.patientDiagnosesDetails.icdId}" />
+						
+						</td>
+					 </tr>
+					 <tr>
+					   <td>     
+		 			      <p:commandButton value="#{msg.save}" actionListener="#{patientManageBean.editDiagnosis}" 
+		 			            oncomplete="editDiagnosisDetail.hide();" update=":diagnosisformId" ajax="true"/>
+		 			   </td>
+				       <td>
+				          <p:commandButton value="#{msg.cancel}"  oncomplete="editDiagnosisDetail.hide();" ajax="false"/>
+				       </td>
+					 </tr>
+				  </table>
+			    </h:form>
+			  </p:dialog>
+			  
+<!-->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>popup for alergy >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+<p:dialog id="allergyIdDetails" header="#{msg.allergy}" widgetVar="masterAllergy" modal="true" appendTo="@(body)" hideEffect="fold" resizable="true"
+					dynamic="false" width="600" position="300,100" draggable="false">
+					
+				 <h:form id="masterAllergyID">	
+					<p:messages  id="masterAllergyId" showDetail="false" style="color:red;margin:8px;" closable="true"/>
+					
+					<table>
+					<tr>
+					<td>
+							<h:outputText value="#{msg.allergy}" style="font-size:10px;" />
+							
+						</td>
+				
+						<td>
+							<p:inputText value="#{patientMedicineManageBean.allergyNameForAddingNew}" id="allergyDeatils"  >
+	 						
+	 							<p:ajax update="allergyDeatils"></p:ajax> 
+	 						</p:inputText>
+	 						<p:watermark value="#{msg.searchAllergy}" for="allergyDeatils"></p:watermark> 
+					
+				
+						
+						</td>
+						 <td align="left">
+							 <p:commandButton value="#{msg.search}" action="#{patientMedicineManageBean.searchMasterAllergyData}"  id="searchmasterallergyId"
+								immediate="true" update=":masterAllergyID"  ajax="true"/> 
+						 </td> 
+						 
+						 <td>
+						 		<h:outputText value="Date" />
+						 </td>
+						 
+						 <td>
+						 		<!-- p:calendar pattern="MM/dd/yyyy" id="dateUpdate"  showOn="button" navigator="true" 
+										value="#{patientMedicineManageBean.patientAllergy.onSetDate}" >
+										
+										
+								 <p:ajax update="dateUpdate"></p:ajax> 
+						</p:calendar> -->
+						
+						 <p:growl id="growl" showDetail="true"/>  
+  
+								    <p:calendar  value="#{patientMedicineManageBean.patientAllergy.onSetDate}" showOn="button" navigator="true" pattern="MM/dd/yyyy"
+								                  readonlyInput="true"  maxdate="#{patientMedicineManageBean.commonTodayDateForVallidation}">  
+								        <p:ajax event="dateSelect"  update="growl" />  
+								    </p:calendar>  
+						 </td>
+					</tr>
+					
+					<tr>
+						 <td>
+							<h:outputText value="#{msg.severity}"  style="font-size:10px" />
+						</td>
+						
+						 <td >
+							 <p:selectOneMenu value="#{patientMedicineManageBean.patientAllergy.allergySeverity}" style="width:140px;'">
+							 <f:selectItem itemLabel="#{patientMedicineManageBean.patientAllergy.allergySeverity}" itemValue="#{patientMedicineManageBean.patientAllergy.allergySeverity}"/>
+								 <f:selectItem itemLabel="#{msg.mid}" itemValue="#{msg.mid}"/>
+								 <f:selectItem itemLabel="#{msg.modarate}" itemValue="#{msg.modarate}"/>
+								 <f:selectItem itemLabel="#{msg.severe}" itemValue="#{msg.severe}"/>
+							 	<p:ajax update="searchmasterallergyId" ajax="true"></p:ajax> 
+							 </p:selectOneMenu>
+						 </td>
+						
+						 <td></td>
+						
+						<!--  <td width="300px"></td>	 -->
+						
+					
+							
+						<td><h:outputText value="Allergy Notes" /></td>
+							<td>
+								
+								<!-- <p:inputText  id="notes" value="#{patientMedicineManageBean.patientAllergy.allergyNotes}">
+									<p:ajax update="notes"></p:ajax>
+								</p:inputText> -->
+								
+								
+								<p:inputTextarea  id="notes"  value="#{patientMedicineManageBean.patientAllergy.allergyNotes}" maxlength="200"  cols="20" rows="3">
+											<p:ajax update="notes"></p:ajax> 
+								</p:inputTextarea>
+							</td>
+						</tr>
+						
+					</table>
+					
+					<table align="center">
+							<tr >
+							<td >
+							
+								<p:commandButton value="#{msg.submit}"   action="#{patientMedicineManageBean.searchPatientAllergyDetail}"  
+								
+									  update=":masterAllergyID:allergydetail,:allergyInformation:patientAllergy,:diagnosisformId"   oncomplete="handleComplete(xhr, status, args)" >
+								</p:commandButton> 
+						
+							</td >
+							
+							<!-- <td >
+								<p:commandButton value="#{msg.cancel}" onclick="masterAllergy.hide()"></p:commandButton>
+							</td> -->
+						
+						</tr>
+					
+					</table>
+					
+					
+		              <p:dataTable value="#{patientMedicineManageBean.allergyMasterList}" var="mstrAllergy"   id="allergydetail"
+				 			binding="#{patientMedicineManageBean.allergyMasterDatatable}" 
+							resizableColumns="true" scrollable="true"  scrollHeight="300" lazy="true" emptyMessage="#{msg.noMedFound}" 
+							draggableColumns="true" style="width:585px;">
+				 			
+				 			
+				  	<p:column headerText="#{msg.allergyname}" >
+				  			<p:commandLink  value="#{mstrAllergy.allergyName}" actionListener="#{patientMedicineManageBean.findAllergyName}" 
+				  					update=":allergyIdDetails"  style="text-decoration:underline;"  >
+				  				
+				  			<!-- <h:outputText value="#{mstrAllergy.allergyName}" /> -->
+				  			</p:commandLink>
+				    </p:column>
+				    
+				 
+				  
+				 </p:dataTable>
+			</h:form>	
+		</p:dialog>
+		
+		<!-->>>>>>>>>>>>>>>>>>>>>>pop up for edit alergy>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+		<p:dialog id="dlg_id_editAllergy" widgetVar="dlg_editAllergy" width="320" closable="false" 
+			  			modal="true" appendTo="@(body)" hideEffect="fold" header="Allergy Edit">
+			    <h:form> 
+			        <table>
+			        <tr>
+			           <td> 
+					    	<h:outputText value="#{msg.allergy}" />
+					    </td>
+			           <td> 
+					    	<h:outputText value="#{patientMedicineManageBean.patientAllergy.allergyName}" style="font-weight:bold;"/>
+					    </td>
+			        </tr>
+                     <tr>
+					 	<td>  
+						   <h:outputText value="#{msg.severity}"  style="font-size:10px" />
+						</td> 
+						<td>
+						  <p:selectOneMenu value="#{patientMedicineManageBean.patientAllergy.allergySeverity}" 
+						    	style="width:140px;">
+						     <f:selectItem itemLabel="#{patientMedicineManageBean.patientAllergy.allergySeverity}" 
+						     	itemValue="#{patientMedicineManageBean.patientAllergy.allergySeverity}"/>
+							 <f:selectItem itemLabel="#{msg.mid}" itemValue="#{msg.mid}"/>
+							 <f:selectItem itemLabel="#{msg.modarate}" itemValue="#{msg.modarate}"/>
+							 <f:selectItem itemLabel="#{msg.severe}" itemValue="#{msg.severe}"/>
+						  </p:selectOneMenu>
+						</td>
+					 </tr>
+					 <tr>
+					 	<td>
+					 		<h:outputText value="Allergy Notes" />
+					 	</td>
+					 	
+					 	<td>
+					 		<!-- <p:inputText id="editNotes" value="#{patientMedicineManageBean.patientAllergy.allergyNotes}" >
+					 			<p:ajax update="editNotes"></p:ajax>
+					 		</p:inputText> -->
+					 		<p:inputTextarea  id="editNotes"  value="#{patientMedicineManageBean.patientAllergy.allergyNotes}" maxlength="200" cols="20" rows="3">
+											<p:ajax update="editNotes"></p:ajax> 
+								</p:inputTextarea>
+					 	</td>
+					 	
+					 	
+					 	
+					 </tr>
+					 
+					 <tr>
+					 	<td> 
+					    	<h:outputText value="date" />
+					    </td>
+		           		
+		           		<td> 
+					    	<!-- <h:outputText value="#{patientMedicineManageBean.patientAllergy.onSetDate}" style="font-weight:bold;"/> -->
+					    	 <p:growl id="growl" showDetail="true"/>  
+					    	<p:calendar  value="#{patientMedicineManageBean.patientAllergy.onSetDate}" showOn="button" navigator="true" maxdate="#{patientMedicineManageBean.commonTodayDateForVallidation}">  
+								        <p:ajax event="dateSelect"  update="growl" />  
+								    </p:calendar> 
+					    </td>
+					 </tr>
+					 <tr>
+					   <td>     
+		 			      <p:commandButton value="#{msg.save}" actionListener="#{patientMedicineManageBean.editAllergyRow}" 
+		 			            oncomplete="dlg_editAllergy.hide();" update=":allergyInformation" ajax="true"/>
+		 			   </td>
+				       <td>
+				          <p:commandButton value="#{msg.cancel}"  oncomplete="dlg_editAllergy.hide();"/>
+				       </td>      
+					 </tr>
+				  </table>
+			    </h:form>
+			  </p:dialog>
+			  
+			  <!-->>>>>>>>>>>>>>>>>>>>>>>popup dor delete alergy>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			  
+			  <p:dialog widgetVar="deleteAllergy" id="deleteAllergyDetails" dynamic="true" header="Are you Sure you want to delete?" message="Are you Sure you want to delete?"
+                    			 width="260" closable="false" modal="true" appendTo="@(body)" hideEffect="fold">
+                    		<h:outputText value="#{patientMedicineManageBean.patientAllergy.allergyName}" style="font-weight:bold;"/>	 
+                    	<h:form>		 
+					        <h:panelGroup layout="block" style="text-align: center">
+					            <p:commandButton value="Yes" process="@this" actionListener="#{patientMedicineManageBean.deleteAllergyRow}" update=":allergyInformation:patientAllergy,:diagnosisformId,:deleteAllergyDetails"  oncomplete="deleteAllergy.hide();"  />
+					            <p:commandButton value="No"  oncomplete="deleteAllergy.hide();" update=":deleteAllergyDetails" />
+					        </h:panelGroup>
+					    </h:form>
+   					 </p:dialog>
+   					 
+   					 
+   					 <!-- Pop Up for add Patient Vital   -->
+   					 
+   					  <p:dialog widgetVar="addPatientVital" id="addPatientVitalDetail" dynamic="true" header="#{msg.vitals}" 
+                    			 width="620" height="400" position="300,100" closable="true" modal="true" appendTo="@(body)" hideEffect="fold" >
+                    		
+                    	<h:form id="patientVitalFrm">		 
+					        
+					        <table width="100%" style="size: 300;">
+					         <tr>
+					          <td >
+					           <h:outputText value="#{msg.height}"/>
+					           </td>
+					           <td>
+					           <p:inputText value="#{dashBoardManageBean.patientVitalForPatientIntake.feet}" styleClass="inputfield"/>&nbsp;
+					           <h:outputText value="Feet" style="font-weight:bold;" />
+					          </td>
+					          <td/>
+					          <td>
+					          
+					           <p:inputText value="#{dashBoardManageBean.patientVitalForPatientIntake.inch}" styleClass="inputfield"/>
+					           <h:outputText value="Inch" style="font-weight:bold;"/>
+					          </td>
+					          
+					         </tr>
+					         <tr>
+					         
+					        
+					          <td>
+					          <h:outputText value="#{msg.respiration}"/>
+					         </td>
+					         <td>
+					         <p:inputText value="#{dashBoardManageBean.patientVitalForPatientIntake.respiration}" styleClass="inputfield"/>
+					         </td>
+					          
+					          <td >
+					           <h:outputText value="#{msg.pulse}"/>&nbsp;
+					           </td>
+					           <td>
+					           <p:inputText value="#{dashBoardManageBean.patientVitalForPatientIntake.pulse}" styleClass="inputfield"/>
+					          </td>
+					         
+					         </tr>
+					         <tr>
+					          <td >
+					          <h:outputText value="#{msg.systolic}"/>
+					          
+					          </td>
+					          <td>
+					           <p:inputText value="#{dashBoardManageBean.patientVitalForPatientIntake.systolic}" styleClass="inputfield">
+					           
+					           </p:inputText>
+					           
+					           <h:outputText value="mm Hg" style="font-weight:bold;"/>
+					          
+					          </td>
+					          
+					          <td>
+					           <h:outputText value="#{msg.diastolic}"/>
+					          </td>
+					          <td>
+					           <p:inputText value="#{dashBoardManageBean.patientVitalForPatientIntake.diastolic}" styleClass="inputfield"/>
+					           &nbsp;
+					           <h:outputText value="mm Hg" style="font-weight:bold;"/>
+					          </td>
+					         </tr>
+					         <tr>
+					          <td >
+					           <h:outputText value="#{msg.temperature}"/>
+					           </td>
+					           <td>
+					           <p:inputText value="#{dashBoardManageBean.patientVitalForPatientIntake.temperature}" styleClass="inputfield"/>&nbsp;
+					           <h:outputText value="F" style="font-weight:bold;"/>
+					           </td>
+					           
+					           <td >
+					           <h:outputText value="#{msg.weight}"/>
+					           </td>
+					           <td>
+					           <p:inputText value="#{dashBoardManageBean.patientVitalForPatientIntake.weight}" styleClass="inputfield"/>&nbsp;
+					           <h:outputText value="Kg" style="font-weight:bold;"/>
+					          </td>
+					          
+					         </tr>
+					      <tr/><tr/>
+					         <tr>
+					          <td >
+					          <p:commandButton value="#{msg.save}" actionListener="#{dashBoardManageBean.addPatientVitalData}" oncomplete="addPatientVital.hide();" update=":patVitalFrm:panel_vital"  ajax="false" />
+					           
+					          </td>
+					         <td>
+					          <p:commandButton value="#{msg.cancel}"  oncomplete="addPatientVital.hide();" update=":addPatientVitalDetail" /> 
+					         </td>
+					          
+					         </tr>
+					        </table>
+					           
+					            
+					      <!--   </h:panelGroup> -->
+					    </h:form>
+   					 </p:dialog>
+   					 
+   					 
+</p:layoutUnit>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+     </p:layout>
+   </f:view>
+ </h:body>
+</html>

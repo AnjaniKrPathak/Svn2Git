@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 17, 2013 12:08:47 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.WeeklyDose" table="weekly_dose">
+        
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="patientId" type="int">
+			<column name="user_id" />
+		</property>
+
+		<property name="providerId" type="int">
+			<column name="provider_id" />
+		</property>
+		<property name="doctorId" type="int">
+			<column name="doctor_id" />
+		</property>
+        
+        
+        <property name="medicineName" type="java.lang.String">
+            <column name="medicine_name" />
+        </property>
+            
+            	
+		<property name="drugId" type="java.lang.Double">
+			<column name="drug_id" />
+		</property>
+		<property name="drugNameId" type="java.lang.Double">
+			<column name="drug_name_id" />
+		</property>
+            
+        
+        <property name="strength" type="java.lang.String">
+            <column name="strength" />
+        </property>
+        
+        
+        <property name="sundayDose" type="java.lang.String">
+            <column name="sunday_dose" />
+        </property>
+        <property name="mondayDose" type="java.lang.String">
+            <column name="monday_dose" />
+        </property>
+        <property name="tuesDay" type="java.lang.String">
+            <column name="tuesday_dose" />
+        </property>
+        <property name="wednesdayDose" type="java.lang.String">
+            <column name="wednesday_dose" />
+        </property>
+        <property name="thursdayDose" type="java.lang.String">
+            <column name="thursday_dose" />
+        </property>
+        <property name="fridayDose" type="java.lang.String">
+            <column name="friday_dose" />
+        </property>
+        <property name="saturdayDose" type="java.lang.String">
+            <column name="saturday_dose" />
+        </property>
+        
+        
+       
+    </class>
+</hibernate-mapping>

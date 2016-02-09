@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body >
+   
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+		</h:head>
+
+		<p:layout fullPage="true">
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" style="border:none;">
+				<ui:include src="doctorHeader.xhtml" />
+			</p:layoutUnit>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="35">
+				<h:form class="basecolor">
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="245" closable="false"
+				collapsible="true" minSize="200" header="Menu" style="border:none;">
+				<ui:include src="docMenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+		<p:layoutUnit position="center"> 
+				<p:tabView id="tabView" dynamic="true">
+					<!-- Home Tab -->
+				<p:tab title="#{msg.patientSearch}" id="tab_searchPatient">
+			<!-- 	<fieldset style="height:150px;width:95%; border: solid 1px #DDDDDD;background-color: #FFFFFF;"> -->
+				<h:form id="frm_search" class="basecolor">
+				<table width="100%" class="basecolor">
+				  <tr>
+					<td>
+<!--   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,patient search >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.   -->
+					
+					<!-- <p:fieldset legend="#{msg.patientSearch}"> -->
+					
+					  <table align="center">
+						<tr>
+						    <td>
+						       <h:outputText value="#{msg.firstName} " />
+						      </td>
+							     <td>
+							       <p:inputText type="text" id="fname" value="#{dashBoardManageBean.userDetailBeforeSearch.firstName}" />
+							      </td>
+	 						      <td width="20px">
+	 						    </td>
+						      <td>
+						      <h:outputText value="#{msg.lastName}" />
+						    </td>
+						  <td>
+						     <p:inputText type="text" id="lname" value="#{dashBoardManageBean.userDetailBeforeSearch.lastName}" />
+						  </td>
+					   </tr>
+					   <tr height="5px">
+					   </tr>
+					   <tr>
+					
+											<td><h:outputText value="#{msg.socSecNo}" /></td>
+
+											<td><!-- <p:inputText type="text" id="socialsecNo"
+													value="#{dashBoardManageBean.userDetailBeforeSearch.socialSecurityNumber}" /> -->
+														<p:inputMask mask="999-99-9999"  value="#{dashBoardManageBean.userDetailBeforeSearch.socialSecurityNumber}"></p:inputMask>	
+											</td>
+						
+						<td width="20px">
+						</td>
+						<td>
+						   <h:outputText value="#{msg.birthDate} " />
+						</td>
+						<td>
+						  <p:calendar id="DateOfBirth" navigator="true"
+							yearRange="c-100:c+1" display="inline"
+							value="#{dashBoardManageBean.userDetailBeforeSearch.dateOfBirth}" />
+						</td>
+					</tr>
+					<tr height="5px">
+					</tr>
+					<tr>
+					   <td>
+					     <h:outputText value="#{msg.patientID} " />
+					   </td>
+						   <td>
+						      <p:inputText type="text" id="patientId"
+									value="#{dashBoardManageBean.userDetailBeforeSearch.id}" />
+						    </td>
+						    <td width="20px">
+						    </td>
+						 <td>
+						  <h:outputText value="#{msg.phoneNo} " />
+						</td>
+						<td>
+						   <p:inputText type="text" id="phno"
+								value="#{dashBoardManageBean.userDetailBeforeSearch.phoneNumber}" />
+						</td>
+					</tr>
+					<tr height="10px">
+					</tr>
+					<tr>
+					    <td colspan="5" align="center">
+					      <p:commandButton id="SubmitButton" value="#{msg.search} "
+							  action="#{dashBoardManageBean.searchPatient}"
+							   oncomplete="searchPatient.show()" update=":frm_patientSearch"/> &nbsp;&nbsp;
+						   <p:commandButton type="reset" value="#{msg.reset}" />
+					    </td>
+					</tr>
+			 </table>
+	   <!--   </fieldset>  -->
+ 	 </td>
+  </tr>
+</table>
+</h:form>
+</p:tab>
+</p:tabView>	
+<!--   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> patient search dialog box >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   -->			
+				
+ <p:dialog header="#{msg.patientDetails}" widgetVar="searchPatient" modal="true" appendToBody="true"  
+    hideEffect="fold" resizable="true" dynamic="true" width="800">
+
+	<h:form id="frm_patientSearch">
+		<p:dataTable id="tbl_patientsearch" value="#{dashBoardManageBean.userLoginDetailList}" var="searchPatientDetail" paginator="true" 
+		   rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
+		    {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="10,15" emptyMessage="#{msg.noMedFound}" paginatorPosition="bottom"
+			binding="#{dashBoardManageBean.patientSearchTableObjForPatientMenu}">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg.firstName }" />
+					</f:facet>
+					   <h:outputText value="#{searchPatientDetail.firstName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg.lastName }" />
+					</f:facet>
+						<h:outputText value="#{searchPatientDetail.lastName}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg.socSecNo }" />
+					</f:facet>
+						<h:outputText value="#{searchPatientDetail.socialSecurityNumber}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg.birthDate }" />
+					</f:facet>
+						<h:outputText value="#{searchPatientDetail.dateOfBirth}">
+							<f:convertDateTime pattern="#{msg.dateFormat}" timeZone="#{userManageBean.loggedUsertimeZone}" dateStyle="full" type="date"/>
+						</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg.patientID }" />
+					</f:facet>
+						<h:outputText value="#{searchPatientDetail.id}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg.phoneNo }" />
+					</f:facet>
+						<h:outputText value="#{searchPatientDetail.phoneNumber}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg.select }" />
+					</f:facet>
+					<p:commandButton id="search" value="#{msg.view}" actionListener="#{dashBoardManageBean.patientSearchFromPatientMenu}"
+							action="go_to_overview" ajax="false" update=":patientMenu" />
+				</p:column>
+		</p:dataTable>
+	</h:form>
+</p:dialog>
+
+</p:layoutUnit>  
+	
+	<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+	
+   </p:layout>
+  </f:view>
+ </h:body>
+</html>
+

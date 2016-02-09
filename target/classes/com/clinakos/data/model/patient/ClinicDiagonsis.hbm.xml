@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.ClinicDiagonsis"
+		table="clinic_diagnosis">
+		<id name="id" type="int" column="id">
+			<generator class="identity" />
+		</id>
+
+		<property name="clinicId" type="int">
+			<column name="clinic_id" />
+		</property>
+
+		<property name="diagnosisName">
+			<column name="diagonsis_name" />
+		</property>
+
+		<property name="icdId" type="int">
+			<column name="icd_id" />
+		</property>
+
+
+		<property name="medicineName">
+			<column name="medicine_name" />
+		</property>
+		<!-- <set name="clinicDiagonsisLabList" table="clinic_diagonsis_lab" inverse="true" 
+			lazy="true" fetch="select"> <key> <column name="id" not-null="true" /> </key> 
+			<one-to-many class="com.clinakos.data.model.patient.ClinicDiagonsisLab" /> 
+			</set> -->
+		<!-- <bag name="clinicDiagonsisLabList" table="clinic_diagonsis_lab" inverse="true" 
+			lazy="true" fetch="select"> <key> <column name="clinic_diagonsis_id" not-null="true" 
+			/> </key> <one-to-many class="com.clinakos.data.model.patient.ClinicDiagonsisLab" 
+			/> </bag> -->
+
+		<list name="clinicDiagonsisLabList" table="clinic_diagonsis_lab"
+			inverse="true" lazy="true" fetch="select" cascade="all">
+			<key column="clinic_diagonsis_id" not-null="true" />
+			<list-index column="index_col" />
+
+			<one-to-many class="com.clinakos.data.model.patient.ClinicDiagonsisLab" />
+		</list>
+
+		<!-- <list name="clinicDiagonsisLabList" cascade="all"> <key column="parent_id"/> 
+			<index column="idx"/> <one-to-many class="Child"/> </list> -->
+		<!-- <list name="lovCodeDetail" cascade="all"> <key column="Lov_Type_Id"/> 
+			<list-index column="LovType_Id"/> <one-to-many class="com.clinakos.core.model.LOVCode"/> 
+			</list> -->
+
+
+
+	</class>
+</hibernate-mapping>

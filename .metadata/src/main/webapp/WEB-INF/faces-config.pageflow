@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14371092396190" configfile="/clinakos/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="14023" id="pf14371114004701" referenceLink="//@navigationRule.60/@fromViewId|" outlinks="pf14371114004702 pf14371114004703 pf14371114004704 pf14371114004705 pf14371114004706 pf14371114004707 pf14371114004708 pf14371114004709 pf143711140047010 pf143711140047011 pf143711140047012 pf143711140047013 pf143711140047014 pf143711140047015 pf143711140047016 pf143711140047017 pf143711140047018 pf143711140047019 pf143711140047020 pf143711140047021 pf143711140047022 pf143711140047023 pf143711140047024 pf143711140047025 pf143711140047026 pf143711140047027 pf143711140047028 pf143711140047029 pf143711140047030 pf143711140047031 pf143711140047032 pf143711140047033 pf143711140047034 pf143711140047035 pf143711140047036 pf143711140047037 pf143711140047038 pf143711140047039 pf143711140047040 pf143711140047041 pf143711140047042 pf143711140047043 pf143711140047044 pf143711140047045 pf143711140047046 pf143711140047047 pf143711140047048 pf143711140047049 pf143711140047050 pf143711140047051 pf143711140047052 pf143711140047053 pf143711140047054 pf143711140047055 pf143711140047056 pf143711140047057 pf143711140047058 pf143711140047059 pf143711140047060 pf143711140047062 pf143711140047063 pf143711140047064 pf143711140047065 pf143711140047066 pf143711140047067 pf143711140047068 pf143711140047069 pf143711140047070 pf143711140047071 pf143711140047072 pf143711140047073 pf143711140047074 pf143711140047075 pf143711140047076 pf143711140047077 pf143711140047078 pf14377386236240 pf14377386236241 pf14543901949550 pf14543901949551 pf14543901949552 pf14543901949553 pf14543901949554 pf14543901949555 pf14543901949556 pf14543901949557" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/core/recoverPassword.xhtml" x="338" y="178" id="pf143711140047079" referenceLink="//@navigationRule.60/@navigationCase.0/@toViewId|" inlinks="pf14371114004702 pf14543901949557" path="/page/core/recoverPassword.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/core/login.xhtml" x="338" y="29767" id="pf143711140047080" referenceLink="//@navigationRule.77/@navigationCase.0/@toViewId|" inlinks="pf14371114004703 pf143711140047181" path="/page/core/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/overview.xhtml" x="338" y="562" id="pf143711140047182" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf14371114004704" path="/page/Doctor/overview.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/medication.xhtml" x="338" y="946" id="pf143711140047183" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" inlinks="pf14371114004705" path="/page/Doctor/medication.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/pharmacotherepyClinic.xhtml" x="554" y="5372" id="pf143711140047184" referenceLink="//@navigationRule.56/@navigationCase.0/@toViewId|" inlinks="pf14371114004706 pf143711140047185" path="/page/Doctor/pharmacotherepyClinic.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/pharmacogenomicProfile.xhtml" x="338" y="5170" id="pf143711140047186" referenceLink="//@navigationRule.56/@fromViewId|" outlinks="pf143711140047185" inlinks="pf14371114004707" path="/page/Doctor/pharmacogenomicProfile.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/virtualClinicHome.xhtml" x="338" y="1330" id="pf143711140047187" referenceLink="//@navigationRule.41/@navigationCase.0/@toViewId|" inlinks="pf14371114004708 pf143711140047043" path="/page/Doctor/virtualClinicHome.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/populationHealthOverview.xhtml" x="338" y="1714" id="pf143711140047188" referenceLink="//@navigationRule.7/@navigationCase.0/@toViewId|" inlinks="pf14371114004709" path="/page/Doctor/populationHealthOverview.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/pharmacotherpicissue.xhtml" x="338" y="2098" id="pf143711140047189" referenceLink="//@navigationRule.8/@navigationCase.0/@toViewId|" inlinks="pf143711140047010" path="/page/Doctor/pharmacotherpicissue.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/costoptimization.xhtml" x="338" y="2482" id="pf143711140047190" referenceLink="//@navigationRule.9/@navigationCase.0/@toViewId|" inlinks="pf143711140047011" path="/page/Doctor/costoptimization.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/gapincare.xhtml" x="338" y="2866" id="pf143711140047191" referenceLink="//@navigationRule.10/@navigationCase.0/@toViewId|" inlinks="pf143711140047012" path="/page/Doctor/gapincare.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/drugutilizationreview.xhtml" x="338" y="3250" id="pf143711140047192" referenceLink="//@navigationRule.11/@navigationCase.0/@toViewId|" inlinks="pf143711140047013" path="/page/Doctor/drugutilizationreview.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/druglabmonitoring.xhtml" x="338" y="3634" id="pf143711140047193" referenceLink="//@navigationRule.12/@navigationCase.0/@toViewId|" inlinks="pf143711140047014" path="/page/Doctor/druglabmonitoring.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/specialitymedmanagement.xhtml" x="338" y="4018" id="pf143711140047194" referenceLink="//@navigationRule.13/@navigationCase.0/@toViewId|" inlinks="pf143711140047015" path="/page/Doctor/specialitymedmanagement.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/aco33.xhtml" x="338" y="4402" id="pf143711140047195" referenceLink="//@navigationRule.14/@navigationCase.0/@toViewId|" inlinks="pf143711140047016" path="/page/Doctor/aco33.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/hedis2013.xhtml" x="338" y="4786" id="pf143711140047196" referenceLink="//@navigationRule.15/@navigationCase.0/@toViewId|" inlinks="pf143711140047017" path="/page/Doctor/hedis2013.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/AdminUI.xhtml" x="338" y="5575" id="pf143711140047197" referenceLink="//@navigationRule.16/@navigationCase.0/@toViewId|" inlinks="pf143711140047018" path="/page/Doctor/AdminUI.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/masterdatamanagement.xhtml" x="338" y="5959" id="pf143711140047198" referenceLink="//@navigationRule.17/@navigationCase.0/@toViewId|" inlinks="pf143711140047019" path="/page/Doctor/masterdatamanagement.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/batchDataPullProcess.xhtml" x="338" y="6343" id="pf143711140047199" referenceLink="//@navigationRule.80/@navigationCase.0/@toViewId|" inlinks="pf143711140047020 pf14377386236241" path="/page/Doctor/batchDataPullProcess.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/maintenance.xhtml" x="338" y="6727" id="pf1437111400471100" referenceLink="//@navigationRule.19/@navigationCase.0/@toViewId|" inlinks="pf143711140047021" path="/page/Doctor/maintenance.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/addPatient.xhtml" x="338" y="7111" id="pf1437111400471101" referenceLink="//@navigationRule.20/@navigationCase.0/@toViewId|" inlinks="pf143711140047022" path="/page/Doctor/addPatient.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/addGroup.xhtml" x="338" y="7495" id="pf1437111400471102" referenceLink="//@navigationRule.21/@navigationCase.0/@toViewId|" inlinks="pf143711140047023" path="/page/Doctor/addGroup.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/doctorProfile.xhtml" x="338" y="7879" id="pf1437111400472103" referenceLink="//@navigationRule.44/@navigationCase.0/@toViewId|" inlinks="pf143711140047024 pf143711140047046" path="/page/Doctor/doctorProfile.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/anticoag.xhtml" x="338" y="8263" id="pf1437111400472104" referenceLink="//@navigationRule.23/@navigationCase.0/@toViewId|" inlinks="pf143711140047025" path="/page/Doctor/anticoag.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/genralmedactionplan.xhtml" x="338" y="8647" id="pf1437111400472105" referenceLink="//@navigationRule.24/@navigationCase.0/@toViewId|" inlinks="pf143711140047026" path="/page/Doctor/genralmedactionplan.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/psychopharm.xhtml" x="338" y="9031" id="pf1437111400472106" referenceLink="//@navigationRule.69/@navigationCase.0/@toViewId|" inlinks="pf143711140047027 pf143711140047070" path="/page/Doctor/psychopharm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/hepatitis.xhtml" x="338" y="9415" id="pf1437111400472107" referenceLink="//@navigationRule.26/@navigationCase.0/@toViewId|" inlinks="pf143711140047028" path="/page/Doctor/hepatitis.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/specialtydrug.xhtml" x="338" y="9799" id="pf1437111400472108" referenceLink="//@navigationRule.27/@navigationCase.0/@toViewId|" inlinks="pf143711140047029" path="/page/Doctor/specialtydrug.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/device.xhtml" x="338" y="10183" id="pf1437111400472109" referenceLink="//@navigationRule.28/@navigationCase.0/@toViewId|" inlinks="pf143711140047030" path="/page/Doctor/device.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/fitnessActivities.xhtml" x="338" y="10567" id="pf1437111400472110" referenceLink="//@navigationRule.29/@navigationCase.0/@toViewId|" inlinks="pf143711140047031" path="/page/Doctor/fitnessActivities.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/nutrition.xhtml" x="338" y="10951" id="pf1437111400472111" referenceLink="//@navigationRule.30/@navigationCase.0/@toViewId|" inlinks="pf143711140047032" path="/page/Doctor/nutrition.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/diabetesMeasurement.xhtml" x="338" y="11335" id="pf1437111400472112" referenceLink="//@navigationRule.31/@navigationCase.0/@toViewId|" inlinks="pf143711140047033" path="/page/Doctor/diabetesMeasurement.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/inr.xhtml" x="338" y="11719" id="pf1437111400472113" referenceLink="//@navigationRule.32/@navigationCase.0/@toViewId|" inlinks="pf143711140047034" path="/page/Doctor/inr.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/routineActivities.xhtml" x="338" y="12103" id="pf1437111400472114" referenceLink="//@navigationRule.33/@navigationCase.0/@toViewId|" inlinks="pf143711140047035" path="/page/Doctor/routineActivities.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/biometricMeasurement.xhtml" x="338" y="12487" id="pf1437111400472115" referenceLink="//@navigationRule.34/@navigationCase.0/@toViewId|" inlinks="pf143711140047036" path="/page/Doctor/biometricMeasurement.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/weight.xhtml" x="338" y="12871" id="pf1437111400472116" referenceLink="//@navigationRule.35/@navigationCase.0/@toViewId|" inlinks="pf143711140047037" path="/page/Doctor/weight.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/sleep.xhtml" x="338" y="13255" id="pf1437111400472117" referenceLink="//@navigationRule.36/@navigationCase.0/@toViewId|" inlinks="pf143711140047038" path="/page/Doctor/sleep.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/tobaccoCessation.xhtml" x="338" y="13639" id="pf1437111400472118" referenceLink="//@navigationRule.37/@navigationCase.0/@toViewId|" inlinks="pf143711140047039" path="/page/Doctor/tobaccoCessation.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/newCharts.xhtml" x="338" y="14023" id="pf1437111400472119" referenceLink="//@navigationRule.38/@navigationCase.0/@toViewId|" inlinks="pf143711140047040" path="/page/Doctor/newCharts.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/visit.xhtml" x="338" y="14407" id="pf1437111400472120" referenceLink="//@navigationRule.39/@navigationCase.0/@toViewId|" inlinks="pf143711140047041" path="/page/Doctor/visit.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/warfarinmaintance.xhtml" x="338" y="14791" id="pf1437111400472121" referenceLink="//@navigationRule.40/@navigationCase.0/@toViewId|" inlinks="pf143711140047042" path="/page/Doctor/warfarinmaintance.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/personalizedMedReview.xhtml" x="338" y="15175" id="pf1437111400472122" referenceLink="//@navigationRule.42/@navigationCase.0/@toViewId|" inlinks="pf143711140047044" path="/page/Doctor/personalizedMedReview.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/visitSummary.xhtml" x="338" y="15559" id="pf1437111400472123" referenceLink="//@navigationRule.57/@navigationCase.0/@toViewId|" inlinks="pf143711140047045 pf143711140047058" path="/page/Doctor/visitSummary.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/ePrescribe.xhtml" x="338" y="15943" id="pf1437111400473124" referenceLink="//@navigationRule.45/@navigationCase.0/@toViewId|" inlinks="pf143711140047047" path="/page/Doctor/ePrescribe.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/labResults.xhtml" x="338" y="16327" id="pf1437111400473125" referenceLink="//@navigationRule.46/@navigationCase.0/@toViewId|" inlinks="pf143711140047048" path="/page/Doctor/labResults.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/diagonoses.xhtml" x="338" y="16711" id="pf1437111400473126" referenceLink="//@navigationRule.47/@navigationCase.0/@toViewId|" inlinks="pf143711140047049" path="/page/Doctor/diagonoses.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/editPatientProfile.xhtml" x="338" y="17095" id="pf1437111400473127" referenceLink="//@navigationRule.48/@navigationCase.0/@toViewId|" inlinks="pf143711140047050" path="/page/Doctor/editPatientProfile.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/alergy.xhtml" x="338" y="17479" id="pf1437111400473128" referenceLink="//@navigationRule.62/@navigationCase.0/@toViewId|" inlinks="pf143711140047051 pf143711140047063" path="/page/Doctor/alergy.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/dPOptimizer.xhtml" x="338" y="17863" id="pf1437111400473129" referenceLink="//@navigationRule.50/@navigationCase.0/@toViewId|" inlinks="pf143711140047052" path="/page/Doctor/dPOptimizer.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/careTeam.xhtml" x="338" y="18247" id="pf1437111400473130" referenceLink="//@navigationRule.51/@navigationCase.0/@toViewId|" inlinks="pf143711140047053" path="/page/Doctor/careTeam.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Patient/patientProfile.xhtml" x="338" y="18631" id="pf1437111400473131" referenceLink="//@navigationRule.52/@navigationCase.0/@toViewId|" inlinks="pf143711140047054" path="/page/Patient/patientProfile.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Patient/myMedication.xhtml" x="338" y="19015" id="pf1437111400473132" referenceLink="//@navigationRule.53/@navigationCase.0/@toViewId|" inlinks="pf143711140047055" path="/page/Patient/myMedication.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Patient/myCareTeam.xhtml" x="338" y="19399" id="pf1437111400473133" referenceLink="//@navigationRule.54/@navigationCase.0/@toViewId|" inlinks="pf143711140047056" path="/page/Patient/myCareTeam.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Patient/myFormulary.xhtml" x="338" y="19783" id="pf1437111400473134" referenceLink="//@navigationRule.55/@navigationCase.0/@toViewId|" inlinks="pf143711140047057" path="/page/Patient/myFormulary.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Patient/myMedicationGoal.xhtml" x="338" y="20167" id="pf1437111400473135" referenceLink="//@navigationRule.58/@navigationCase.0/@toViewId|" inlinks="pf143711140047059" path="/page/Patient/myMedicationGoal.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Patient/myVirtualPillBox.xhtml" x="338" y="20551" id="pf1437111400473136" referenceLink="//@navigationRule.59/@navigationCase.0/@toViewId|" inlinks="pf143711140047060" path="/page/Patient/myVirtualPillBox.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Patient/patientDiagonoses.xhtml" x="338" y="20935" id="pf1437111400473137" referenceLink="//@navigationRule.61/@navigationCase.0/@toViewId|" inlinks="pf143711140047062" path="/page/Patient/patientDiagonoses.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/gapinCareAnalysis.xhtml" x="338" y="21319" id="pf1437111400473138" referenceLink="//@navigationRule.63/@navigationCase.0/@toViewId|" inlinks="pf143711140047064" path="/page/Doctor/gapinCareAnalysis.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/overViewFilter.xhtml" x="338" y="21703" id="pf1437111400473139" referenceLink="//@navigationRule.64/@navigationCase.0/@toViewId|" inlinks="pf143711140047065" path="/page/Doctor/overViewFilter.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/doctorProfileBeta.xhtml" x="338" y="22087" id="pf1437111400473140" referenceLink="//@navigationRule.65/@navigationCase.0/@toViewId|" inlinks="pf143711140047066" path="/page/Doctor/doctorProfileBeta.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/virtualPillBox.xhtml" x="338" y="22471" id="pf1437111400473141" referenceLink="//@navigationRule.66/@navigationCase.0/@toViewId|" inlinks="pf143711140047067" path="/page/Doctor/virtualPillBox.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/lithiumDosingGuideline.xhtml" x="338" y="22855" id="pf1437111400473142" referenceLink="//@navigationRule.67/@navigationCase.0/@toViewId|" inlinks="pf143711140047068" path="/page/Doctor/lithiumDosingGuideline.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Patient/myAllergy.xhtml" x="338" y="23239" id="pf1437111400474143" referenceLink="//@navigationRule.68/@navigationCase.0/@toViewId|" inlinks="pf143711140047069" path="/page/Patient/myAllergy.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/AddOrganization.xhtml" x="338" y="23623" id="pf1437111400474144" referenceLink="//@navigationRule.70/@navigationCase.0/@toViewId|" inlinks="pf143711140047071" path="/page/Doctor/AddOrganization.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/addUser.xhtml" x="338" y="24007" id="pf1437111400474145" referenceLink="//@navigationRule.71/@navigationCase.0/@toViewId|" inlinks="pf143711140047072" path="/page/Doctor/addUser.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/patientLetter.xhtml" x="338" y="24391" id="pf1437111400474146" referenceLink="//@navigationRule.72/@navigationCase.0/@toViewId|" inlinks="pf143711140047073" path="/page/Doctor/patientLetter.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/medActionPlan.xhtml" x="338" y="24775" id="pf1437111400474147" referenceLink="//@navigationRule.73/@navigationCase.0/@toViewId|" inlinks="pf143711140047074" path="/page/Doctor/medActionPlan.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/currentMedicationList.xhtml" x="338" y="25159" id="pf1437111400474148" referenceLink="//@navigationRule.74/@navigationCase.0/@toViewId|" inlinks="pf143711140047075" path="/page/Doctor/currentMedicationList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/providerLetter.xhtml" x="338" y="25543" id="pf1437111400474149" referenceLink="//@navigationRule.75/@navigationCase.0/@toViewId|" inlinks="pf143711140047076" path="/page/Doctor/providerLetter.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/providerReferralLetter.xhtml" x="338" y="25927" id="pf1437111400474150" referenceLink="//@navigationRule.76/@navigationCase.0/@toViewId|" inlinks="pf143711140047077" path="/page/Doctor/providerReferralLetter.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/core/reset-forgot-password.xhtml" x="122" y="29767" id="pf1437111400474151" referenceLink="//@navigationRule.77/@fromViewId|" outlinks="pf143711140047181" path="/page/core/reset-forgot-password.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Pharma/pharmaDashboard.xhtml" x="338" y="26311" id="pf1437111400474152" referenceLink="//@navigationRule.78/@navigationCase.0/@toViewId|" inlinks="pf143711140047078" path="/page/Pharma/pharmaDashboard.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/batchPatientMedicationLists.xhtml" x="338" y="26695" id="pf14377386236272" referenceLink="//@navigationRule.79/@navigationCase.0/@toViewId|" inlinks="pf14377386236240" path="/page/Doctor/batchPatientMedicationLists.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/uploadDiagnosis.xhtml" x="338" y="27079" id="pf14543901949588" referenceLink="//@navigationRule.81/@navigationCase.0/@toViewId|" inlinks="pf14543901949550" path="/page/Doctor/uploadDiagnosis.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/interactionHistory.xhtml" x="338" y="27463" id="pf14543901949589" referenceLink="//@navigationRule.82/@navigationCase.0/@toViewId|" inlinks="pf14543901949551" path="/page/Doctor/interactionHistory.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/adherenceHistory.xhtml" x="338" y="27847" id="pf145439019495810" referenceLink="//@navigationRule.83/@navigationCase.0/@toViewId|" inlinks="pf14543901949552" path="/page/Doctor/adherenceHistory.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/deviceDetails.xhtml" x="338" y="28231" id="pf145439019495811" referenceLink="//@navigationRule.84/@navigationCase.0/@toViewId|" inlinks="pf14543901949553" path="/page/Doctor/deviceDetails.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Super-Admin/searchPractices.xhtml" x="338" y="28615" id="pf145439019495912" referenceLink="//@navigationRule.85/@navigationCase.0/@toViewId|" inlinks="pf14543901949554" path="/page/Super-Admin/searchPractices.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/managePatient.xhtml" x="338" y="28999" id="pf145439019495913" referenceLink="//@navigationRule.86/@navigationCase.0/@toViewId|" inlinks="pf14543901949555" path="/page/Doctor/managePatient.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="page/Doctor/batchDevicesSync.xhtml" x="338" y="29383" id="pf145439019495914" referenceLink="//@navigationRule.87/@navigationCase.0/@toViewId|" inlinks="pf14543901949556" path="/page/Doctor/batchDevicesSync.xhtml"/>
+  <links id="pf14371114004702" target="pf143711140047079" source="pf14371114004701" outcome="recoverPassword" redirect="true"/>
+  <links id="pf14371114004703" target="pf143711140047080" source="pf14371114004701" outcome="go_to_Login" redirect="true"/>
+  <links id="pf14371114004704" target="pf143711140047182" source="pf14371114004701" outcome="go_to_overview" redirect="true"/>
+  <links id="pf14371114004705" target="pf143711140047183" source="pf14371114004701" outcome="go_to_Medication" redirect="true"/>
+  <links id="pf14371114004706" target="pf143711140047184" source="pf14371114004701" outcome="go_to_PharmacotherapyClinic" redirect="true"/>
+  <links id="pf14371114004707" target="pf143711140047186" source="pf14371114004701" outcome="go_to_PharmacogenomicProfile" redirect="true"/>
+  <links id="pf14371114004708" target="pf143711140047187" source="pf14371114004701" outcome="go_to_Virtual_Clinic" redirect="true"/>
+  <links id="pf14371114004709" target="pf143711140047188" source="pf14371114004701" outcome="go_to_Population_Health" redirect="true"/>
+  <links id="pf143711140047010" target="pf143711140047189" source="pf14371114004701" outcome="go_to_Pharmacotherapy_Issues" redirect="true"/>
+  <links id="pf143711140047011" target="pf143711140047190" source="pf14371114004701" outcome="go_to_cost_optimization" redirect="true"/>
+  <links id="pf143711140047012" target="pf143711140047191" source="pf14371114004701" outcome="go_to_gapincare" redirect="true"/>
+  <links id="pf143711140047013" target="pf143711140047192" source="pf14371114004701" outcome="go_to_drugutilization_review" redirect="true"/>
+  <links id="pf143711140047014" target="pf143711140047193" source="pf14371114004701" outcome="go_to_labmonitoring" redirect="true"/>
+  <links id="pf143711140047015" target="pf143711140047194" source="pf14371114004701" outcome="go_to_speciality_med_management" redirect="true"/>
+  <links id="pf143711140047016" target="pf143711140047195" source="pf14371114004701" outcome="go_to_acoo33" redirect="true"/>
+  <links id="pf143711140047017" target="pf143711140047196" source="pf14371114004701" outcome="go_to_hdsi2013" redirect="true"/>
+  <links id="pf143711140047018" target="pf143711140047197" source="pf14371114004701" outcome="go_to_admin_ui" redirect="true"/>
+  <links id="pf143711140047019" target="pf143711140047198" source="pf14371114004701" outcome="go_to_masterdata_management" redirect="true"/>
+  <links id="pf143711140047020" target="pf143711140047199" source="pf14371114004701" outcome="go_to_batchdata_pull_process" redirect="true"/>
+  <links id="pf143711140047021" target="pf1437111400471100" source="pf14371114004701" outcome="go_to_maintance" redirect="true"/>
+  <links id="pf143711140047022" target="pf1437111400471101" source="pf14371114004701" outcome="go_to_addPatient" redirect="true"/>
+  <links id="pf143711140047023" target="pf1437111400471102" source="pf14371114004701" outcome="go_to_addGroup" redirect="true"/>
+  <links id="pf143711140047024" target="pf1437111400472103" source="pf14371114004701" outcome="go_to_doctorprofile" redirect="true"/>
+  <links id="pf143711140047025" target="pf1437111400472104" source="pf14371114004701" outcome="go_to_anticoag" redirect="true"/>
+  <links id="pf143711140047026" target="pf1437111400472105" source="pf14371114004701" outcome="go_to_generalmedactionplan" redirect="true"/>
+  <links id="pf143711140047027" target="pf1437111400472106" source="pf14371114004701" outcome="go_to_psychopharm" redirect="true"/>
+  <links id="pf143711140047028" target="pf1437111400472107" source="pf14371114004701" outcome="go_to_hepatitis" redirect="true"/>
+  <links id="pf143711140047029" target="pf1437111400472108" source="pf14371114004701" outcome="go_to_specialtydrug" redirect="true"/>
+  <links id="pf143711140047030" target="pf1437111400472109" source="pf14371114004701" outcome="go_to_device" redirect="true"/>
+  <links id="pf143711140047031" target="pf1437111400472110" source="pf14371114004701" outcome="go_to_anticoaginr" redirect="true"/>
+  <links id="pf143711140047032" target="pf1437111400472111" source="pf14371114004701" outcome="go_to_bloodpressure" redirect="true"/>
+  <links id="pf143711140047033" target="pf1437111400472112" source="pf14371114004701" outcome="go_to_diabetes" redirect="true"/>
+  <links id="pf143711140047034" target="pf1437111400472113" source="pf14371114004701" outcome="go_to_inr" redirect="true"/>
+  <links id="pf143711140047035" target="pf1437111400472114" source="pf14371114004701" outcome="go_to_pulse" redirect="true"/>
+  <links id="pf143711140047036" target="pf1437111400472115" source="pf14371114004701" outcome="go_to_temperature" redirect="true"/>
+  <links id="pf143711140047037" target="pf1437111400472116" source="pf14371114004701" outcome="go_to_weight" redirect="true"/>
+  <links id="pf143711140047038" target="pf1437111400472117" source="pf14371114004701" outcome="go_to_sleep" redirect="true"/>
+  <links id="pf143711140047039" target="pf1437111400472118" source="pf14371114004701" outcome="go_to_tobacco" redirect="true"/>
+  <links id="pf143711140047040" target="pf1437111400472119" source="pf14371114004701" outcome="go_to_newchart" redirect="true"/>
+  <links id="pf143711140047041" target="pf1437111400472120" source="pf14371114004701" outcome="go_to_visithistory" redirect="true"/>
+  <links id="pf143711140047042" target="pf1437111400472121" source="pf14371114004701" outcome="go_to_warfarin_maintance" redirect="true"/>
+  <links id="pf143711140047043" target="pf143711140047187" source="pf14371114004701" outcome="go_to_virtual_clinic_home" redirect="true"/>
+  <links id="pf143711140047044" target="pf1437111400472122" source="pf14371114004701" outcome="go_to_persionalizeMedReview" redirect="true"/>
+  <links id="pf143711140047045" target="pf1437111400472123" source="pf14371114004701" outcome="go_to_visitSummary_page" redirect="true"/>
+  <links id="pf143711140047046" target="pf1437111400472103" source="pf14371114004701" outcome="go_to_doctor_Profile" redirect="true"/>
+  <links id="pf143711140047047" target="pf1437111400473124" source="pf14371114004701" outcome="go_to_ePrescribe_page" redirect="true"/>
+  <links id="pf143711140047048" target="pf1437111400473125" source="pf14371114004701" outcome="go_to_LabResult" redirect="true"/>
+  <links id="pf143711140047049" target="pf1437111400473126" source="pf14371114004701" outcome="go_to_Diagnoses" redirect="true"/>
+  <links id="pf143711140047050" target="pf1437111400473127" source="pf14371114004701" outcome="go_to_editPatient" redirect="true"/>
+  <links id="pf143711140047051" target="pf1437111400473128" source="pf14371114004701" outcome="go_to_Allergy" redirect="true"/>
+  <links id="pf143711140047052" target="pf1437111400473129" source="pf14371114004701" outcome="go_to_DPOptimizer" redirect="true"/>
+  <links id="pf143711140047053" target="pf1437111400473130" source="pf14371114004701" outcome="go_to_careteam" redirect="true"/>
+  <links id="pf143711140047054" target="pf1437111400473131" source="pf14371114004701" outcome="go_to_My_overview" redirect="true"/>
+  <links id="pf143711140047055" target="pf1437111400473132" source="pf14371114004701" outcome="go_to_My_Medication" redirect="true"/>
+  <links id="pf143711140047056" target="pf1437111400473133" source="pf14371114004701" outcome="go_to_My_Care_Team" redirect="true"/>
+  <links id="pf143711140047057" target="pf1437111400473134" source="pf14371114004701" outcome="go_to_My_Formulary" redirect="true"/>
+  <links id="pf143711140047185" target="pf143711140047184" source="pf143711140047186" outcome="redirect_to_Pharmacogenomics_clinic" redirect="true"/>
+  <links id="pf143711140047058" target="pf1437111400472123" source="pf14371114004701" outcome="go_to_VisitSummary" redirect="true"/>
+  <links id="pf143711140047059" target="pf1437111400473135" source="pf14371114004701" outcome="go_to_My_Medication_Goal" redirect="true"/>
+  <links id="pf143711140047060" target="pf1437111400473136" source="pf14371114004701" outcome="go_to_virtualpillbox" redirect="true"/>
+  <links id="pf143711140047062" target="pf1437111400473137" source="pf14371114004701" outcome="go_to_patientDiagonoses" redirect="true"/>
+  <links id="pf143711140047063" target="pf1437111400473128" source="pf14371114004701" outcome="go_to_alergy_page" redirect="true"/>
+  <links id="pf143711140047064" target="pf1437111400473138" source="pf14371114004701" outcome="go_to_Care_Analysis" redirect="true"/>
+  <links id="pf143711140047065" target="pf1437111400473139" source="pf14371114004701" outcome="go_to_ovw_filters" redirect="true"/>
+  <links id="pf143711140047066" target="pf1437111400473140" source="pf14371114004701" outcome="go_to_new_home" redirect="true"/>
+  <links id="pf143711140047067" target="pf1437111400473141" source="pf14371114004701" outcome="go_to_doctor_virtual_pill_box" redirect="true"/>
+  <links id="pf143711140047068" target="pf1437111400473142" source="pf14371114004701" outcome="go_to_lithium_dosing_guideline" redirect="true"/>
+  <links id="pf143711140047069" target="pf1437111400474143" source="pf14371114004701" outcome="go_to_My_Allergy" redirect="true"/>
+  <links id="pf143711140047070" target="pf1437111400472106" source="pf14371114004701" outcome="go_to_psychopharm" redirect="true"/>
+  <links id="pf143711140047071" target="pf1437111400474144" source="pf14371114004701" outcome="go_to_addOrganization" redirect="true"/>
+  <links id="pf143711140047072" target="pf1437111400474145" source="pf14371114004701" outcome="go_to_addUsers" redirect="true"/>
+  <links id="pf143711140047073" target="pf1437111400474146" source="pf14371114004701" outcome="go_to_patient_letter_report" redirect="true"/>
+  <links id="pf143711140047074" target="pf1437111400474147" source="pf14371114004701" outcome="go_to_med_action_plan_report" redirect="true"/>
+  <links id="pf143711140047075" target="pf1437111400474148" source="pf14371114004701" outcome="go_to_current_medication_list_report" redirect="true"/>
+  <links id="pf143711140047076" target="pf1437111400474149" source="pf14371114004701" outcome="go_to_provider_letter_report" redirect="true"/>
+  <links id="pf143711140047077" target="pf1437111400474150" source="pf14371114004701" outcome="go_to_provider_referral_letter_report" redirect="true"/>
+  <links id="pf143711140047181" target="pf143711140047080" source="pf1437111400474151" outcome="back_to_login_screen_from_reset_forgot_password" redirect="true"/>
+  <links id="pf143711140047078" target="pf1437111400474152" source="pf14371114004701" outcome="go_to_pharmaDashboard" redirect="true"/>
+  <links id="pf14377386236240" target="pf14377386236272" source="pf14371114004701" outcome="go_to_batchPatient_Medication_Lists_Report" redirect="true"/>
+  <links id="pf14377386236241" target="pf143711140047199" source="pf14371114004701" outcome="reload_batchDataPull_screen" redirect="true"/>
+  <links id="pf14543901949550" target="pf14543901949588" source="pf14371114004701" outcome="go_to_uploadDiagnosis" redirect="true"/>
+  <links id="pf14543901949551" target="pf14543901949589" source="pf14371114004701" outcome="go_to_interaction_history" redirect="true"/>
+  <links id="pf14543901949552" target="pf145439019495810" source="pf14371114004701" outcome="go_to_adherence_history" redirect="true"/>
+  <links id="pf14543901949553" target="pf145439019495811" source="pf14371114004701" outcome="go_to_device_details" redirect="true"/>
+  <links id="pf14543901949554" target="pf145439019495912" source="pf14371114004701" outcome="go_to_search_practice" redirect="true"/>
+  <links id="pf14543901949555" target="pf145439019495913" source="pf14371114004701" outcome="go_to_manage_patient" redirect="true"/>
+  <links id="pf14543901949556" target="pf145439019495914" source="pf14371114004701" outcome="go_to_batch_devices" redirect="true"/>
+  <links id="pf14543901949557" target="pf143711140047079" source="pf14371114004701" outcome="go_to_forgetPassword" redirect="true"/>
+</pageflow:Pageflow>

@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 9, 2014 10:01:05 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.core.PatientPBMDrugHistoryResult" table="patient_pbm_drug_history_result">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="patientId" type="int">
+            <column name="patient_id" />
+        </property>
+        <!-- <property name="pbmXmlInBase64DecodeResult" type="java.lang.String">
+            <column name="PBMXMLINBASE64DECODERESULT" />
+        </property> -->
+        <property name="doctorFirstName" type="java.lang.String">
+            <column name="doctor_first_name" />
+        </property>
+        <property name="doctorLastName" type="java.lang.String">
+            <column name="doctor_last_name" />
+        </property>
+        <property name="drugInfo" type="java.lang.String">
+            <column name="drug_info" />
+        </property>
+        <property name="drugQuantity" type="java.lang.String">
+            <column name="drug_quantity" />
+        </property>
+        <property name="fillDate" type="java.lang.String">
+            <column name="fill_date" />
+        </property>
+        <property name="drugNdc" type="java.lang.String">
+            <column name="drug_ndc" />
+        </property>
+        <property name="drugId" type="java.lang.String">
+            <column name="drug_id" />
+        </property>
+        <property name="healthPlanName" type="java.lang.String">
+            <column name="health_plan_name" />
+        </property>
+        <property name="pharmacyName" type="java.lang.String">
+            <column name="pharmacy_name" />
+        </property>
+        <property name="pharmacyContactNumber" type="java.lang.String">
+            <column name="pharmacy_contact_number" />
+        </property>
+        <property name="daysSupply" type="java.lang.String">
+            <column name="days_supply" />
+        </property>
+        <property name="sig" type="java.lang.String">
+            <column name="sig" />
+        </property>
+        <property name="drugHistoryTransactionGuid" type="java.lang.String">
+            <column name="drug_history_transaction_guid" />
+        </property>
+        <property name="doctorContactNumber" type="java.lang.String">
+            <column name="doctor_contact_number" />
+        </property>
+        <property name="source" type="java.lang.String">
+            <column name="source" />
+        </property>
+        
+        <property name="patientPbmEligblityGuid" type="java.lang.String">
+            <column name="patient_pbm_eligblity_guid" />
+        </property>
+        
+        <property name="status" type="boolean">
+            <column name="status" />
+        </property>
+        
+        <property name="drugHistoryExist" type="boolean">
+            <column name="isDrug_history_exist" />
+        </property>
+        
+        <property name="pulledBy" type="int">
+            <column name="pulled_by" />
+        </property>
+        
+    </class>
+</hibernate-mapping>

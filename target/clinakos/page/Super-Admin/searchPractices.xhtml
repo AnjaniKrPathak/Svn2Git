@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+		</h:head>
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="85" minSize="60">
+				<ui:include src="../Super-Admin/superAdminHeader.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<ui:include src="../core/footer.xhtml"></ui:include>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+			 	<ui:include src="super_admin_profile_leftmenu.xhtml">
+				</ui:include> 
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+			<p:layoutUnit position="center">
+			<ui:include src="/page/core/blockDialog.xhtml"></ui:include>
+			<p:panel header="Search">
+			<h:form id="searchFormId" prependId="false">
+			<h:panelGrid columns="4" cellpadding="10">
+			<h:outputText value="Diagnosis /  Diagnosis Id: "></h:outputText>
+			<p:inputText value="#{practiceSearchBean.searchObj.diagnosis}" id="diagnosisId"></p:inputText>
+			<h:outputText value="Drug / Drug Id : "></h:outputText>
+			<p:inputText value="#{practiceSearchBean.searchObj.drugs}" id="drugId"></p:inputText>
+			<h:outputText value="Lab / LOINC code : "></h:outputText>
+			<p:inputText value="#{practiceSearchBean.searchObj.lab}" id="labId"></p:inputText>
+			<h:outputText value="From Date : "></h:outputText>
+			<p:calendar value="#{practiceSearchBean.searchObj.fromDateSearch}" id="fromDateId" showOn="button"></p:calendar>
+			<h:outputText value="To Date : "></h:outputText>
+			<p:calendar value="#{practiceSearchBean.searchObj.toDateSearch}" id="toDateId" showOn="button"></p:calendar>
+			</h:panelGrid>
+			<h:panelGrid columns="2" cellpadding="10" style="align:center">
+			<p:commandButton value="search" actionListener="#{practiceSearchBean.doPracticeSearch}" update=":searchResultSetId" onstart="blockPage.show();" oncomplete="blockPage.hide();"></p:commandButton>
+			<p:commandButton value="Reset" actionListener="#{practiceSearchBean.doResetSearch}" update=":searchResultSetId,searchFormId:diagnosisId,searchFormId:drugId,searchFormId:labId,searchFormId:fromDateId,searchFormId:toDateId" onstart="blockPage.show();" oncomplete="blockPage.hide();"></p:commandButton>
+			</h:panelGrid>
+			</h:form>
+			</p:panel>
+			<p:panel id = "searchResultSetId">
+			<p:panel rendered="#{practiceSearchBean.searchObj.practiceSearchResultSet.size()>0}">
+			<h:outputText value="#{practiceSearchBean.searchObj.practiceSearchResultSet.size()}"></h:outputText>
+			<h:outputText value=" Results Found " ></h:outputText>
+			</p:panel>
+			<p:dataTable value="#{practiceSearchBean.searchObj.practiceSearchResultSet}"
+									var="practiceSearchObj" id="practiceSearchResultId"
+									 emptyMessage="#{msg.noMedFound}"
+									paginator="true" rows="25"
+									paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+									rowsPerPageTemplate="25,50,100">
+						<p:column headerText="Patient Id">
+							<h:outputText value="#{practiceSearchObj.patientId}"></h:outputText>
+						</p:column>
+						<p:column headerText="First Name">
+							<h:outputText value="#{practiceSearchObj.firstName}"></h:outputText>
+						</p:column>
+						<p:column headerText="Last Name">
+							<h:outputText value="#{practiceSearchObj.lastName}"></h:outputText>
+						</p:column>
+						<p:column headerText="Practice">
+							<h:outputText value="#{practiceSearchObj.providerName}"></h:outputText>
+						</p:column>
+
+					</p:dataTable>
+			</p:panel>
+			</p:layoutUnit>
+		</p:layout>
+	</f:view>
+</h:body>
+</html>

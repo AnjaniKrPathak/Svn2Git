@@ -1,0 +1,27 @@
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">	
+
+<ui:composition>
+	<p:dialog widgetVar="medActionPlanMessageShowForDelete" resizable="true" appendTo="@(body)"  modal="true" closable="false"
+	 dynamic="true">
+	<h:form id="medActionPlanMessageShowForDeleteFormId">
+		<h:outputText value="Are you sure you want to permanently delete this medication and the associated med action plan? "></h:outputText>&nbsp;&nbsp;&nbsp;
+		
+		<p:commandButton value="Yes" 
+				action="#{patientMedicineManageBean.saveMedicineChangesOnViewRx}"  immediate="true">
+			</p:commandButton> 
+			
+			<p:commandButton value="No"
+				onclick="medActionPlanMessageShowForDelete.hide();"  >
+
+			</p:commandButton> 
+	</h:form>
+	</p:dialog>
+	</ui:composition>
+	</html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 28, 2013 2:07:02 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.VisitHistory" table="visit_history">
+		<id name="id">
+			<column name="id" />
+			<generator class="increment" />
+		</id>
+
+		<property name="patientId" type="java.lang.Integer">
+			<column name="patient_id" />
+		</property>
+
+		<property name="doctorID" type="java.lang.Integer">
+			<column name="doctor_id" />
+		</property>
+
+		<property name="clinicProviderID" type="java.lang.Integer">
+			<column name="clinic_provider_id" />
+		</property>
+
+
+		<property name="visitDate" type="java.util.Date">
+			<column name="visit_date" />
+		</property>
+
+
+		<property name="notes">
+			<column name="notes" />
+		</property>
+
+		<property name="patientEducation">
+			<column name="patient_education" />
+		</property>
+
+
+	</class>
+</hibernate-mapping>

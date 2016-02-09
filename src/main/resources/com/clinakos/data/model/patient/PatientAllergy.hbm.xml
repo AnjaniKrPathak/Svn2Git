@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 18, 2013 10:04:05 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.PatientAllergy"
+		table="patient_allergy">
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="increment" />
+		</id>
+		<property name="patientId" type="int">
+			<column name="user_id" />
+		</property>
+		<property name="allergytype" type="int">
+			<column name="allergy_type" />
+		</property>
+		<property name="allergyName" type="java.lang.String">
+			<column name="allergy_name" />
+		</property>
+		
+		<property name="allergyNotes" type="java.lang.String">
+			<column name="allergy_notes" />
+		</property>
+		<property name="allergySeverity" type="java.lang.String">
+			<column name="allergy_severity" />
+		</property>
+		
+		<property name="allergySource" type="java.lang.String">
+			<column name="allergy_source" />
+		</property>
+		
+		<property name="compositeAllergyId" type="java.lang.Integer">
+			<column name="composite_allergy_id" />
+		</property>
+		<property name="alergyConceptId" type="java.lang.Integer">
+			<column name="alergy_concept_id" />
+		</property>
+		
+		<property name="allergyConceptType" type="java.lang.String">
+			<column name="allergy_concept_type" />
+		</property>
+		
+		<property name="allergyConceptTypeId" type="java.lang.Integer">
+			<column name="allergy_concept_type_id" />
+		</property>
+		
+		<property name="startDate" type="java.util.Date">
+			<column name="start_date" />
+		</property>
+		
+		<property name="modifyDate" type="java.util.Date">
+			<column name="modify_date" />
+		</property>
+		
+		<property name="onSetDate" type="java.util.Date">
+			<column name="on_set_date" />
+		</property>
+		<property name="dateTimeForcompareAllergy" type="java.lang.String">
+			<column name="date_time_for_compare" />
+		</property>
+	</class>
+</hibernate-mapping>

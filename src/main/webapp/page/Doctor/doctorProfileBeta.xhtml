@@ -1,0 +1,548 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+<h:body onload="#{dashBoardManageBean.setoverviewindex()}">
+	
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<meta Http-Equiv="Cache-Control" content="no-cache, no-store, must-revalidate,max-age=0" />
+        		<meta Http-Equiv="Pragma" Content="no-cache" />
+        		<meta Http-Equiv="Expires" Content="-1"/>
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+             
+
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+<link href="../../JavaScript/nv.d31.css" rel="stylesheet" type="text/css"/>
+<style>
+
+.mypiechart {
+  width: 300px;
+  border: 2px;
+}
+
+
+.bar {
+ fill:  rgb(4,180,180);/* rgb(56,156,173); #ced29d", "#33CCCC", "#389CAD", "#f7aa47", "#416c85", "#36908a", "#C5B47F" */
+}
+
+.bar:hover {
+  fill:#416c85;/* rgb(0,128,192);  *//* steelblue; */  
+}
+ .sector {
+        cursor: pointer;
+      }
+</style>
+			<script type="text/javascript" language="javascript">
+			
+			$(document).ready(function() {                      
+		        noBack();
+		   });
+
+		   function noBack() {
+			    window.location.hash="no-back-button";
+				window.location.hash="Again-No-back-button";//again because google chrome don't insert first hash into history
+				window.onhashchange=function(){window.location.hash="";}
+		       }
+		     
+			 function customExtender() {
+			    this.cfg.highlighter = {
+			      useAxesFormatters: false,
+			      tooltipAxes: 'x'
+			    }
+			  }
+			 
+			
+			
+		</script>
+		<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+		<script type="text/javascript" src="../../JavaScript/gauge.js"></script>
+ 
+		<script>
+						
+				
+			var gauges = [];
+			
+			function createGauge(name, label, min, max)
+			{
+				var config = 
+				{
+					size: 220,
+					label: label,
+					min: undefined != min ? min : 0,
+					max: undefined != max ? max : 100,
+					minorTicks: 5
+				}
+				
+				var range = config.max - config.min;
+				config.yellowZones =[{from: 60, to:80}] ;//[{ from: config.min + range*0.75, to: config.min + range*0.9 }];
+				config.redZones = [{from: 00, to:60}] ;//[{ from: config.min + range*0.9, to: config.max }];
+				config.greenZones = [{from: 80, to:100}] ;
+				
+				gauges[name] = new Gauge(name + "GaugeContainer", config);
+				gauges[name].render();
+			}
+			
+			function createGauges()
+			{
+				createGauge("compliance", "Compliance");
+			}
+			
+			function updateGauges()
+			{
+				for (var key in gauges)
+				{
+					var value = getRandomValue(gauges[key])
+					gauges[key].redraw(value);
+				}
+			}
+			
+			function getRandomValue(gauge)
+			{
+				var overflow = #{userManageBean.meterGaugeModel.value}; //10;
+				return overflow; //gauge.config.min - overflow + (gauge.config.max - gauge.config.min + overflow*2) *  Math.random();
+			}
+			
+			function initialize()
+			{
+				createGauges();
+				setInterval(updateGauges, 1000);
+			}
+			
+		</script>
+				
+		
+</h:head>
+	
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>...for Top display>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+         <p:layout fullPage="true">
+        <p:layoutUnit position="north" size="98" minSize="60">
+				<ui:include src="doctorHeader.xhtml" />
+			</p:layoutUnit>
+		 
+		<p:layoutUnit id="bottom" position="south" size="24">
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</p:layoutUnit>
+			
+			<p:layoutUnit id="left" position="west" size="0" closable="false" collapsible="true" minSize="0"  style="border:none;">
+				<ui:include src="doctor_profile_leftmenu.xhtml" >
+				</ui:include>
+			</p:layoutUnit>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..top>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<p:layoutUnit position="center">
+  <hr/>
+<h:outputText value=" #{msg.numberofPatientsunderPharmacotherapyManagement}" style="font-weight:bold;" styleClass="contentPan"/>
+&nbsp;<h:outputText value="#{userManageBean.numberOfPatientParticularProvider.size()}" styleClass="contentPan"/>
+<hr/>
+
+<table width="100%">
+<tr>
+
+<td>
+<fieldset style="height:auto;font-size: 11px;" class="fieldContent">
+					  <legend class="titleBar">#{msg.anticoagclinicstatus_in_initiation}</legend>
+<!-- <h:outputText value=" #{msg.anticoagclinicstatus_in_initiation}" style="font-weight:bold;" styleClass="contentPan"/><br/><br/> -->
+<br/>
+<h:outputText value=" #{msg.dat}" style="font-weight:bold;" styleClass="contentPan"/>&nbsp;<h:outputText value="#{dashBoardManageBean.getDate()}" styleClass="contentPan">
+<f:convertDateTime pattern="#{msg.dateFormat}"/>
+</h:outputText>
+&nbsp;&nbsp;
+<h:outputText value=" #{msg.no_of_patient_inr_lab}" style="font-weight:bold;" styleClass="contentPan"/>
+&nbsp;<!-- <p:commandLink  style="text-decoration:underline;" onclick="Patientforinitiationphase.show()"> -->
+<h:outputText value="#{userManageBean.totalnumberofpatientinrlabforinitiationphase.size()}" styleClass="contentPan"/>
+<br/>
+<br/>
+
+<table>
+<tr><td><h:graphicImage value="./../../Images/greencircle.png" style="width:18px;height:17px;" /></td><td><h:outputText value="#{msg.no_of_patient_in_range}" style="font-weight:bold;" styleClass="contentPan"/>
+&nbsp;
+<!-- <p:commandLink  style="text-decoration:underline;" onclick="Patientforinitiationphaseforgreen.show()"> -->
+<h:outputText value="#{userManageBean.numberOfPatientforanticoagclinicforintiationphase.size()}" styleClass="contentPan" />
+
+</td></tr>
+<tr><td><h:graphicImage value="./../../Images/orangecircle.png" style="width:18px;height:17px;" /></td><td><h:outputText value="#{msg.noof_patient_for_for_higherend_patient}" style="font-weight:bold;" styleClass="contentPan"/>
+&nbsp;<h:outputText value="#{userManageBean.numberofpatientformedactionplanforhigherendofpatientforintiationphase.size()}" styleClass="contentPan" /></td></tr>
+<tr><td><h:graphicImage value="./../../Images/yellow.png" style="width:18px;height:17px;" /></td><td><h:outputText value="#{msg.no_of_patient_in_tnarpy_range}" style="font-weight:bold;" styleClass="contentPan"/>
+&nbsp;<h:outputText value="#{userManageBean.numberofpatientformedactionplanforinitiationphase.size()}" styleClass="contentPan" /></td></tr>
+<tr><td><h:graphicImage value="./../../Images/redcircle.png" style="width:18px;height:17px;" /></td><td><h:outputText value="#{msg.noof_patient_for_tharpyrange}" style="font-weight:bold;" styleClass="contentPan"/>
+&nbsp;<h:outputText value="#{userManageBean.numberofpatientformedactionplanforgraterrangeforintiationphase.size()}" styleClass="contentPan" />&nbsp;<h:outputText value="(High Risk for Hemorrhage)" style="color:red;" styleClass="contentPan"/></td></tr>
+
+</table>
+
+</fieldset>
+</td>
+
+<td>
+<fieldset style="height:auto;font-size: 11px;" class="fieldContent">
+					  <legend class="titleBar">#{msg.anticoagclinicstatus_in_maintance}</legend>
+<!-- <h:outputText value=" #{msg.anticoagclinicstatus_in_maintance}" style="font-weight:bold;" styleClass="contentPan"/> -->
+<br/>
+<h:outputText value=" #{msg.dat}" style="font-weight:bold;" styleClass="contentPan"/>&nbsp;<h:outputText value="#{dashBoardManageBean.getDate()}" styleClass="contentPan">
+<f:convertDateTime pattern="#{msg.dateFormat}"/>
+</h:outputText>
+&nbsp;&nbsp;
+<h:outputText value=" #{msg.no_of_patient_inr_lab}" style="font-weight:bold;" styleClass="contentPan"/>
+&nbsp;<h:outputText value="#{userManageBean.totalnumberofpatientinrlab.size()}" styleClass="contentPan"/>
+<br/><br/>
+<table>
+<tr><td><h:graphicImage value="./../../Images/greencircle.png" style="width:18px;height:17px;" /></td><td><h:outputText value="#{msg.no_of_patient_in_range}" style="font-weight:bold;" styleClass="contentPan"/>
+&nbsp;<h:outputText value="#{userManageBean.numberOfPatientforanticoagclinic.size()}" styleClass="contentPan" /></td></tr>
+<tr><td><h:graphicImage value="./../../Images/orangecircle.png" style="width:18px;height:17px;" /></td><td><h:outputText value="#{msg.noof_patient_for_for_higherend_patient}" style="font-weight:bold;" styleClass="contentPan"/>
+&nbsp;<h:outputText value="#{userManageBean.numberofpatientformedactionplanforhigherendofpatient.size()}" styleClass="contentPan" /></td></tr>
+<tr><td><h:graphicImage value="./../../Images/yellow.png" style="width:18px;height:17px;" /></td><td><h:outputText value="#{msg.no_of_patient_in_tnarpy_range}" style="font-weight:bold;" styleClass="contentPan"/>
+&nbsp;<h:outputText value="#{userManageBean.numberofpatientformedactionplan.size()}" styleClass="contentPan"/></td></tr>
+<tr><td><h:graphicImage value="./../../Images/redcircle.png" style="width:18px;height:17px;" /></td><td><h:outputText value="#{msg.noof_patient_for_tharpyrange}" style="font-weight:bold;" styleClass="contentPan"/>
+&nbsp;<h:outputText value="#{userManageBean.numberofpatientformedactionplanforgraterrange.size()}" styleClass="contentPan" />&nbsp;<h:outputText value="(High Risk for Hemorrhage)" style=" color:red;" styleClass="contentPan"/></td></tr>
+
+</table>
+</fieldset>
+</td>
+
+</tr>
+</table>
+
+
+
+ <!-- Chart area -->
+              <table width="90%">					
+						<tr>
+						<td  valign="top" >
+					<fieldset style="min-width:350px;height:270px;" class="fieldContent">
+					  <legend class="titleBar">Compliance Meter</legend>
+					 <center><br></br> <span id="complianceGaugeContainer" style="height:230px;margin-top:200px;"></span></center>
+					</fieldset>
+						</td>
+						
+						<td  valign="top" >
+					<fieldset style="min-width:400px;min-height:270px;" class="fieldContent">
+					  <legend class="titleBar">Clinics</legend>
+					 <center>
+					 
+					 <!-- >>>>>>>>>>>>>>>>>>>>>>>D3 Pie Chart>>>>>>>>>>>>>>>		 -->
+			
+				<svg id="test1" style="height:239px;margin-top:0px; margin-left:10px"></svg>
+			
+	    <script src="../../JavaScript/d3.v3.js"></script>
+		<script src="../../JavaScript/nv.d3.js"></script>
+			<script src="../../JavaScript/pie.js"></script>
+		<script type="text/javascript">
+	
+		nv.addGraph(function() {
+			   dataset1='#{userManageBean.clinicMasterList}';
+			  // alert(dataset1);
+			   var dataset =$.parseJSON(dataset1);
+			   $.each(dataset, function(index, value) {
+			    	  // alert("clinic name "+this['clinicName']+"percentage "+this['percentage']);
+			    	});
+			  
+			  
+			   var color = d3.scale.ordinal() // 33CCCC 910000 8BBC21  
+			   .range(["#ced29d", "#33CCCC", "#389CAD", "#f7aa47", "#416c85", "#36908a", "#C5B47F"]);
+			 //  .range(["#2e5467", "#7499af", "#ced29d", "#f7aa47", "#416c85", "#36908a", "#C5B47F"]);
+			   //.range(["#2e5467", "#7499af", "#416c85", "#f7aa47", "#C5B47F", "#36908a", "#ced29d"]);
+			   //.range(["#4BB2C5", "#ff4629", "#9AB6A8", "#00B3B3", "#0085ce", "#d0743c", "#ff8c00"]);
+			   
+		    var width =350;
+		        height =250;
+		   /* color= d3.scale.ordinal()
+	.range(["#336699", "#C5B47F", "#4BB2C5", "#1FBED6", "#a05d56", "#d0743c", "#ff8c00"]); */
+	// Declare shadow filter
+ 
+	
+		    var chart = nv.models.pieChart()
+		        .x(function(d) { return d.clinicName })
+		        .y(function(d) { return d.percentage })
+		    // .color(d3.scale.category10().range())  	
+		    .color(color.range())  	
+              .width(width)
+		        .height(height)
+		        ;
+	
+	 
+	chart.pie.pieLabelsOutside(false).labelType("percent");
+   
+	
+		      d3.select("#test1")
+		          .datum(dataset)
+		         .transition().duration(350)   
+		          .attr('width', width)
+		          .attr('height', height)
+		          .call(chart)//;
+		   			
+		      .on('mouseover',function(d) {
+	                d3.select(this).select("path").transition()
+	                    .duration(200)
+	                    .attr("d", arcOver)
+	                
+	                textTop.text(d3.select(this).datum().data.label)
+	                    .attr("y", -10);
+	                textBottom.text(d3.select(this).datum().data.value.toFixed(2))
+	                    .attr("y", 10);
+	            })
+	;
+		    chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+		   
+		    return chart;
+		});
+</script>
+			  
+					</center>
+					</fieldset>
+						
+				
+	
+			</td>
+					<td valign="top">	
+					<fieldset style="width:360px;height:270px;font-size: 11px;" class="fieldContent">
+					  <legend class="titleBar">Insurance</legend>
+					 <center> <div id="chart" style="height:20px;margin-top:30px;" ></div></center>
+					</fieldset> 
+						</td> 
+				
+					
+				
+						</tr>
+					</table>
+
+ 
+  <table width="100%">
+						<tr>
+							<td class="contentBox">
+							 <!--  <p:panel style="border:1px solid #4682B4;"> -->
+								
+								  <h:outputText value=" #{msg.complianceIssues}" 
+										/>&nbsp;
+									
+									<h:graphicImage value="./../../Images/red.png"
+										style="width:20px" />
+									<h:outputText
+										value=" #{userManageBean.noOfRedSymbolPatient}"
+										/>&nbsp;
+						
+						<h:graphicImage value="./../../Images/amber.png"
+										style="width:20px" />&nbsp;
+						<h:outputText value="#{userManageBean.noOfOrangeSymbolPatient}"
+										 />
+								
+									
+
+
+								<!-- </p:panel> -->
+							</td>
+
+							<td class="contentBox">
+					          <!--  <p:panel
+									style="border:1px solid #4682B4;"> -->
+
+									<h:outputText
+										value=" #{msg.averageMedsperPatient } #{userManageBean.averageMedicine}"
+										 />
+
+								<!-- </p:panel> -->
+							</td>
+							 <td class="contentBox">
+						   <!-- <p:panel
+									style="border:1px solid #4682B4;"> -->
+									<h:outputText
+										value="#{msg.averagePhysiciansperPatient } #{userManageBean.averagePhysicians}"
+										 />
+									
+
+								<!-- </p:panel> -->
+						 </td>
+						</tr>				
+						<tr>
+						 <td class="contentBox">
+						   <!-- <p:panel
+									style="border:1px solid #4682B4;"> -->
+									<h:outputText
+										value=" #{msg.withPharmacogenomics } #{userManageBean.pharmacogenomicsPercentage} "
+										 />
+									
+
+								<!-- </p:panel> -->
+						 </td>
+						 <td class="contentBox">
+							<!--  <p:panel
+									style="border:1px solid #4682B4;"> -->
+									<h:outputText
+										value=" #{msg.averageDiagnosespePatient } #{userManageBean.averageDiagnoses} "
+										 />
+									
+
+								<!-- </p:panel> -->
+						 </td>						
+						 <td class="contentBox">
+						   <!-- <p:panel
+									style="border:1px solid #4682B4;"> -->
+
+									<h:outputText
+										value=" #{msg.averagePharmaciesperPatient } #{userManageBean.averagePharmacyPerPatient} "
+										 />
+
+								<!-- </p:panel> -->
+						 </td>
+						</tr>
+						
+					</table>
+				
+
+
+				
+				
+				<!-- Drug Dose Combination Dialog Box -->
+			
+				<p:dialog id="drugDose" widgetVar="drugDoseCombo" header="#{msg.drugdosecombination}" modal="true" appendToBody="true" hideEffect="fold" width="800" height="500" position="350,70" styleClass="contentPan">
+				<h:form id="drugDoseFrm">
+					<p:dataTable value="#{userManageBean.wsDrugList}" var="drugDose" binding="#{userManageBean.drugDoseComboDatatable}" emptyMessage="#{msg.noMedFound}" styleClass="contentArea">
+					 <p:column headerText="Drug Name" styleClass="contentPan">
+					  <h:outputText value="#{drugDose.drugName}" />
+					 </p:column>
+					 <p:column headerText="Drug" styleClass="contentPan">
+					 <h:commandLink action="#{userManageBean.medicineSearchFormulary}" value="#{drugDose.drugDetail}" style="color: #006; text-decoration: underline;" />
+					 </p:column>
+					 
+					
+					</p:dataTable>
+					
+						</h:form>
+					</p:dialog>
+					
+					<p:dialog widgetVar="insuranceDetail" header="#{msg.insurancedetail}" modal="true" appendToBody="true" hideEffect="fold" resizable="true" dynamic="false" width="400" height="500" position="450,70" styleClass="contentPan">
+					 <h:form id="insuranceDetailFrm">
+					 <p:dataTable value="#{userManageBean.insuranceDetailList}" var="insDtl" binding="#{userManageBean.insuranceDetailDatatable}" emptyMessage="#{msg.noMedFound}" styleClass="contentArea">
+					  <p:column headerText="#{msg.insurance}" styleClass="contentPan">
+					   <h:commandLink value="#{insDtl.companyName}" action="#{userManageBean.selectedInsuranceCompany}" style="color: #006; text-decoration: underline;" />
+					  </p:column>
+					 </p:dataTable>
+					</h:form> 
+					</p:dialog>
+		
+
+			</p:layoutUnit>
+		</p:layout>
+		
+	</f:view>
+</h:body>
+
+<script type="text/javascript">
+//initialize tab menu, by passing in ID of UL
+initialize();
+		
+</script>
+ <script src="http://d3js.org/d3.v2.min.js"></script>
+  
+    <script>
+   
+    $( document ).ready(function() { 
+
+    	
+	dataSetBar='#{userManageBean.insuranceDetailListBar}';
+	//alert(dataSetBar);
+	var barchartDataSet=$.parseJSON(dataSetBar);
+     //alert("barchart "+barchartDataSet);
+     $.each(barchartDataSet, function(index, value) {
+  	  // alert("insurance Name "+this['companyName']+"value "+this['companyValue']);
+  	}); 
+
+
+//var data = d3.csv.parse(d3.select('#csv').text());
+
+var data=barchartDataSet;
+var valueLabelWidth = 40; // space reserved for value labels (right)
+var barHeight = 25; // height of one bar
+var barLabelWidth = 180; // space reserved for bar labels
+var barLabelPadding = 15; // padding between bar and bar labels (left)
+ var gridLabelHeight = 10; // space reserved for gridline labels
+var gridChartOffset = 25; // space between start of grid and first bar 
+var maxBarWidth = 280; // width of the bar with the max value
+ 
+// accessor functions 
+var barLabel = function(d) { return d['companyName']; };
+var barValue = function(d) { return parseFloat(d['companyValue']); };
+ 
+// scales
+var yScale = d3.scale.ordinal().domain(d3.range(0, data.length)).rangeBands([0, data.length * barHeight]);
+var y = function(d, i) { return yScale(i); };
+var yText = function(d, i) { return y(d, i) + yScale.rangeBand() / 2; };
+var x = d3.scale.linear().domain([0, d3.max(data, barValue)]).range([0, maxBarWidth]);
+// svg container element
+var chart = d3.select('#chart').append("svg")
+  .attr('width', maxBarWidth + barLabelWidth + valueLabelWidth)
+ // .style("background-Color","#f7aa47")//#ced29d", "#33CCCC", "#389CAD", "#f7aa47", "#416c85", "#36908a", "#C5B47F"
+  .attr('height', gridLabelHeight + gridChartOffset + data.length * barHeight);
+  
+// grid line labels
+var gridContainer = chart.append('g')
+  .attr('transform', 'translate(' + barLabelWidth + ',' + gridLabelHeight + ')'); 
+gridContainer.selectAll("text").data(x.ticks(10)).enter().append("text")
+  .attr("x", x)
+  .attr("dy", -3)
+  .attr("text-anchor", "middle")
+  .text(String);
+// vertical grid lines
+gridContainer.selectAll("line").data(x.ticks(10)).enter().append("line")
+  .attr("x1", x)
+  .attr("x2", x)
+  .attr("y1", 0)
+  .attr("y2", yScale.rangeExtent()[1] + gridChartOffset)
+  .style("stroke", "#008B8B");
+ 
+  
+  //#ced29d", "#33CCCC", "#389CAD", "#f7aa47", "#416c85", "#36908a", "#C5B47F"
+// bar labels
+var labelsContainer = chart.append('g')
+  .attr('transform', 'translate(' + (barLabelWidth - barLabelPadding) + ',' + (gridLabelHeight + gridChartOffset) + ')'); 
+labelsContainer.selectAll('text').data(data).enter().append('text')
+  .attr('y', yText)
+  .attr('stroke', 'none')
+  .attr('fill', '#00557D')
+  .attr("dy", ".35em") // vertical-align: middle
+  .attr('text-anchor', 'end')
+  .text(barLabel);
+// bars
+var barsContainer = chart.append('g')
+  .attr('transform', 'translate(' + barLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')'); 
+barsContainer.selectAll("rect").data(data).enter().append("rect")
+  .attr('y', y)
+  .attr('height', yScale.rangeBand())
+  .attr('width', function(d) { return x(barValue(d)); })
+  .attr('stroke', 'white')
+  .attr('fill', 'rgb(75,178,197)')
+  .attr('class','bar');
+// bar value labels
+barsContainer.selectAll("text").data(data).enter().append("text")
+  .attr("x", function(d) { return x(barValue(d)); })
+  .attr("y", yText)
+  .attr("dx", 3) // padding-left
+  .attr("dy", ".35em") // vertical-align: middle
+  .attr("text-anchor", "start") // text-align: right
+  .attr("fill", "#00557D")
+  .attr("stroke", "#00557D")
+  .text(function(d) { return d3.round(barValue(d), 2); });
+// start line
+barsContainer.append("line")
+  .attr("y1", -gridChartOffset)
+  .attr("y2", yScale.rangeExtent()[1] + gridChartOffset)
+  .style("stroke", "#000");
+
+
+    });
+  
+    </script>
+     
+    
+</html>
+
+
+
+

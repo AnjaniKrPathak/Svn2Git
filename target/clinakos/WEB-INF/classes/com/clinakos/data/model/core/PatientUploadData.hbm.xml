@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 13, 2015 1:02:53 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.core.PatientUploadData" table="upload_patient_data">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="patient_External_Id" type="java.lang.String">
+            <column name="Source_EMR_Patient_ID" />
+        </property>
+        <property name="patient_First_Name" type="java.lang.String">
+            <column name="PATIENT_FIRST_NAME" />
+        </property>
+        <property name="patient_Middle_Initial" type="java.lang.String">
+            <column name="patient_middle_name" />
+        </property>
+        <property name="Patient_Last_Name" type="java.lang.String">
+            <column name="PATIENT_LAST_NAME" />
+        </property>
+        <property name="patient_Date_of_Birth" type="java.lang.String">
+            <column name="PATIENT_DATE_OF_BIRTH" />
+        </property>
+        <property name="patient_Gender" type="java.lang.String">
+            <column name="PATIENT_GENDER" />
+        </property>
+        <property name="patient_City" type="java.lang.String">
+            <column name="PATIENT_CITY" />
+        </property>
+        <property name="patient_State" type="java.lang.String">
+            <column name="PATIENT_STATE" />
+        </property>
+        <property name="patient_Country" type="java.lang.String">
+            <column name="PATIENT_COUNTRY" />
+        </property>
+        <property name="patient_Zip_Code" type="java.lang.String">
+            <column name="PATIENT_ZIP_CODE" />
+        </property>
+         <property name="patient_Address_Line1" type="java.lang.String">
+            <column name="Patient_Address_Line1" />
+        </property>
+         <property name="patient_Address_Line2" type="java.lang.String">
+            <column name="Patient_Address_Line2" />
+        </property>
+        <property name="providerId" type="int">
+            <column name="Provider_Id" />
+        </property>
+        <property name="adminId" type="int">
+            <column name="Created_By" />
+        </property>
+        <property name="patient_Home_Telephone" type="java.lang.String">
+            <column name="Patient_Home_Telephone" />
+        </property>
+        <property name="patient_Email" type="java.lang.String">
+            <column name="Patient_Email" />
+        </property>
+    </class>
+</hibernate-mapping>

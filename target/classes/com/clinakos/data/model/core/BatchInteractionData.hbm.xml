@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 7 Jul, 2015 1:57:48 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.core.BatchInteractionData" table="batch_interaction_data">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <property name="drugId" type="double">
+            <column name="drug_id" />
+        </property>
+        <property name="drugNameId" type="double">
+            <column name="drug_name_id" />
+        </property>
+        <property name="interactionText" type="java.lang.String">
+            <column name="interaction_text" />
+        </property>
+        <property name="severityLevel" type="java.lang.String">
+            <column name="severity_level" />
+        </property>
+        <property name="interactionType" type="int">
+            <column name="interaction_type" />
+        </property>
+        <property name="formularyStatus" type="java.lang.String">
+            <column name="formulary_status" />
+        </property>
+    </class>
+</hibernate-mapping>

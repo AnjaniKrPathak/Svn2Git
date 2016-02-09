@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<meta http-Equiv="Cache-Control" Content="no-cache, no-store, must-revalidate"/>
+    			<meta http-Equiv="Pragma" Content="no-cache, no-store, must-revalidate"/>
+    			<meta http-Equiv="Expires" Content="-1"/>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="tabmenu/subModal.css" />
+			<script src="tabmenu/common.js" type="text/javascript"></script>
+			<script src="tabmenu/subModal.js" type="text/javascript"></script>
+
+			<style type="text/css">
+.box_scale {
+              width:300px;
+             height:300px;
+  -webkit-transform: scale(1.0);  /* Saf3.1+, Chrome */
+     -moz-transform: scale(1.0);  /* FF3.5+ */
+      -ms-transform: scale(1.0);  /* IE9 */
+       -o-transform: scale(1.0);  /* Opera 10.5+ */
+          transform: scale(1.0);
+             filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+                     M11=0.9999619230641713, M12=-0.008726535498373935, M21=0.008726535498373935, M22=0.9999619230641713,SizingMethod='auto expand');
+}
+</style>
+</h:head>
+
+	<h:body>
+     <div id="new_crop" align="center" class="box_scale">
+		<!-- <iframe src="modelcontent.jsf" height="520" width="850"> </iframe> -->
+		<ui:include src="modelcontent.jsf"></ui:include>
+	</div>
+    
+	
+
+
+</h:body>
+</html>
+

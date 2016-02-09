@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 17, 2014 5:05:38 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.NetworkChart" table="proc_networkChart">
+         <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" /> 
+        </id>
+       
+        <property name="patient_id" type="int">
+            <column name="user_id" />
+        </property>
+        <property name="doctor_id" type="int">
+            <column name="doctor_id" />
+        </property>
+        <property name="doctor_name" type="java.lang.String">
+            <column name="fiest_name" />
+        </property>
+        <property name="doctor_prescriptions" type="int">
+            <column name="doctor_prescriptions" />
+        </property>
+        
+    </class>
+</hibernate-mapping>

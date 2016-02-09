@@ -1,0 +1,48 @@
+//created on: Mar 17, 2014
+package com.clinakos.rules
+
+//list any import classes here.
+import com.clinakos.data.model.rules.Message
+import com.clinakos.data.model.rules.Request
+
+
+//declare any global variables here
+
+
+
+
+rule "Saridon-PageList"
+
+    when
+        m : Message( medicine == "Saridon" , request == Request.PAGE_LIST  )
+    then
+        //actions
+        m.setResponse("Diagnosis,Dosage,ActionPlan");
+
+end
+
+rule "Saridon-Diagnosis"
+    //include attributes such as "salience" here...
+    when
+        m : Message( medicine == "Saridon" , request == Request.DIAGNOSIS )
+    then
+        //actions
+        m.setResponse("Headache");
+end
+
+
+rule "Saridon-Dosage"
+
+	when
+		m : Message( medicine == "Saridon" , request == Request.DOSAGE )
+	then
+		m.setResponse("250mg");
+end
+
+rule "Saridon-ActionPlan"
+
+	when
+		m : Message( medicine == "Saridon" ,  request == Request.ACTION_PLAN )
+	then
+		m.setResponse("Take rest");
+end

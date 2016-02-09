@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 19, 2014 1:31:21 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.validic.ValidicDiabetesMeasurements" table="validic_diabetes_measurements">
+        <id name="id" type="int" >
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="clinakosUserId" type="java.lang.String">
+            <column name="clinakos_user_id" />
+        </property>
+         <property name="_id" type="java.lang.String">
+            <column name="validic_diabetes_measurement_id" />
+        </property>
+        <property name="timestamp" type="java.lang.String">
+            <column name="timestamp" />
+        </property>
+        <property name="utc_offset" type="java.lang.String">
+            <column name="utc_offset" />
+        </property>
+        <property name="c_peptide" type="double" access="field">
+            <column name="c_peptide" />
+        </property>
+        <property name="fasting_plasma_glucose_test" type="double">
+            <column name="fasting_plasma_glucose_test" />
+        </property>
+        <property name="hba1c" type="double">
+            <column name="hba1c" />
+        </property>
+        <property name="insulin" type="double">
+            <column name="insulin" />
+        </property>
+        <property name="oral_glucose_tolerance_test" type="double">
+            <column name="oral_glucose_tolerance_test" />
+        </property>
+        <property name="random_plasma_glucose_test" type="double">
+            <column name="random_plasma_glucose_test" />
+        </property>
+        <property name="triglyceride" type="double">
+            <column name="triglyceride" />
+        </property>
+        <property name="blood_glucose" type="double">
+            <column name="blood_glucose" />
+        </property>
+        <property name="source" type="java.lang.String">
+            <column name="source" />
+        </property>
+        <property name="source_name" type="java.lang.String">
+            <column name="source_name" />
+        </property>
+        <property name="activityId" type="java.lang.String">
+            <column name="activity_id" />
+        </property> 
+        <property name="user_id" type="java.lang.String">
+            <column name="validic_user_id" />
+        </property>
+        
+    </class>
+</hibernate-mapping>

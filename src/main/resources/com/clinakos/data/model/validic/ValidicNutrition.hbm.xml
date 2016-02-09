@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 24, 2014 1:51:18 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.validic.ValidicNutrition" table="validic_nutrition">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="_id" type="java.lang.String">
+            <column name="validic_nutrition_id" />
+        </property>
+        <property name="clinakosUserId" type="java.lang.String">
+            <column name="clinakos_user_id" />
+        </property>
+        <property name="timestamp" type="java.lang.String">
+            <column name="timestamp" />
+        </property>
+        <property name="utc_offset" type="java.lang.String">
+            <column name="utc_offset" />
+        </property>
+        <property name="calories" type="double">
+            <column name="calories" />
+        </property>
+        <property name="carbohydrates" type="double">
+            <column name="carbohydrates" />
+        </property>
+        <property name="fat" type="double">
+            <column name="fat" />
+        </property>
+        <property name="fiber" type="double">
+            <column name="fiber" />
+        </property>
+        <property name="protein" type="double">
+            <column name="protein" />
+        </property>
+        <property name="sodium" type="double">
+            <column name="sodium" />
+        </property>
+        <property name="water" type="double">
+            <column name="water" />
+        </property>
+        <property name="meal" type="java.lang.String">
+            <column name="meal" />
+        </property>
+        <property name="source" type="java.lang.String">
+            <column name="source" />
+        </property>
+        
+        <property name="entryId" type="java.lang.String">
+            <column name="entry_id" />
+        </property>
+        <property name="source_name" type="java.lang.String">
+            <column name="source_name" />
+        </property>
+        <property name="last_updated" type="java.lang.String">
+            <column name="last_updated" />
+        </property>
+        
+        <property name="user_id" type="java.lang.String">
+            <column name="validic_user_id" />
+        </property>
+    </class>
+</hibernate-mapping>

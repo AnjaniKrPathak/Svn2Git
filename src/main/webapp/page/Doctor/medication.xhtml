@@ -1,0 +1,659 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body onload="#{dashBoardManageBean.setMedIndex()}">
+
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+				
+			</f:facet>
+			<style>
+			   .greenCircleRedOutline
+    {
+    width:15px;
+    height:15px;
+    border-radius:15px;
+    font-size:12px;
+    color:#000000;
+   /*  padding:2 0 0 2; */
+   /*  line-height:10px; */
+    text-align:center;
+    vertical-align:middle;
+    background:#007F00;
+    border-style: solid;
+    border-color: #FF4962;
+    }
+			</style>
+			
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="93" minSize="60">
+				<ui:include src="doctorHeader.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			  <p:layoutUnit id="left" position="west" size="0" closable="false" collapsible="true" minSize="0" style="border:none;">
+				  <ui:include src="docMenu.xhtml">
+				</ui:include>
+				</p:layoutUnit>
+			
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center">
+				<!-- <ui:include src="../Doctor/patientTabHeader.xhtml"></ui:include> -->
+				
+				
+						<!-- <h:form id="medicineFormID"> -->
+				<p:accordionPanel dynamic="true" activeIndex="1">
+						<p:tab >
+						<f:facet name="title">
+						<h:outputText value="#{dashBoardManageBean.userLoginDetail.userId} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}"  rendered="#{userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header')}"></h:outputText>
+						<h:outputText value="#{dashBoardManageBean.userLoginDetail.firstName} #{dashBoardManageBean.userLoginDetail.lastName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"/>
+						</f:facet>
+						
+							<p:outputPanel deferred="true" >
+							<ui:include src="../Doctor/patientDetailsHeader.xhtml"></ui:include>
+							</p:outputPanel>
+						</p:tab>
+					</p:accordionPanel>
+					
+				<h:form>
+					<table width="100%">
+						<tr>
+						<td class="contentTextPan">
+							<h:outputText value="#{msg.lastReconcileDate} " style="font-weight: bold;"/>
+								<h:outputText id="reconcileDateIdForNA" value="NA" rendered="#{(auditManageBean.reconcileInfo.lastReconciledDateStr eq null)}" />
+								 <h:outputText id="reconcileDateId" value="#{auditManageBean.reconcileInfo.lastReconciledDateStr}" rendered="#{auditManageBean.reconcileInfo.lastReconciledDateStr ne null}" />
+						<!-- <h:outputText id="reconcileDateIdForNA" value="NA" rendered="#{(patientMedicineManageBean.lastReconcileInfo.size() eq 0)}" /> -->
+						<!-- <h:outputText id="reconcileDateId" value="#{patientMedicineManageBean.lastReconcileInfo.get(1)} " rendered="#{!(patientMedicineManageBean.lastReconcileInfo.size() eq 0)}" /> -->
+					<!--    <h:outputText id="reconcileDateId" value="#{patientMedicineManageBean.lastRecoinciledDate}" rendered="#{!(patientMedicineManageBean.lastReconcileInfo.size() eq 0)}" /> -->
+					       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<h:outputText value="#{msg.lastReconciledBy} " style="font-weight: bold;"/>
+						<h:outputText id="reconcileByNA" value="NA" rendered="#{(auditManageBean.reconcileInfo.lastReconciledByName eq null)}" />
+						 <h:outputText id="reconcileById" value="#{auditManageBean.reconcileInfo.lastReconciledByName}" rendered="#{auditManageBean.reconcileInfo.lastReconciledByName ne null}" />
+					<!-- 	<h:outputText id="reconcileByNA" value="NA" rendered="#{(patientMedicineManageBean.lastReconcileInfo.size() eq 0)}" /> -->
+					<!-- <h:outputText id="reconcileById" value="#{patientMedicineManageBean.lastRecoinciledBy}" rendered="#{!(patientMedicineManageBean.lastReconcileInfo.size() eq 0)}" /> -->
+					<!-- 	<h:outputText id="reconcileById" value="#{patientMedicineManageBean.lastReconcileInfo.get(0)} " rendered="#{!(patientMedicineManageBean.lastReconcileInfo.size() eq 0)}" /> -->
+					
+						</td>
+							<!-- <td align="right">
+							
+								<p:commandButton value="#{msg.med_review}"	action="go_to_persionalizeMedReview" immediate="true" />
+							
+							</td> -->
+						</tr>											
+					</table>
+				</h:form>
+					<h:form>
+					  <table width="100%" class="secContentBorder" cellpadding="0" cellspacing="0">
+					   <tr>
+					    <td class="secHeadPart">#{msg.medicineDetails}</td>
+					   </tr>
+					   <tr class="secContentBorder">
+					    <td>
+					    <!-- <fieldset class="dataField">
+					        <legend class="legendField">#{msg.medicineDetails}</legend> -->
+					    <p:dataTable id="medDetel1" 
+								draggableColumns="true" overflow="auto" scrollHeight="101"
+								value="#{patientMedicineManageBean.patientMedicationDataList}"
+								binding="#{patientMedicineManageBean.medDataTable}"
+								var="medDetail" emptyMessage="#{msg.noMedicinefound}">
+
+
+								<p:ajax event="rowToggle"  
+									listener="#{patientMedicineManageBean.onRowExpensionMedicationHistory}"></p:ajax>
+								<p:column id="rowtoggle" width="2%">
+								
+									<p:rowToggler id="abc" />
+								</p:column>
+								<!--  <p:column style="width:2px" id="check">
+									<f:facet name="header">
+										<h:outputText value="" />
+									</f:facet>
+									<h:outputText value="" />
+								</p:column>-->
+
+
+								<!--  <p:column sortBy="#{medDetail.startDate}" id="startDate" style="white-space:normal;">
+									<f:facet name="header">
+										<h:outputText value="#{msg.datePrescribed} " />
+									</f:facet>
+									<h:outputText value="#{medDetail.startDate}">
+										<f:convertDateTime pattern="#{msg.dateFormat}" />
+									</h:outputText>
+								</p:column>-->
+
+
+							<p:column sortBy="#{medDetail.drugs}" id="drugsName">
+									<f:facet name="header">
+										<h:outputText value="#{msg.medicineName}"  />
+									</f:facet>
+									<div align="left">
+									<h:outputText value="#{medDetail.drugs}" /></div>
+								</p:column>
+
+
+								<p:column sortBy="#{medDetail.strengths}" id="symbol">
+
+									<f:facet name="header">
+										<h:outputText value="#{msg.strength}"  />
+									</f:facet>
+									<div align="left">
+									<h:outputText value="#{medDetail.strengths}" />
+									</div>
+								</p:column>
+
+								<p:column sortBy="#{medDetail.directions}" id="directionns" >
+									<f:facet name="header">
+										<h:outputText value="#{msg.directions}"  />
+									</f:facet>
+									<div align="left">
+							<p:outputPanel rendered="#{medDetail.directions ne 'Select Frequency'}">
+								<h:outputText value="#{medDetail.unit}" />&nbsp;
+								<h:outputText value="#{medDetail.dosageForm}" rendered="#{medDetail.dosageForm ne 'Add Sig'}" />&nbsp;
+								<h:outputText value="#{medDetail.directions}"  rendered="#{medDetail.directions ne 'Add Sig'}"/>
+								</p:outputPanel>
+			
+							<h:outputText value="#{msg.regimen_not_availale}" rendered="#{medDetail.directions eq 'Select Frequency'}"></h:outputText>
+								</div>
+								</p:column>
+
+								<p:column sortBy="#{medDetail.quantity}" id="qty"  style="width:3%;">
+									<f:facet name="header">
+										<h:outputText value="#{msg.qty1}" />
+									</f:facet>
+									<div align="right">
+									<h:outputText value="#{medDetail.quantity}" /></div>
+								</p:column>
+									
+									<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg.days_supply}"   />
+												
+											</f:facet>
+											<div align="left">
+											<h:outputText value="#{medDetail.daySupply}"  />
+											</div>
+										</p:column>
+									
+								<p:column sortBy="#{medDetail.prescriberName}" id="presName">
+									<f:facet name="header">
+										<h:outputText value="#{msg.prescriber}"  />
+									</f:facet>
+									<div align="left">
+									<h:outputText value="#{medDetail.prescriberName}" />
+									</div>
+								</p:column>
+
+								<p:column sortBy="#{medDetail.startDate}" id="lastDate">
+									<f:facet name="header">	
+										<h:outputText value="#{msg.datePrescribed}" />
+									</f:facet>
+									<center><h:outputText value="#{medDetail.startDate}">
+											<f:convertDateTime pattern="#{msg.dateFormat}"  dateStyle="full" type="date"/>
+									</h:outputText></center>
+								</p:column>
+								<p:column sortBy="#{medDetail.pharmacyName}" id="pharmaName"
+								style="width:8%;"	>
+									<f:facet name="header">
+										<h:outputText value="#{msg.per_pharmacy}"  />
+									</f:facet>
+									<div align="left">
+									<h:outputText value="#{medDetail.pharmacyName}"  />
+									</div>
+								</p:column>
+								<!--  <p:column sortBy="#{medDetail.reffils}" id="refils"
+									style="white-space:normal;">
+									<f:facet name="header">
+										<h:outputText value="#{msg.refills1}" />
+									</f:facet>
+									<h:outputText value="#{medDetail.reffils}" />
+								</p:column>-->
+								<!-- <p:column id="symbolls" style="white-space:normal;background-color: #FFFFFF;">
+									<f:facet name="header">
+										<h:outputText value="#{msg.compliance}"  style="font-size:9px;"/>
+									</f:facet>
+
+									<h:graphicImage value="./../../Images/green1.jpg" height="25px" id="ComplainPerGreen"
+										width="30px"
+										rendered="#{medDetail.compliancePercentage gt 80	}" />
+										<p:tooltip  for="ComplainPerGreen"  showEffect="clip" hideEffect="explode" >
+				                           <h:outputText value="Compliance=#{medDetail.compliancePercentage}%" /><br />
+				 
+				               </p:tooltip>
+									<h:graphicImage value="./../../Images/orange1.jpg" height="25px" id="ComplainPerOran" 
+										width="30px"
+										rendered="#{medDetail.compliancePercentage gt 60 and  medDetail.compliancePercentage le 80}" />
+										
+								<p:tooltip for="ComplainPerOran"   showEffect="clip" hideEffect="explode" >
+				             <h:outputText value="Compliance=#{medDetail.compliancePercentage}%" /><br />
+				 
+				               </p:tooltip>		
+									<h:graphicImage value="./../../Images/red1.jpg" height="25px" id="ComplainPerRed"
+										width="30px"
+										rendered="#{medDetail.compliancePercentage lt 60}" />
+										<p:tooltip for="ComplainPerRed"  showEffect="clip" hideEffect="explode" >
+				                  <h:outputText value="Compliance=#{medDetail.compliancePercentage}%" /><br />
+				 
+				                       </p:tooltip>
+								</p:column>
+								<p:column id="formularys" style="white-space:normal;background-color: #FFFFFF;">
+									<f:facet name="header">
+										<h:outputText value="#{msg.per_formulary}"  style="font-size:9px;"/>
+									</f:facet>
+									<h:graphicImage value="./../../Images/green1.jpg" height="25px" id="formularyForGreen"
+										width="30px"
+										rendered="#{medDetail.formularySymbol eq 'tier1'}" />
+										<p:tooltip for="formularyForGreen"  showEffect="clip" hideEffect="explode" >
+				 
+				                    <h:outputText value="Tier1" rendered="#{medDetail.formularySymbol eq 'tier1'}" /><br />
+				 
+				                         </p:tooltip>
+				
+									<h:graphicImage value="./../../Images/orange1.jpg" height="25px" id="formularyForOrange"
+										width="30px"
+										rendered="#{medDetail.formularySymbol eq 'tier2'}" />
+										<p:tooltip for="formularyForOrange"  showEffect="clip" hideEffect="explode" >
+				 
+				                      <h:outputText value="Tier2" rendered="#{medDetail.formularySymbol eq 'tier2'}" /><br />
+				 
+				                        </p:tooltip>
+									<h:graphicImage value="./../../Images/red1.jpg" height="25px" id="formularyForRed"
+										width="30px"
+										rendered="#{medDetail.formularySymbol eq 'tier3'}" />
+										<p:tooltip for="formularyForRed"  showEffect="clip" hideEffect="explode" >
+				 
+				                    <h:outputText value="Tier3" rendered="#{medDetail.formularySymbol eq 'tier3'}" /><br />
+				               </p:tooltip>
+									<h:graphicImage value="./../../Images/red1.jpg" height="25px" id="formularySymbolForRed"
+										width="30px" rendered="#{medDetail.formularySymbol eq ''}" />
+											<p:tooltip for="formularySymbolForRed"  showEffect="clip" hideEffect="explode" >
+				 
+				                        <h:outputText value="#{medDetail.formularySymbol}" /><br />
+				
+				                            </p:tooltip>
+								</p:column>
+								<p:column id="genomics" style="white-space:normal;background-color: #FFFFFF;">
+									<f:facet name="header">
+										<h:outputText value="#{msg.pharmacogenomics}" style="font-size:9px;" />
+									</f:facet>
+									<h:graphicImage value="./../../Images/green1.jpg" height="25px" id="pharmacogenomicforGreen"
+										width="30px"
+										rendered="#{medDetail.attentionRating eq 'Normal'}" />
+										<p:tooltip for="pharmacogenomicforGreen"  showEffect="clip" hideEffect="explode" >
+										 <h:outputText value="#{medDetail.attentionRating}" /><br />
+										</p:tooltip>
+									<h:graphicImage value="./../../Images/orange1.jpg" height="25px" id="pharmacogenomicforOrange"
+										width="30px"
+										rendered="#{medDetail.attentionRating eq 'Medium'}" />
+										<p:tooltip for="pharmacogenomicforOrange"  showEffect="clip" hideEffect="explode" >
+										 <h:outputText value="#{medDetail.attentionRating}" /><br />
+										</p:tooltip>
+									<h:graphicImage value="./../../Images/red1.jpg" height="25px" id="pharmacogenomicforRed"
+										width="30px" rendered="#{medDetail.attentionRating eq 'High'}" />
+
+								</p:column> -->
+								
+								<p:column style="width:7%;" >
+			<f:facet name="header">
+				<h:outputText value="#{msg.compliance}" />
+			</f:facet>
+			
+			   <center>
+               <h:panelGroup rendered="#{medDetail.compliancePercentage gt 100}" layout="block" styleClass="greenCircleRedOutline" id="complianceGt100Id">
+      
+                <p:tooltip for="complianceGt100Id"  showEffect="clip" hideEffect="explode">
+                 <h:outputText value="Compliance=100%" /><br />
+             
+                </p:tooltip>
+                </h:panelGroup>
+                </center>
+			
+			<center><h:graphicImage value="./../../Images/green1.jpg" height="20px" id="complianceForGreen"
+				width="20px" rendered="#{medDetail.compliancePercentage gt 80 and medDetail.compliancePercentage le 100}" /></center>
+				
+				 <p:tooltip for="complianceForGreen"  showEffect="clip" hideEffect="explode" >
+				 
+				<!--  <h:outputText value="#{medDetail.drugs}" /><br />  -->
+				  <h:outputText value="Compliance=#{medDetail.compliancePercentage}%" /><br />
+				</p:tooltip>
+				
+			<center><h:graphicImage value="./../../Images/orange1.jpg" height="20px"
+				width="20px" id="complianceForOrange"
+				rendered="#{medDetail.compliancePercentage gt 60 and  medDetail.compliancePercentage le 80}" /></center>
+				
+				<p:tooltip for="complianceForOrange"  showEffect="clip" hideEffect="explode" >
+				 
+				 <h:outputText value="Compliance=#{medDetail.compliancePercentage}%" /><br />
+				
+				</p:tooltip>
+				
+				
+			<center>	<h:outputText value="N/A"  id="complianceForwhite"
+				width="20px" rendered="#{medDetail.compliancePercentage eq 0}" />
+				<!-- <h:outputText value="No History Available" /> -->
+				</center>
+			<center><h:graphicImage value="./../../Images/red1.jpg" height="20px" id="complianceForRed"
+				width="20px" rendered="#{medDetail.compliancePercentage gt 0 and medDetail.compliancePercentage le 60}" />
+				<!-- <h:outputText value="No History Available" /> -->
+				</center>
+			
+			
+				
+				<p:tooltip for="complianceForRed"  showEffect="clip" hideEffect="explode" >
+				  <h:outputText value="Compliance=#{medDetail.compliancePercentage}%" /><br />
+				 
+				</p:tooltip>
+				
+				<p:tooltip for="complianceForwhite"  showEffect="clip" hideEffect="explode" >
+				  <h:outputText value="Compliance=#{medDetail.compliancePercentage}%" /><br />
+				 
+				</p:tooltip>
+		</p:column>
+		
+		
+		
+		<p:column style="width:7%;">
+			<f:facet name="header">
+				<h:outputText value="#{msg.per_formulary}" />
+			</f:facet>
+			
+			<center><h:graphicImage value="./../../Images/green1.jpg" height="20px" id="formularyForGreen"
+				width="20px" rendered="#{medDetail.formularySymbol eq 'On Formulary' or medDetail.formularySymbol eq 'Unlisted Drug'}" /></center>
+				
+				<p:tooltip for="formularyForGreen"  showEffect="clip" hideEffect="explode" >
+				
+				 <h:outputText value="Generic" rendered="#{medDetail.formularySymbol eq 'Unlisted Drug'}" />
+				 <h:outputText value="On Formulary" rendered="#{medDetail.formularySymbol eq 'On Formulary'}" /><br />
+				</p:tooltip>
+				
+				
+			<center><h:graphicImage value="./../../Images/orange1.jpg" height="20px" id="formularyForOrange"
+				width="20px" rendered="#{medDetail.formularySymbol eq 'Tier 1' or medDetail.formularySymbol eq 'Tier 2' or  medDetail.formularySymbol eq 'Tier 3' or medDetail.formularySymbol eq 'Tier 4' or medDetail.formularySymbol eq 'Tier 4 and above'}" /></center>
+				
+				<p:tooltip for="formularyForOrange"  showEffect="clip" hideEffect="explode" >
+				 <h:outputText value="#{msg.tier_1_mapped_lbl}" rendered="#{medDetail.formularySymbol eq 'Tier 1'}" />
+				<h:outputText value="#{msg.tier_2_mapped_lbl}" rendered="#{medDetail.formularySymbol eq 'Tier 2'}" />
+				 <h:outputText value="#{msg.tier_3_mapped_lbl}" rendered="#{medDetail.formularySymbol eq 'Tier 3'}" />
+				 <h:outputText value="#{msg.tier_4_above_mapped_lbl}" rendered="#{medDetail.formularySymbol eq 'Tier 4'}" />
+				 <h:outputText value="#{msg.tier_4_above_mapped_lbl}" rendered="#{medDetail.formularySymbol eq 'Tier 4 and above'}" />
+				
+				<br />
+				 
+				</p:tooltip>
+				
+			<center><h:graphicImage value="./../../Images/red1.jpg" height="20px" id="formularyForRed"
+				width="20px" rendered="#{medDetail.formularySymbol eq 'Non Formulary' or medDetail.formularySymbol eq 'Prior Authorization' or medDetail.formularySymbol eq 'Not Reimbursed'}" /></center>
+				
+				<p:tooltip for="formularyForRed"  showEffect="clip" hideEffect="explode" >
+				<h:outputText value="Prior Authorization" rendered="#{medDetail.formularySymbol eq 'Prior Authorization'}" />
+				<h:outputText value="Non Formulary" rendered="#{medDetail.formularySymbol eq 'Non Formulary'}" />
+				<h:outputText value="Not Reimbursed" rendered="#{medDetail.formularySymbol eq 'Not Reimbursed'}" />
+				
+<br />
+				</p:tooltip>
+		</p:column>
+		
+		
+		<p:column style="width:8%;" >
+			<f:facet name="header">
+				<h:outputText value="#{msg.pharmacogenomics}"  />
+				
+			</f:facet>
+			<center><h:graphicImage value="./../../Images/green1.jpg" height="20px" id="pharmacogenomic_forGreen"
+				width="20px" rendered="#{medDetail.attentionRating eq 'Low'}" /></center>
+				<p:tooltip for="pharmacogenomic_forGreen"  showEffect="clip"  hideEffect="explode" style="min-width:auto;max-width:55%;">
+				 
+				     <h:outputText value="#{msg.reasoning}" style="font-weight: bold;"/><h:outputText value=":" />&nbsp;
+				    <h:outputText value="#{medDetail.reason}" />&nbsp;
+				    <h:outputText value="#{medDetail.phenoType}" /><br/>
+				    <h:outputText value="#{msg.recommendation}"  style="font-weight: bold;"/><h:outputText value=":" />&nbsp;
+				    <h:outputText value="#{medDetail.recomendation}" />
+				</p:tooltip>
+			<center><h:graphicImage value="./../../Images/orange1.jpg" height="20px" id="pharmacogenomic_forOrange"
+				width="20px" rendered="#{medDetail.attentionRating eq 'Medium'}" /></center>
+				<p:tooltip for="pharmacogenomic_forOrange"  showEffect="clip"  hideEffect="explode" style="min-width:auto;max-width:55%;">
+				 
+					<h:outputText value="#{msg.reasoning}" style="font-weight: bold;"/><h:outputText value=":" />&nbsp;
+				  	<h:outputText value="#{medDetail.reason}" />&nbsp;
+				    <h:outputText value="#{medDetail.phenoType}" /><br/>
+				  	<h:outputText value="#{msg.recommendation}"  style="font-weight: bold;"/><h:outputText value=":" />&nbsp;
+				  	<h:outputText value="#{medDetail.recomendation}" />
+				</p:tooltip>
+			<center><h:graphicImage value="./../../Images/red1.jpg" height="20px" id="pharmacogenomic_forRed"
+				width="20px" rendered="#{medDetail.attentionRating eq 'High'}" /></center>
+				<p:tooltip for="pharmacogenomic_forRed"  showEffect="clip"  hideEffect="explode" style="min-width:auto;max-width:55%;">
+					 <h:outputText value="#{msg.reasoning}" style="font-weight: bold;"/><h:outputText value=":" />&nbsp;
+					  <h:outputText value="#{medDetail.reason}" />&nbsp;
+				    <h:outputText value="#{medDetail.phenoType}" /><br/>
+					  <h:outputText value="#{msg.recommendation}"  style="font-weight: bold;"/><h:outputText value=":" />&nbsp;
+					  <h:outputText value="#{medDetail.recomendation}" />
+				</p:tooltip>
+		</p:column>
+
+
+								<!-- Row Expansion for History -->
+								
+								<p:rowExpansion>
+									<p:dataTable 
+										value="#{patientMedicineManageBean.pharmacyDetailList}"
+										id="fetchMedicationHistoryy" scrollable="true" 
+										emptyMessage="#{msg.nohistoryavalilabe}" var="medHistory"
+										style="margin-left:10px;width:99%;">
+										
+										<p:column bgcolor="grey" >
+											<f:facet name="header">
+												<h:outputText value="Date Filled"  />
+											</f:facet>
+											<div align="center">
+											<h:outputText value="#{medHistory.dateOfPurchase}">
+												<f:convertDateTime pattern="#{msg.dateFormat}"  dateStyle="full" type="date"/>
+											</h:outputText></div>
+										</p:column>
+
+
+										<p:column style="white-space:normal;">
+											<f:facet name="header">
+												<h:outputText value="Medicine Detail"  />
+											</f:facet>
+											<div align="left">
+											<h:outputText value="#{medHistory.drugInfo}" />
+											</div>
+										</p:column>
+
+
+										<!-- <p:column style="white-space:normal;">
+											<f:facet name="header">
+												<h:outputText value="#{msg.strength1}" />
+											</f:facet>
+											<div align="left">
+											<h:outputText value="#{medHistory.strength}" />
+											</div>
+										</p:column> -->
+
+										<!-- <p:column >
+											<f:facet name="header">
+												<h:outputText value="#{msg.directions}"  />
+											</f:facet>
+											<div align="left">
+											<h:outputText value="#{medHistory.unit}" />&nbsp;
+								            <h:outputText value="#{medHistory.dosageForm}" rendered="#{medHistory.dosageForm ne 'Add Sig'}"/>&nbsp;
+											<h:outputText value="#{medHistory.direction}"  rendered="#{medHistory.direction ne 'Add Sig'}"/>
+											</div>
+										</p:column> -->
+
+										<p:column style="text-align:center;">
+											<f:facet name="header">
+												<h:outputText value="#{msg.qty1}" />
+											</f:facet>
+											<h:outputText value="#{medHistory.quantity}" />
+										</p:column>
+
+											<p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg.days_supply}"   />
+												
+											</f:facet>
+											<div align="left">
+											<h:outputText value="#{medHistory.daysOfSupply}"  />
+											</div>
+										</p:column>
+
+
+										<p:column style="width:190px;">
+											<f:facet name="header">
+												<h:outputText value="#{msg.prescriber1}" />
+											</f:facet>
+										
+											<h:outputText value="#{medHistory.doctorName}" />
+											
+										</p:column>
+
+										<!-- <p:column >
+											<f:facet name="header">
+												<h:outputText value="#{msg.dateLastFilled}" />
+											</f:facet>
+											<div align="center">
+											<h:outputText value="#{medHistory.lastFillDate}">
+												<f:convertDateTime pattern="#{msg.dateFormat}" timeZone="#{userManageBean.loggedUsertimeZone}" dateStyle="full" type="date"/>
+											</h:outputText></div>
+										</p:column> -->
+
+										<!-- <p:column>
+											<f:facet name="header">
+												<h:outputText value="#{msg.refills}" />
+											</f:facet>
+											<div align="right">
+											<h:outputText value="#{medHistory.reffils}" /></div>
+										</p:column> -->
+									</p:dataTable>
+								</p:rowExpansion>
+							</p:dataTable>
+						
+							<p:blockUI block="medDetel1" trigger="medDetel1">  
+                               LOADING ...<br />
+								<p:graphicImage value="./../../Images/ajax_loader.gif"
+									width="40" height="40" />
+							</p:blockUI>
+						
+							<!-- </fieldset> -->
+					    </td>
+					   </tr>
+					  </table>
+	</h:form>
+<!--    =================================DATA TABLE FOR OLD MEDICATION DATA=============================================   -->	
+    <h:form>
+	       <table>
+	             <tr>
+			        <td height="100%">
+		            </td>
+			      </tr>
+	           </table>
+			  <table width="100%" class="secContentBorder" cellpadding="0" cellspacing="0">
+					   <tr>
+					    <td class="secHeadPart">#{msg.oldMedicineDetails}</td>
+					   </tr>
+					   <tr class="secContentBorder">
+					    <td>
+					    <p:dataTable id="tabl_oldMedicationData" value="#{patientMedicineManageBean.oldMedicationDataList}"
+								var="oldMed" draggableColumns="true" overflow="auto" scrollHeight="101"
+								emptyMessage="#{msg.noMedicinefound}">
+
+							<p:column id="drugsName">
+									<f:facet name="header">
+										<h:outputText value="#{msg.medicineName}"  />
+									</f:facet>
+									<div align="left">
+									   <h:outputText value="#{oldMed.drugInfo}" />
+									</div>
+								</p:column>
+								<p:column id="qty"  style="width:3%;">
+									<f:facet name="header">
+										<h:outputText value="#{msg.qty1}" />
+									</f:facet>
+									<div align="right">
+									   <h:outputText value="#{oldMed.quantity}" />
+									</div>
+								</p:column>
+								<p:column  id="lastDate">
+									<f:facet name="header">	
+										<h:outputText value="#{msg.date_prescribed}" />
+									</f:facet>
+									<center>
+									   <h:outputText value="#{oldMed.dateOfPurchase}">
+									   		<!-- <f:convertDateTime pattern="dd.MM.yyyy HH:mm" /> -->
+										  <f:convertDateTime pattern="#{msg.dateFormat}"  dateStyle="full" type="date"/>
+									   </h:outputText>
+									</center>
+								</p:column>
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.days_supply}"   />
+									</f:facet>
+									<div align="left">
+									   <h:outputText value="#{oldMed.daysOfSupply}"  />
+									</div>
+								</p:column>
+								<p:column  id="presName">
+									<f:facet name="header">
+										<h:outputText value="#{msg.prescriber}"  />
+									</f:facet>
+									<div align="left">
+										<h:outputText value="Dr " rendered="#{oldMed.doctorName ne null}"/>
+									    <h:outputText value="#{oldMed.doctorName}" />
+									</div>
+								</p:column>
+								<p:column id="pharmaName"
+								style="width:8%;"	>
+									<f:facet name="header">
+										<h:outputText value="#{msg.per_pharmacy}"  />
+									</f:facet>
+									<div align="left">
+									    <h:outputText value="#{oldMed.pharmacyName}"  />
+									</div>
+								</p:column>
+							</p:dataTable>
+					    </td>
+					   </tr>
+			  </table>
+
+<!--    =================================ENDS DATA TABLE FOR OLD MEDICATION DATA =======================================    -->				  
+					  
+  </h:form>
+								
+
+<!-- </h:form> -->
+			
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+		</p:layout>
+
+	</f:view>
+
+</h:body>
+</html>

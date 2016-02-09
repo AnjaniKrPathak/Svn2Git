@@ -1,0 +1,523 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body onload="#{dashBoardManageBean.setoverviewindex()}">
+    <f:view contentType="text/html">
+   <h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<title><h:outputText value="#{msg.clinakos}" /></title>
+	</f:facet>
+	<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+	
+    </h:head>
+<p:layout fullPage="true">
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="85" minSize="60">
+				<ui:include src="doctorheader2.xhtml" />
+			</p:layoutUnit>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="27">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<h:form class="tab">
+					<ui:include src="doctor_profile_leftmenu.xhtml">
+					</ui:include>
+				</h:form>
+				</p:layoutUnit>
+				
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit  position="center">
+		
+		<h:form id="peopleListFormId">
+		<table align="left" style="margin-left: 2%;width: 90%;">
+    	
+    		<tr>
+    			<td valign="top">
+    			
+    				<div id="manageOrganization" align="right">
+    	
+				    	<h:panelGrid >
+				    		<p:commandButton value="Add People" type="button" onclick="PF('addOrganizationDialog').show();" />
+				    	</h:panelGrid>
+		    
+					    	
+   				</div>
+      		<br/>
+      	</td>
+    </tr>
+   </table>
+   			
+	<table style="margin-left: 2%;width: 90%;"><tr><td>
+      <p:dataTable var="people" value="#{dashBoardManageBean.displayuserLoginDetailList}" id="peopleList" editable="true"
+      rows="13" paginator="true" paginatorPosition="bottom"
+      				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+      				rowsPerPageTemplate="13,20,30" paginatorAlwaysVisible="false"> 
+  		<p:columnGroup type="header">
+      		<p:row>
+                <p:column headerText="User Name" />
+                <p:column headerText="Email Id" />
+                <p:column headerText="City" />
+                <p:column colspan="2" headerText="Action" />
+            </p:row>
+      	</p:columnGroup>
+      	
+        <p:column  style="width:5%">  
+          	<h:outputText value="#{people.firstName} #{people.middleName} #{people.lastName} " />  
+        </p:column>  
+  
+        <p:column  style="width:5%">  
+            <h:outputText value="#{people.email}" />  
+        </p:column>
+        
+         <p:column  style="width:5%">  
+            <h:outputText value="#{people.city}" />  
+        </p:column>
+          
+  		  <p:column style="width:3%;text-align: center">
+	        <p:commandLink id = "edit" update=":editUserFromId:editPeopleDetailId" oncomplete="editUserDialog.show()">
+		        <f:setPropertyActionListener value="#{people}" target="#{dashBoardManageBean.userLoginDetailEditObj}" />
+		         <h:graphicImage value="./../../Images/editIcon.jpg"
+										width="15px" height="20px" id="editOrg" />	
+  			</p:commandLink>
+  			<p:tooltip id="toolTipEdit" for="edit" value="Edit User" /> 
+        </p:column> 
+		
+		<p:column style="width:3%;text-align: center">
+  			<p:commandLink id = "delete" actionListener="#{dashBoardManageBean.deleteUser(people)}" update=":peopleListFormId:peopleList" >
+                 <h:graphicImage value="./../../Images/DeleteRed.png"
+										width="15px" height="20px" id="deleteOrg" />
+                <p:confirm header="Confirmation" message="Are you sure want to Delete?" icon="ui-icon-alert" />
+            </p:commandLink>
+            
+  			<p:tooltip id="toolTipDelete" for="delete" value="Delete Orgnization" /> 
+		</p:column>
+       
+    </p:dataTable>
+    </td></tr></table>
+    </h:form>
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+      <h:form>
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="margin-left:40px;"/>
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+        </h:form>
+    </p:confirmDialog>
+    	
+			
+<!--       #################################ADD USER/PEOPLE DIALOG BOX#####################################################    -->			
+
+<p:dialog id="addPeopleDialogId" widgetVar="addOrganizationDialog" header="Add People" 
+                    			height="510" width="auto" closable="true" modal="true" appendTo="@(body)" hideEffect="fold">
+        <p:ajax event="close" update="addPeopleDialogId"></p:ajax>            			 
+	<h:form id="addUserFormId" >						
+		<table width="989" height="460" border="0" align="center">
+			<tr>
+		      <td width="1000" colspan="4" ><p:messages id="msg_addUser" closable="true" ></p:messages>
+		     <h:outputText id="outTxt_msg" value="#{dashBoardManageBean.messageForPateintAddedDialog}" styleClass="mandatoryField" style="font-weight:bold;"></h:outputText> </td>
+		    </tr>
+		    <tr>
+		      <td width="229"><h:outputText value="#{msg.firstName}" /><h:outputText value="*" styleClass="mandatoryField"/>  </td>
+		      <td width="238"><p:inputText id="fName" value="#{dashBoardManageBean.userLoginDetailsNewPatient.firstName}" styleClass="inputfield" required="true" 
+					             requiredMessage="Please Enter FirstName"/> </td>
+		      <td width="232"><h:outputText value="#{msg.middleName}" /> </td>
+		      <td width="262"><p:inputText id="mName" value="#{dashBoardManageBean.userLoginDetailsNewPatient.middleName}" styleClass="inputfield"/></td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="#{msg.lastName}" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td><p:inputText id="lName" value="#{dashBoardManageBean.userLoginDetailsNewPatient.lastName}" styleClass="inputfield" required="true"
+					           requiredMessage="Please Enter LastName"/></td>
+		      <td><h:outputText value="User Role" /> <h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td><p:selectOneMenu style="width:160px;"  value="#{dashBoardManageBean.selectedRole}"
+		      			 required="true" requiredMessage="Please select Role">
+		      			 <p:ajax listener="#{dashBoardManageBean.selectedRoleForAddPeople}" update="txt_stateLicense,txt_npiNumber,dea,txt_physicianSpeciality,drpDwn_clinic"/>
+		      			 <f:selectItem itemLabel="Select role" itemValue="" noSelectionOption="true" />
+												<f:selectItems value="#{dashBoardManageBean.roleSecurityList}"
+													var="roleSec" itemLabel="#{roleSec.roleName}" itemValue="#{roleSec.id}" />
+												
+											</p:selectOneMenu></td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="Password" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+		      <td><p:inputText id="txt_password" value="#{dashBoardManageBean.loginSecurity.password}" styleClass="inputfield" 
+		      		required="true" requiredMessage="Please Enter Password" 
+		      		validatorMessage="Password length should be 6 characters and combination of at least one digit, uppercase characters and special symbols.">
+					  <f:validateRegex pattern="((?=.*\d)(?=.*[A-Z])(?=.*[@#$%]).{6,20})" />	
+					</p:inputText>				
+		      		<p:watermark for="txt_password" value="Password *" />
+		      </td>
+		      <td><h:outputText value="Confirm Password " /><h:outputText value="*" styleClass="mandatoryField"/></td>
+		      <td><p:inputText id="txt_confirmPassword" value="#{dashBoardManageBean.loginSecurity.confirmPassword}" styleClass="inputfield" 
+		      			required="true" requiredMessage="Please Confirm Password"/>
+		      		<p:watermark for="txt_confirmPassword" value="Confirm Password *" />
+		      </td>
+		    </tr>
+		     <tr>
+		      <td><h:outputText value="Company" /> <h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td><p:selectOneMenu style="width:160px;"  value="#{dashBoardManageBean.clinicProvider.providerId}" required="true" 
+		      						requiredMessage="Please Select Company">
+		      				<p:ajax listener="#{dashBoardManageBean.onProviderChange}" update="drpDown_providerLocation" />
+		      				<f:selectItem itemLabel="Select Provider" itemValue="" noSelectionOption="true" />	
+							<f:selectItems value="#{dashBoardManageBean.companyList}"
+								var="company" itemLabel="#{company.name}" itemValue="#{company.id}" />
+				 </p:selectOneMenu></td>
+		      <td><h:outputText value="Clinic " /></td>
+		      <td><p:selectOneMenu id="drpDwn_clinic" style="width:160px;"  value="#{dashBoardManageBean.clinicProvider.clinicId}" disabled="#{dashBoardManageBean.disableClinicForAddingAdmin}">
+					<f:selectItems value="#{dashBoardManageBean.clinicList}"
+							var="clinic" itemLabel="#{clinic.clinicName}" itemValue="#{clinic.id}" />
+				</p:selectOneMenu></td>
+		    </tr>
+		    
+		    <tr>
+		      <td><h:outputText value="Location" /> <h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td><p:selectOneMenu id="drpDown_providerLocation" style="width:160px;"  value="#{dashBoardManageBean.clinicProvider.providerLocationId}" 
+							required="true" requiredMessage="Please Select Location" >		
+					<f:selectItem itemLabel="Select Location" itemValue="" noSelectionOption="true" />										
+					<f:selectItems value="#{dashBoardManageBean.providerLocationListForNewUser}"
+						var="location" itemLabel="#{location.location}" itemValue="#{location.id}" />
+									
+				</p:selectOneMenu></td>
+		      <td></td>
+		      <td></td>
+		    </tr>
+		    
+		    <tr>
+		      <td> <h:outputText value="#{msg.phno}" /> </td>
+		      <td><p:inputMask mask="(999) 999-9999" value="#{dashBoardManageBean.userLoginDetailsNewPatient.phoneNumber}" styleClass="inputfield"/></td>
+		      <td><h:outputText value="#{msg.extn}"/> </td>
+		      <td><p:inputMask id="extn" mask="9?9999"  value="#{dashBoardManageBean.userLoginDetailsNewPatient.extensionPhone}" styleClass="inputfield"/></td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="#{msg.mobNo}" /> </td>
+		      <td><p:inputMask id="mobileNo" mask="(999) 999-9999" value="#{dashBoardManageBean.userLoginDetailsNewPatient.mobileNumber}" styleClass="inputfield"/></td>
+		      <td><h:outputText value="#{msg.email}" /> </td>
+		      <td><p:inputText id="emailAddress" value="#{dashBoardManageBean.userLoginDetailsNewPatient.email}" 
+					            styleClass="inputfield">
+					             <!-- <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" for="email" />
+					              <f:validateLength minimum="2"/>  -->
+					           </p:inputText></td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="#{msg.DOB}" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td><p:calendar widgetVar="addCalender"  value="#{dashBoardManageBean.userLoginDetailsNewPatient.dateOfBirth}"  style="width:160px" 
+					           showOn="button" navigator="true" pattern="MM/dd/yyyy" yearRange="c-100:c+1" readonlyInput="true" required="true"  
+					           onfocus="$('#queryForm\\:msgs > div').hide();$('#queryForm\\:msgs > div').eq(1).show();$(this).mask('99/99/9999');return false;"
+					           requiredMessage="Please Enter DateOfBirth" maxdate="#{patientMedicineManageBean.commonTodayDateForVallidation}"></p:calendar>
+					           </td>
+					           
+		      <td><h:outputText value="#{msg.gender}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+		      <td><p:selectOneMenu value="#{dashBoardManageBean.userLoginDetailsNewPatient.gender}"  style="width:160px"  required="true"
+					           requiredMessage="Please Enter Gender">
+					             <!--   <f:selectItem itemValue="" itemLabel=""/> -->
+					              <f:selectItem itemValue="male" itemLabel="Male"/>
+					              <f:selectItem  itemValue="female" itemLabel="Female"/>
+					              <f:selectItem itemValue="others" itemLabel="Others"/>
+					              </p:selectOneMenu> </td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="#{msg.dlNo}" /></td>
+		      <td><p:inputText value="#{dashBoardManageBean.userLoginDetailsNewPatient.dlNumber}" styleClass="inputfield"/></td>
+		      <td><h:outputText value="#{msg.socSecNo}" /> </td>
+		      <td><p:inputMask id="soscNumber" mask="999-99-9999" value="#{dashBoardManageBean.userLoginDetailsNewPatient.socialSecurityNumber}"/></td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="#{msg.race}" /></td>
+		      <td><p:inputText value="#{dashBoardManageBean.userLoginDetailsNewPatient.race}" styleClass="inputfield"/></td>
+		      <td><h:outputText value="Status" /> <h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td> <p:selectOneMenu  id="status" value="#{dashBoardManageBean.userLoginDetailsNewPatient.status}" styleClass="inputfield" style="width:160px"  required="true"
+					           requiredMessage="Please Status of the User">
+					    
+		       		<f:selectItem itemLabel="Active" itemValue="1" />
+		            <f:selectItem itemLabel="Inactive" itemValue="0" />
+		      </p:selectOneMenu></td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="Door No" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td><p:inputText id="addLine1" value="#{dashBoardManageBean.userLoginDetailsNewPatient.doorNo}" styleClass="inputfield"  required="true"
+					           requiredMessage="Please Enter DoorNo"/></td>
+		      <td><h:outputText value="Street" /> <h:outputText value="*" styleClass="mandatoryField"/></td>
+		      <td><p:inputText value="#{dashBoardManageBean.userLoginDetailsNewPatient.street}" styleClass="inputfield" 
+					          required="true" requiredMessage="Please Enter Street"/></td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="#{msg.city}" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td><p:inputText id="cityId" value="#{dashBoardManageBean.userLoginDetailsNewPatient.city}" styleClass="inputfield"  required="true"
+					           requiredMessage="Please Enter City"/></td>
+		      <td><h:outputText value="#{msg.state}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+		      <td><p:inputMask id="stateId" mask="a*" value="#{dashBoardManageBean.userLoginDetailsNewPatient.state}" styleClass="inputfield"  required="true"
+					           requiredMessage="Please Enter State" maxlength="2"/></td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="#{msg.country}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+		      <td><p:inputMask mask="a*" id="countryId" value="#{dashBoardManageBean.userLoginDetailsNewPatient.country}" styleClass="inputfield"  required="true"
+					           requiredMessage="Please Enter Country" maxlength="2"/></td>
+		      <td><h:outputText value="#{msg.zipCode}" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td><p:inputText id="zipCodeId" value="#{dashBoardManageBean.userLoginDetailsNewPatient.pincode}" styleClass="inputfield"  required="true"
+					           requiredMessage="Please Enter zipCode" maxlength="5"/></td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="#{msg.bloodgroup}" /> </td>
+		      <td><p:inputText value="#{dashBoardManageBean.userLoginDetailsNewPatient.bloodGroup}" styleClass="inputfield"/></td>
+		      <td><h:outputText value="Marital Status" /></td>
+		      <td><p:selectOneMenu id="pateintStatus" value="#{dashBoardManageBean.userLoginDetailsNewPatient.martailStatus}" style="width:160px">
+					              <!-- <f:selectItem itemValue="" itemLabel=""/> -->
+					              <f:selectItem itemValue="single" itemLabel="Single"/>
+					              <f:selectItem  itemValue="married" itemLabel="Married"/>
+					              </p:selectOneMenu>
+					              </td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="#{msg.timeZone}" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td><p:selectOneMenu  id="timeZoneId" value="#{dashBoardManageBean.userLoginDetailsNewPatient.loginTimeZone}" style="width:160px;" styleClass="inputfield"  required="true"
+					           requiredMessage="Please Enter TimeZone">
+		       		<f:selectItems value="#{dashBoardManageBean.timeZoneList}"
+													var="timeZone" itemLabel="#{timeZone.timeZone}" itemValue="#{timeZone.timeZone}" />
+		      </p:selectOneMenu></td>
+		      <td><h:outputText value="DEA Number" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td><p:inputText id="dea" value="#{dashBoardManageBean.doctorDetail.dea}" styleClass="inputfield"
+		        disabled="#{dashBoardManageBean.disableValueForAddUser}"/>
+		        <p:watermark for="dea" value="Mandatory for role_doctor *" /></td>	
+		    </tr>
+		    <tr>
+		      <td><h:outputText value="Physician Specialty" /></td>
+		      <td><p:inputText id="txt_physicianSpeciality" value="#{dashBoardManageBean.doctorDetail.speciality}" disabled="#{dashBoardManageBean.disableValueForAddUser}" styleClass="inputfield"/></td>
+		      <td><h:outputText value="NPI number" /> <h:outputText value="*" styleClass="mandatoryField"/></td>
+		      <td><p:inputText id="txt_npiNumber" value="#{dashBoardManageBean.doctorDetail.npi}" disabled="#{dashBoardManageBean.disableValueForAddUser}" styleClass="inputfield" />
+		      	    <p:watermark for="txt_npiNumber" value="Mandatory for role_doctor *" /></td>
+		    </tr>
+		    <tr>
+		      <td><h:outputText  value="State License" /> <h:outputText value="*" styleClass="mandatoryField"/> </td>
+		      <td><p:inputText id="txt_stateLicense" value="#{dashBoardManageBean.doctorDetail.docLicenseState}" disabled="#{dashBoardManageBean.disableValueForAddUser}" styleClass="inputfield" />
+		      		 <p:watermark for="txt_stateLicense" value="Mandatory for role_doctor *" /></td>
+		      <td><!-- <h:outputText value="License No" /> --> </td>
+		      <td><!-- <p:inputText value="#{dashBoardManageBean.doctorDetail.docLicenseNumber}" disabled="#{dashBoardManageBean.disableValueForAddUser}" styleClass="inputfield"/> --></td>
+		    </tr>
+		    
+		    <tr>
+		      <td colspan="4">&nbsp;</td>
+		    </tr>
+		    <tr>
+		      <td colspan="4" align="center">
+				<table>
+				   <tr>
+				     <td align="center">
+				       <p:commandButton id="button_createUser" value="Create User" actionListener ="#{dashBoardManageBean.addSuperAdmin}" update="outTxt_msg,msg_addUser"/>
+				     </td>
+				     <td align="center">
+				       <p:commandButton value="Cancel" actionListener ="#{dashBoardManageBean.cancelAddUser}" oncomplete="addOrganizationDialog.hide();" ajax="false" update=":addUserFormId"></p:commandButton>
+				     </td>
+				   </tr>
+				</table>		      
+		      </td>
+		    </tr>
+		  </table>
+	</h:form>
+	<p:blockUI block="addUserFormId" trigger=":addUserFormId:button_createUser">
+	     LOADING<br />
+	    <p:graphicImage value="./../../Images/ajax_loader.gif" width="40" height="40"  />
+	</p:blockUI>		
+</p:dialog>		
+
+<!--     ###################################### DIALOG BOX FOR EDIT USER############################################    -->
+<p:dialog id="editPeopleDialogId" widgetVar="editUserDialog" header="Edit People" 
+                    			 width="auto" closable="true" modal="true" appendTo="@(body)" hideEffect="fold">
+<h:form id="editUserFromId">	
+	<p:messages closable="true"></p:messages>						
+	<p:outputPanel id="editPeopleDetailId"   style="text-align:center;" >				
+	<table width="989" height="460" border="0" align="center">
+    <tr>
+      <td width="229"><h:outputText value="#{msg.firstName}" /><h:outputText value="*" styleClass="mandatoryField"/>  </td>
+      <td width="238"><p:inputText id="fName" value="#{dashBoardManageBean.userLoginDetailEditObj.firstName}" styleClass="inputfield" required="true" 
+			             requiredMessage="Please Enter FirstName"/> </td>
+      <td width="232"><h:outputText value="#{msg.middleName}" /> </td>
+      <td width="262"><p:inputText id="mName" value="#{dashBoardManageBean.userLoginDetailEditObj.middleName}" styleClass="inputfield"/></td>
+    </tr>
+    <tr>
+      <td><h:outputText value="#{msg.lastName}" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+      <td><p:inputText id="lName" value="#{dashBoardManageBean.userLoginDetailEditObj.lastName}" styleClass="inputfield" required="true"
+			           requiredMessage="Please Enter LastName"/></td>
+      <td><h:outputText value="User Role" /></td>
+      <td><p:selectOneMenu style="width:160px;"  value="#{dashBoardManageBean.selectedRole}"
+		      			 required="true" requiredMessage="Please select Role">
+		      			 <p:ajax listener="#{dashBoardManageBean.selectedRoleForAddPeople}" update=":addUserFormId"/>
+												<f:selectItems value="#{dashBoardManageBean.roleSecurityList}"
+													var="roleSec" itemLabel="#{roleSec.roleName}" itemValue="#{roleSec.id}" />
+												
+		</p:selectOneMenu></td>
+    </tr>
+    
+    <tr>
+      <td> <h:outputText value="#{msg.phno}" /> </td>
+      <td><p:inputMask mask="(999) 999-9999" value="#{dashBoardManageBean.userLoginDetailEditObj.phoneNumber}" styleClass="inputfield"/></td>
+      <td><h:outputText value="#{msg.extn}"/> </td>
+      <td><p:inputMask id="extn" mask="9?9999"  value="#{dashBoardManageBean.userLoginDetailEditObj.extensionPhone}" styleClass="inputfield"/></td>
+    </tr>
+    <tr>
+      <td><h:outputText value="#{msg.mobNo}" /> </td>
+      <td><p:inputMask id="mobileNo" mask="(999) 999-9999" value="#{dashBoardManageBean.userLoginDetailEditObj.mobileNumber}" styleClass="inputfield"/></td>
+      <td><h:outputText value="#{msg.email}" /> </td>
+      <td><p:inputText id="emailAddress" value="#{dashBoardManageBean.userLoginDetailEditObj.email}" 
+			            styleClass="inputfield">
+			             <!-- <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" for="email" />
+			              <f:validateLength minimum="2"/>  -->
+			           </p:inputText></td>
+    </tr>
+    <tr>
+      <td><h:outputText value="#{msg.DOB}" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+      <td><p:calendar widgetVar="addCalender"  value="#{dashBoardManageBean.userLoginDetailEditObj.dateOfBirth}"  style="width:160px" 
+			           showOn="button" navigator="true" pattern="MM/dd/yyyy" yearRange="c-100:c+1" readonlyInput="true" required="true"  
+			           onfocus="$('#queryForm\\:msgs > div').hide();$('#queryForm\\:msgs > div').eq(1).show();$(this).mask('99/99/9999');return false;"
+			           requiredMessage="Please Enter DateOfBirth" maxdate="#{patientMedicineManageBean.commonTodayDateForVallidation}"></p:calendar>
+			           </td>
+			           
+      <td><h:outputText value="#{msg.gender}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+      <td><p:selectOneMenu widgetVar="patientGender" value="#{dashBoardManageBean.userLoginDetailEditObj.gender}"  style="width:160px"  required="true"
+			           requiredMessage="Please Enter Gender">
+			              <f:selectItem itemValue="male" itemLabel="Male"/>
+			              <f:selectItem  itemValue="female" itemLabel="Female"/>
+			              <f:selectItem itemValue="others" itemLabel="Others"/>
+			              </p:selectOneMenu> </td>
+    </tr>
+    <tr>
+      <td><h:outputText value="#{msg.dlNo}" /></td>
+      <td><p:inputText value="#{dashBoardManageBean.userLoginDetailEditObj.dlNumber}" styleClass="inputfield"/></td>
+      <td><h:outputText value="#{msg.socSecNo}" /> </td>
+      <td><p:inputMask id="soscNumber" mask="999-99-9999" value="#{dashBoardManageBean.userLoginDetailEditObj.socialSecurityNumber}" styleClass="inputfield"  /></td>
+    </tr>
+    <tr>
+      <td><h:outputText value="#{msg.race}" /></td>
+      <td><p:inputText value="#{dashBoardManageBean.userLoginDetailEditObj.race}" styleClass="inputfield"/></td>
+      <td><h:outputText value="Status" /></td>
+      <td> <p:selectOneMenu  id="status" value="#{dashBoardManageBean.loginSecurityEditObj.status}" styleClass="inputfield" style="width:160px"  required="true"
+			           requiredMessage="Please Status of the User">
+			    
+       		<f:selectItem itemLabel="Active" itemValue="1" />
+            <f:selectItem itemLabel="Inactive" itemValue="0" />
+      </p:selectOneMenu></td>
+    </tr>
+    <tr>
+      <td><h:outputText value="Door No" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+      <td><p:inputText id="addLine1" value="#{dashBoardManageBean.userLoginDetailEditObj.doorNo}" styleClass="inputfield"  required="true"
+			           requiredMessage="Please Enter DoorNo"/></td>
+      <td><h:outputText value="Street" /> <h:outputText value="*" styleClass="mandatoryField"/></td>
+      <td><p:inputText value="#{dashBoardManageBean.userLoginDetailEditObj.street}" styleClass="inputfield" 
+			       required="true"    requiredMessage="Please Enter Street"/></td>
+    </tr>
+    <tr>
+      <td><h:outputText value="#{msg.city}" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+      <td><p:inputText id="cityId" value="#{dashBoardManageBean.userLoginDetailEditObj.city}" styleClass="inputfield"  required="true"
+			           requiredMessage="Please Enter City"/></td>
+      <td><h:outputText value="#{msg.state}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+      <td><p:inputMask id="stateId" mask="a*" value="#{dashBoardManageBean.userLoginDetailEditObj.state}" styleClass="inputfield"  required="true"
+			           requiredMessage="Please Enter State" /></td>
+    </tr>
+    <tr>
+      <td><h:outputText value="#{msg.country}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+      <td><p:inputMask mask="a*" id="countryId" value="#{dashBoardManageBean.userLoginDetailEditObj.country}" styleClass="inputfield"  required="true"
+			           requiredMessage="Please Enter Country" /></td>
+      <td><h:outputText value="#{msg.zipCode}" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+      <td><p:inputText id="zipCodeId" value="#{dashBoardManageBean.userLoginDetailEditObj.pincode}" styleClass="inputfield"  required="true"
+			           requiredMessage="Please Enter zipCode"/></td>
+    </tr>
+    <tr>
+      <td><h:outputText value="#{msg.bloodgroup}" /> </td>
+      <td><p:inputText value="#{dashBoardManageBean.userLoginDetailEditObj.bloodGroup}" styleClass="inputfield"/></td>
+      <td><h:outputText value="Marital Status" /></td>
+      <td><p:selectOneMenu id="pateintStatus" value="#{dashBoardManageBean.userLoginDetailEditObj.martailStatus}" style="width:160px">
+			              <f:selectItem itemValue="single" itemLabel="Single"/>
+			              <f:selectItem  itemValue="married" itemLabel="Married"/>
+			              </p:selectOneMenu>
+			              </td>
+    </tr>
+    <tr>
+      <td><h:outputText value="#{msg.timeZone}" /><h:outputText value="*" styleClass="mandatoryField"/> </td>
+      <td><p:selectOneMenu  id="timeZoneId" value="#{dashBoardManageBean.userLoginDetailEditObj.loginTimeZone}" style="width:160px;" styleClass="inputfield"  required="true"
+			           requiredMessage="Please Enter TimeZone">
+       		<f:selectItems value="#{dashBoardManageBean.timeZoneList}"
+											var="timeZone" itemLabel="#{timeZone.timeZone}" itemValue="#{timeZone.timeZone}" />
+											
+      </p:selectOneMenu></td>
+      <td><h:outputText value="DEA Number" /> </td>
+      <td><p:inputText value="#{dashBoardManageBean.doctorDetailEditObj.dea}" styleClass="inputfield"/></td>	
+    </tr>
+    <tr>
+      <td><h:outputText value="Physician Specialty" /> </td>
+      <td><p:inputText value="#{dashBoardManageBean.doctorDetailEditObj.speciality}" styleClass="inputfield" /></td>
+      <td><h:outputText value="NPI number" /> </td>
+      <td><p:inputText value="#{dashBoardManageBean.doctorDetailEditObj.npi}" styleClass="inputfield" /></td>
+    </tr>
+    <tr>
+      <td><h:outputText value="State License" /> </td>
+      <td><p:inputText value="#{dashBoardManageBean.doctorDetailEditObj.docLicenseState}" styleClass="inputfield" /></td>
+      <td><!-- <h:outputText value="License No" /> --> </td>
+      <td><!-- <p:inputText value="#{dashBoardManageBean.doctorDetailEditObj.docLicenseNumber}" styleClass="inputfield" required="true" requiredMessage="Please Enter License No "/> --></td>
+    </tr>
+    
+    <tr>
+      <td colspan="4">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="2">&nbsp;</td>
+      <td><label>
+        <p:commandButton value="Save Changes" actionListener="#{dashBoardManageBean.updateUserEditedData}" action="go_to_addUsers" ajax="true" update=":editUserFromId" ></p:commandButton>
+      </label></td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+	</p:outputPanel>
+	</h:form>		
+</p:dialog>
+
+<!--    ##########################################################Dialog box for message add/edit user, controlled by bean#####################################  -->
+	<p:dialog id="dlg_msg" widgetVar="msgForAddEditUser" header="User Has Been Added Sucessfully" closable="false"
+                    			 width="auto" modal="true" appendTo="@(body)" hideEffect="fold">
+      <h:form>
+          <table>
+             <tr>
+               <td>
+                 <h:outputText></h:outputText>
+               </td>
+             </tr>
+             <tr>
+               <td align="center">
+                 <p:commandButton value="Close" ajax="false" ></p:commandButton>
+               </td>
+             </tr>
+          </table>
+       </h:form>
+    </p:dialog>
+<!--    ##########################################################Dialog box for validation message add/edit user, controlled by bean#####################################  -->
+	<p:dialog id="dlg_validationMsg" widgetVar="validationMsgForAddEditUser" closable="true" header="Please enter doctor license info."
+                    			 width="auto" modal="true" appendTo="@(body)" hideEffect="fold">
+      <h:form>
+          <table>
+             <tr>
+               <td>
+                 <h:outputText ></h:outputText>
+               </td>
+             </tr>
+          </table>
+       </h:form>
+    </p:dialog>
+ </p:layoutUnit>
+
+	</p:layout>
+	</f:view>
+</h:body>
+</html>

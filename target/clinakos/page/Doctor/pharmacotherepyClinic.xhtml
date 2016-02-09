@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body>
+
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<!--  <link type="text/css" rel="stylesheet" href="../../CSS/style.css" />-->
+			<script language="javascript" src="../js/basicMethod.js"></script>
+
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="125" style="border:none;">
+				<ui:include src="doctorHeader.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="35" style="border:none;">
+
+				<ui:include src="../core/footer.xhtml"></ui:include>
+
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="155" closable="false"
+				collapsible="true" minSize="150"  style="border:none;">
+				<ui:include src="pharmomenuleft.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center" style="border:none;">
+				<!--  <ui:include src="../Doctor/patientTabHeader.xhtml"></ui:include>-->
+				<!-- <h:form> -->
+				<p:accordionPanel dynamic="true" activeIndex="1">
+					<p:tab
+						title="#{dashBoardManageBean.userLoginDetail.firstName} #{dashBoardManageBean.userLoginDetail.lastName}">
+						<ui:include src="../Doctor/patientDetailsHeader.xhtml"></ui:include>
+					</p:tab>
+
+				</p:accordionPanel>
+
+
+
+
+
+				<!-- </h:form> -->
+				<br />
+				<!-- 	<h:form> -->
+
+
+
+				<p:tabView id="pharmaCotherapyTabID"  
+					activeIndex="#{patientMedicineManageBean.tabValue}">
+					<!-- <p:ajax event=”tabChange” listener=#{patientMedicineManageBean.OnChangetabValue} /> -->
+					<!-- <p:ajax event="tabChange"
+						listener="#{patientMedicineManageBean.OnChangetabValue}" /> -->
+					<p:tab title="Personalized Med Review"
+						id="PersonalizedMedReviewTabID">
+
+						<h:panelGrid style="width:100%;">
+
+							<ui:include src="../Doctor/personalizedMedReview.xhtml"></ui:include>
+
+
+						</h:panelGrid>
+
+					</p:tab>
+
+
+					<p:tab title="Anticoag" id="anticoagTabIID">
+
+						<h:panelGrid id="anticogTab" style="width:100%;">
+							<ui:include src="../Doctor/anticoag.xhtml"></ui:include>
+
+						</h:panelGrid>
+
+					</p:tab>
+
+
+					<p:tab title="Visit Summary" id="visitSummaryTabID">
+
+						<h:panelGrid style="width:100%;">
+							<ui:include src="../Doctor/visitSummary.xhtml"></ui:include>
+
+						</h:panelGrid>
+
+					</p:tab>
+
+					<p:tab title="Overall Medication Action Plan">
+
+						<h:panelGrid>
+
+
+						</h:panelGrid>
+
+					</p:tab>
+				</p:tabView>
+
+
+
+
+				<!-- </h:form> -->
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+		</p:layout>
+
+	</f:view>
+
+</h:body>
+</html>

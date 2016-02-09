@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">	
+
+<ui:composition>
+		 	<p:dialog id="genericMedActionPlanDialog"
+					widgetVar="medAactionPlanDialog" 
+					resizable="true"  modal="true" dynamic="true"
+					closable="false" draggable="true"  height="300px" appendTo="@(body)">
+					 <p:ajax event="close" update="genericMedActionPlanDialog" />
+					 <p:growl id="growl" showDetail="true"  widgetVar="growlMsg"/> 
+					<h:form id="newGenericMedPlanFormIdforfilter">
+					 
+					<table>
+					<tr>
+					<td>
+					<h:outputText styleClass="outputtext"  value="#{patientMedicineManageBean.patientMedicationData.drugs}"/>&nbsp; 
+					<h:outputText styleClass="outputtext"  value="#{patientMedicineManageBean.patientMedicationData.strengths},"/>&nbsp;
+					<h:outputText styleClass="outputtext"  value="#{patientMedicineManageBean.patientMedicationData.unit}"/>&nbsp; 
+					<h:outputText styleClass="outputtext"  value="#{patientMedicineManageBean.patientMedicationData.dosageForm}" rendered="#{patientMedicineManageBean.patientMedicationData.dosageForm ne 'Add Sig'}" />&nbsp;
+					<h:outputText styleClass="outputtext"  value="#{patientMedicineManageBean.patientMedicationData.directions}" rendered="#{patientMedicineManageBean.patientMedicationData.directions ne 'Add Sig'}"/>
+					</td>
+					<td></td>
+					<!-- <p:spacer width="200px;"></p:spacer> -->
+					<td></td>
+					</tr>
+					<tr>
+					<td>
+					<h:outputText value="Diagnosis" styleClass="outputtext" />: <h:outputText  id="diagnosisNameIdObj" value="#{patientMedicineManageBean.patientDiagnosesDetailsObj.code}" /> 
+					<!--  <h:outputText id="diagnosisNameId" value="#{patientMedicineManageBean.genericMedActionPlanList.get(0).diagnosisName}" rendered="#{patientMedicineManageBean.genericMedActionPlanList.size()>0}"/>  -->
+					</td>
+					
+					<td>
+					
+					<p:commandLink rendered="#{patientMedicineManageBean.patientDiagnosesDetailsObj.code ne null}" onclick="deletediagnoses.show();">
+					 
+					 			<h:graphicImage value="./../../Images/delIcon.jpg"
+										width="25px" height="25px" id="delRxId" onmouseover="delRxId.show();" onmouseout="delRxId.hide();"/>
+										
+										<p:dialog widgetVar="delRxId" position="650,220" closable="false">
+										<h:outputText value="delete diagnosis"/>
+									</p:dialog>
+					 </p:commandLink> 
+					 <p:dialog widgetVar="deletediagnoses" id="deletediagnosesis" header="Are you Sure you want to delete?" message="Are you Sure you want to delete?"
+                    			 width="260" closable="false" modal="true" appendTo="@(body)" hideEffect="fold">
+                    	<h:form>		 
+					        <h:panelGroup layout="block" style="text-align: center">
+					            <p:commandButton value="Yes" process="@this" actionListener="#{patientMedicineManageBean.clearMedActionPlan1}" update=":newGenericMedPlanFormIdforfilter"  oncomplete="deletediagnoses.hide();"  />
+					            <p:commandButton value="No"  oncomplete="deletediagnoses.hide();" />
+					        </h:panelGroup>
+					    </h:form>
+   					 </p:dialog>
+					 
+					 &nbsp;  <p:commandLink  id="addrEditDiagnoses"  onclick="diagnosisPopUp.show()"  update="diagnosisNameIdObj">
+					 		<h:graphicImage value="./../../Images/editIcon.jpg"
+										width="25px" height="25px" />
+					 </p:commandLink> 
+					 <p:tooltip id="editDiagnosesTool" for="addrEditDiagnoses" value="Add and update diagnosis"/>
+					
+					 </td>
+					 </tr>
+					 <tr>
+					  <td>
+					  <h:outputText value="#{msg.dosing_start_date}"/>
+					  </td>
+					  <td>
+					    <p:calendar  value="#{patientMedicineManageBean.parentMedActionPlan.dosingStartDate}" showOn="button"    id="dosingStartDate" pattern="#{msg.dateFormat}">
+					    <f:convertDateTime pattern="#{msg.dateFormat}" for="dosingStartDate" dateStyle="full" type="date" timeZone="#{userManageBean.loggedUsertimeZone}" />	
+					    </p:calendar>
+					  </td>
+					 </tr>
+					</table>
+					<p:panel header="#{msg.monitoring_parameter_header_label}" id="checkboxPanelId" >
+					  <p:selectManyCheckbox id="monitoringParameterId" 
+                                                    value="#{patientMedicineManageBean.selectedMonitoringParameters}"
+                                                   valueChangeListener="#{patientMedicineManageBean.onParameterChangeMedActionPlan}" >
+                <!--    <f:selectItems value="#{patientMedicineManageBean.monitoringParameters}" var="monitor" itemLabel="#{monitor.key}" 
+                  itemValue="#{monitor.value}"></f:selectItems> -->
+                  <f:selectItems value="#{patientMedicineManageBean.monitoringParamsList}" var="monitor" itemLabel="#{monitor.parentParameter}" itemValue="#{monitor.parentParameter}"></f:selectItems>
+                    <p:ajax partialSubmit="true"  process=":newGenericMedPlanFormIdforfilter:genericMedActionTableIdforfilter,monitoringParameterId"
+                                  update=":newGenericMedPlanFormIdforfilter:genericMedActionTableIdforfilter,monitoringParameterId,:newGenericMedPlanFormIdforfilter:blockDialog" onstart="showBlockUI()" oncomplete="hideBlockUI()"></p:ajax>
+                    </p:selectManyCheckbox>
+                    </p:panel>
+                     <p:messages id="messagesLabName"  closable="true"></p:messages>
+                  <h:panelGrid columns="3">
+                
+                   <p:inputText  id="searchLabNameId" value="#{patientMedicineManageBean.loincNumber}" >
+                   </p:inputText>
+                   <p:commandButton value="#{msg.search_lab_label}" 
+                    actionListener="#{patientMedicineManageBean.searchLabInLoincMaster}"  
+                      oncomplete="handleSearchLab(xhr, status, args)" process="@this,searchLabNameId,:newGenericMedPlanFormIdforfilter:genericMedActionTableIdforfilter" update="searchLabNameId,messagesLabName" partialSubmit="true">
+                    </p:commandButton>
+                    <p:commandButton value="Clear" actionListener="#{patientMedicineManageBean.clearMedActionPlan}" update=":newGenericMedPlanFormIdforfilter" />
+                  </h:panelGrid>
+                  <p:messages id="messagesValidate"  closable="true"/>  
+                  <p:dataTable value="#{patientMedicineManageBean.parentMedActionPlan.childLabParameters}" var="genericMedActionPlanVar"
+                   id="genericMedActionTableIdforfilter" binding="#{patientMedicineManageBean.genericMedActionPlanPropertyforfilter}" emptyMessage="#{msg.noMedFound}">
+                    <p:column>
+                    <p:commandLink process="@this,genericMedActionTableIdforfilter,:newGenericMedPlanFormIdforfilter:checkboxPanelId"  update="genericMedActionTableIdforfilter,:newGenericMedPlanFormIdforfilter:monitoringParameterId,:newGenericMedPlanFormIdforfilter:checkboxPanelId"   
+                    actionListener="#{patientMedicineManageBean.removeSelectedMonitoringParameter}" title="#{msg.deleteallergy}">
+									<h:graphicImage value="./../../Images/delIcon.jpg"
+										width="25px" height="30px" id="editMedActionPlan" />
+									  <!-- <p:tooltip for="editMedActionPlan">
+										  <h:outputText value="#{msg.deleteallergy}" />  
+									</p:tooltip>  -->
+					
+					</p:commandLink>
+                    </p:column>
+                   <p:column headerText="#{msg.monitoring_parameter_label}">
+                 <h:outputText value="#{genericMedActionPlanVar.labParameterObj.labType} #{genericMedActionPlanVar.labParameterObj.units}"/>  
+                   </p:column>
+                    <p:column headerText="#{msg.goal}">
+                  <table cellpadding="1" cellspacing="1">
+                  <tr>
+                  <td style="border:none;">
+                   <p:selectOneMenu value="#{genericMedActionPlanVar.goalLowRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="goalRange" itemLabel="#{goalRange.key}"
+									itemValue="#{goalRange.value}"/>
+									</p:selectOneMenu>
+					</td>
+					<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.goalLowRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Goal " style="width:50px"></p:inputText>
+					</td>
+					<td style="border: none;">
+					<h:outputText	value="#{msg.or_label}" />
+					</td>
+					 <td style="border:none;">
+                   <p:selectOneMenu value="#{genericMedActionPlanVar.goalHighRangeSymbol}" >
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="goalRangeEnd" itemLabel="#{goalRangeEnd.key}"
+									itemValue="#{goalRangeEnd.value}"/>
+									</p:selectOneMenu>
+					</td>
+					<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.goalHighRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Goal " style="width:50px"></p:inputText>
+					</td>
+									</tr>
+                  </table>
+                   </p:column>  
+                  <p:column headerText="#{msg.frequency_label}" >
+                   
+                   <table ><tr><td style="border:none;">
+                    <p:selectOneMenu value="#{genericMedActionPlanVar.frequencyNumber}" style="width:50px;">
+									<f:selectItems value="#{patientMedicineManageBean.frequencyNoList}" var="frequencyNo" itemLabel="#{frequencyNo.key}"
+									itemValue="#{frequencyNo.value}"/>
+									</p:selectOneMenu>
+                   </td>
+                   <td style="border:none;"></td>
+                   <td style="border:none;">
+                   <p:selectOneMenu value="#{genericMedActionPlanVar.frequencyUnit}" style="width:90px;">
+									<f:selectItems value="#{patientMedicineManageBean.frequencyList}" var="frequencyRange" itemLabel="#{frequencyRange.key}"
+									itemValue="#{frequencyRange.value}"/>
+									</p:selectOneMenu>
+									
+						</td></tr></table>
+                   </p:column> -->
+                  <p:column headerText="#{msg.alert_level_label}">
+								<table>
+								<tr>
+								<td style="border:none;">
+									<h:graphicImage value="./../../Images/red1.jpg" height="15px"
+										width="20px" />
+								</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertSevereLowRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symSevereLowRange" itemLabel="#{symSevereLowRange.key}"
+									itemValue="#{symSevereLowRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertSevereLowRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Alert " style="width:50px"></p:inputText>
+									</td>
+									<td style="border:none;">
+									<h:outputText value="#{msg.or_label}" />
+									</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertSevereHighRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symSevereHighRange" itemLabel="#{symSevereHighRange.key}"
+									itemValue="#{symSevereHighRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertSevereHighRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Alert " style="width:50px"></p:inputText>
+									</td>
+									</tr>
+									<tr>
+									<td style="border:none;">
+									<h:graphicImage value="./../../Images/orange1.jpg"
+										height="15px" width="20px" />
+									</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertMediumLowRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symMediumLowRange" itemLabel="#{symMediumLowRange.key}"
+									itemValue="#{symMediumLowRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertMediumLowRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Alert " style="width:50px" ></p:inputText>
+									</td>
+									<td style="border:none;">
+									<h:outputText value="#{msg.or_label}" />
+									</td>
+									<td style="border:none;">	
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertMediumHighRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symMediumHighRange" itemLabel="#{symMediumHighRange.key}"
+									itemValue="#{symMediumHighRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertMediumHighRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Alert " style="width:50px"></p:inputText>
+									</td>
+									</tr>
+							 </table>
+
+							</p:column> 
+                   <p:column headerText="#{msg.action}">
+                  <!--  <p:commandButton value="#{msg.alert_physician_label}"></p:commandButton> -->
+								<p:selectOneMenu style="width:150px;">
+									<f:selectItem itemLabel="#{msg.alert_physician_label}"
+										itemValue="#{msg.alert_physician_label}" />
+								</p:selectOneMenu>
+							</p:column>
+                  </p:dataTable>
+               	<table width="100%">
+               	<tr>
+               	<td align="right">
+                  <p:commandButton value="#{msg.cancel}"   
+                   onclick="medAactionPlanDialog.hide()"    process="@this"  update=":genericMedActionPlanDialog">
+                    <p:resetInput target=":genericMedActionPlanDialog"></p:resetInput>
+                   </p:commandButton></td>
+                    <td >
+                   <p:commandButton id="medplan" value="#{msg.done}" process="@this,genericMedActionTableIdforfilter,dosingStartDate"  
+                    actionListener="#{patientMedicineManageBean.saveGenericMedActionPlan}" oncomplete="genericMedActionPlanComplete(xhr, status, args)" ajax="true" update="messagesValidate">
+                   
+                    </p:commandButton>
+                    <p:commandButton id="medplanwithout_diagonoses" value="#{msg.done}" process="@this,genericMedActionTableIdforfilter,dosingStartDate" 
+                    actionListener="#{patientMedicineManageBean.saveGenericMedActionPlanwithoutdiagnoses}" oncomplete="genericMedActionPlanComplete(xhr, status, args)" ajax="true" update="messagesValidate" style="display:none;">
+                    
+                    </p:commandButton>
+                    
+                    <p:commandButton id="medplanwith_graeter_inr" value="#{msg.done}" process="@this,genericMedActionTableIdforfilter,dosingStartDate" 
+                    actionListener="#{patientMedicineManageBean.saveGenericMedActionPlanforgreaterinrvalue}" oncomplete="genericMedActionPlanComplete(xhr, status, args)" ajax="true" update="messagesValidate" style="display:none;">
+                    
+                    </p:commandButton>
+                    </td>
+                 </tr>
+                  	</table>
+                  	 <p:blockUI  id="blockDialog" widgetVar="blockUI"  block=":newGenericMedPlanFormIdforfilter:genericMedActionTableIdforfilter">  
+                               LOADING ...<br />
+							<p:graphicImage value="./../../Images/ajax_loader.gif" width="40" height="40"  />
+						</p:blockUI> 
+                   </h:form>
+                   
+				</p:dialog> 
+				</ui:composition>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+<style>
+/* .ui-menubutton .ui-state-default .ui-icon {
+    background: url("../../Images/user_icon.png"); /** insert your background image **/
+    background-image:"../../Images/user_icon.png";
+    height: 444px;
+} */
+</style>
+<script type="text/javascript" language="javascript">
+function showpDDLDiv()
+{
+	if(document.getElementById('pDDLDiv').style.visibility=='hidden')
+		{
+		document.getElementById('pDDLDiv').style.visibility='visible';
+		
+		}
+	else
+		{
+		document.getElementById('pDDLDiv').style.visibility='hidden';
+		}
+	
+	}
+	
+	function hideDDLDiv()
+	{
+		document.getElementById('pDDLDiv').style.visibility='hidden';
+	}
+</script>
+<style>
+.ui-widget button.ui-state-default
+{
+border:1px solid RGB(174,208,234);
+border-radius:0px;
+height:25px;
+background-color:rgb(80,129,215);
+}
+
+</style>
+</h:head>
+
+<body onmousemove = "resetTimer()" >
+
+
+<div style="background: #FFFFFF;margin-left: 0px" >
+<h:form id="globalSearchFormId" prependId="false">
+<table width="100%">
+		<!--  	<tr>
+				<td align="left" >
+							<img src="../../Images/Clinakos_Logo.png" alt="Clinakos" width="172" height="32" />
+				</td>		
+			<td align="right">
+			<table>
+			<tr>
+			<td style="min-width:111px">
+			 <table>
+			  <tr>
+			   <td valign="top"> 
+					 <img src="../../Images/user_icon.png" alt="" height="25px" /> 
+					
+				</td>
+			<td>
+		<p:menuButton  value="#{userManageBean.logedFirstName} "  autoDisplay="false" iconPos="right" style="margin-left:-4px">
+      				    <p:menuitem icon="ui-icon-person" value="#{userManageBean.logedFirstName} #{userManageBean.logedLastName}" url="#" style="background-color:transparent"/>
+          					  <p:separator style="height:1px;" />
+        			    <p:menuitem icon="ui-icon-power" value="Log Out" url="#{request.contextPath}/j_spring_security_logout" style="background-color:transparent"/>
+       					
+      			 	 </p:menuButton>
+</td></tr></table>
+			</td>
+			</tr>
+			</table>
+			
+			</td>
+      		   
+		       </tr> -->	
+						    <tr>
+						    <td colspan="3">
+						     <ui:include src="../Doctor/doctor_profile_tab.xhtml"/> 
+						    </td>
+						    </tr>
+						    <p:growl id="messages" showDetail="false" sticky="true" />
+
+<p:idleMonitor timeout="#{msg.timeout}">
+    <p:ajax event="idle" listener="#{userManageBean.idleListener}" update="messages" />
+    <!-- <p:ajax event="active" listener="#{userManageBean.activeListener}" update="messages" /> -->
+</p:idleMonitor>
+						    </table>
+						    </h:form>
+				 	       
+</div>
+
+<!-- <p:dialog header="#{msg.patientSearch}" widgetVar="searchPatientTop" 
+					modal="true" appendToBody="true" hideEffect="fold" resizable="false"
+					  position="760,42">	
+	   
+									 
+</p:dialog> -->
+
+<p:dialog header="#{msg.patientDetails}" widgetVar="searchPatient" 
+					modal="true" appendTo="@(body)" hideEffect="fold" closable="true" resizable="false"
+					dynamic="false" width="900" position="300,100" >
+					<p:ajax event="close" update="globalSearchFormId:searchKey"></p:ajax>
+					<h:form id="patientSearch" prependId="false">
+					<table width="100%">
+					   <tr>
+					     <td align="right">
+					        <p:commandButton action="#{dashBoardManageBean.globalAddNewPatient}" value="#{msg.addnewpatient}"
+					         rendered="#{userManageBean.rolePrivillegeUtil.isEnable('administration_addPatient')}"/>
+					     </td>
+					   </tr>
+					</table>
+						<p:dataTable   value="#{dashBoardManageBean.userLoginDetailList}" 
+							var="searchPatientDetail" emptyMessage="#{msg.nopatientfound} "							 
+							 rowKey="#{searchPatientDetail.id}" selectionMode="single"
+							style="scrollable:auto;max-height:300px;">
+					<!-- binding="#{dashBoardManageBean.bindUserDataTable}" 		 selection="#{dashBoardManageBean.userLoginDetail}" selectionMode="single" -->
+						<!-- 	<p:ajax id="search" update="bldialog" process="@this" event="rowSelect" listener="#{dashBoardManageBean.onRowSelect}"/> -->
+							
+								<p:column style="text-align:center;" >
+								<f:facet name="header">
+									<h:outputText value="#{msg.lastName }"/>
+								</f:facet>
+								<div align="center">
+								<p:commandLink  action="#{dashBoardManageBean.onRowSelect}" value="#{searchPatientDetail.lastName}" style="text-decoration:underline;background-color:transparent;" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}" >
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								
+								<p:commandLink  action="#{dashBoardManageBean.onRowSelect}" value="*****" style="text-decoration:underline;background-color:transparent;" rendered="#{(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								</div>
+							</p:column>
+
+							<p:column style="text-align:center;" >
+								<f:facet name="header">
+									<h:outputText value="#{msg.firstName }" />
+								</f:facet>
+								<div align="center">
+								<p:commandLink action="#{dashBoardManageBean.onRowSelect}" value="#{searchPatientDetail.firstName}" style="text-decoration:underline;background-color:transparent;" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								<p:commandLink action="#{dashBoardManageBean.onRowSelect}" value="*****" style="text-decoration:underline;background-color:transparent;" rendered="#{(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								</div>
+							</p:column>
+
+							
+
+							<p:column  style="text-align:center;" >
+								<f:facet name="header" style="text-align:center;">
+									<h:outputText value="#{msg.socSecNo }" />
+								</f:facet>
+								<div align="center">
+								<p:commandLink action="#{dashBoardManageBean.onRowSelect}"
+									value="***-**-#{searchPatientDetail.maskSociaSecurityNumber}" style="text-decoration:underline;background-color:transparent;" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								
+								<p:commandLink action="#{dashBoardManageBean.onRowSelect}"
+									value="*****" style="text-decoration:underline;background-color:transparent;" rendered="#{(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								</div>
+							</p:column>
+
+							<p:column style="text-align:center;" >
+								<f:facet name="header">
+									<h:outputText value="#{msg.birthDate }" />
+								</f:facet>
+								<div align="center">
+								<p:commandLink action="#{dashBoardManageBean.onRowSelect}" style="text-decoration:underline;background-color:transparent;" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+								<h:outputText value="#{searchPatientDetail.dateOfBirth}">
+								<f:convertDateTime pattern="#{msg.dateFormat}" />
+								</h:outputText>
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								
+								<p:commandLink action="#{dashBoardManageBean.onRowSelect}" style="text-decoration:underline;background-color:transparent;" rendered="#{(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+								<h:outputText value="*****">
+								
+								</h:outputText>
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								</div>
+							</p:column>
+
+							<p:column style="text-align:center; " >
+								<f:facet name="header">
+									<h:outputText value="#{msg.patientID }" />
+								</f:facet>
+								<div align="center">
+								<p:commandLink action="#{dashBoardManageBean.onRowSelect}" value="#{searchPatientDetail.userId}" style="text-decoration:underline;background-color:transparent;">
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								</div>
+							</p:column>
+
+							<p:column style="text-align:center; " >
+								<f:facet name="header">
+									<h:outputText value="#{msg.phoneNo }" />
+								</f:facet>
+								<div align="center">
+							<p:commandLink action="#{dashBoardManageBean.onRowSelect}" value="#{searchPatientDetail.phoneNumber}" style="text-decoration:underline;background-color:transparent;" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+							<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+							</p:commandLink>
+							
+							<p:commandLink action="#{dashBoardManageBean.onRowSelect}" value="*****" style="text-decoration:underline;background-color:transparent;" rendered="#{(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+							<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+							</p:commandLink> 
+								</div>
+							</p:column>
+							<!--  <p:column style="width:6%">  
+                <p:commandButton id="selectButtonUserDetailId" actionListener="#{dashBoardManageBean.onRowSelect}"  icon="ui-icon-extlink" title="View">  
+            </p:commandButton>  
+        </p:column>  -->
+
+							<!-- <p:column style="text-align:center; width:5px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg.select }" />
+								</f:facet>
+								<p:commandButton   id="search"   value="#{msg.view}"
+									actionListener="#{dashBoardManageBean.patientSearchData}"
+									action="go_to_overview" ajax="false" />
+									
+									
+							</p:column> -->
+
+						</p:dataTable>
+						
+						<!-- <p:blockUI block="bldialog"
+													trigger="bldialog">  
+                               LOADING ...<br />
+													<p:graphicImage value="./../../Images/ajax_loader.gif"
+														width="40" height="40" />
+												</p:blockUI> -->
+					</h:form>
+				</p:dialog>
+
+<div id="pDDLDiv" style="border:none; width: 100%;background-color: transparent; visibility:hidden;
+z-index:999999999999;position: absolute;margin-top:8px;margin-left:8px;float:right"><br></br>
+<table width="100%" style="padding-right:131px">
+ <tr>
+   <td align="right">
+  
+	<h:form id="searchVirtual">
+<table  style="margin-top:-70px;" >
+<tr>
+<td></td>
+<td align="right" style="border:2px solid rgb(206,228,246); background-color: #fff;width: 295px;">
+<table  class="contentTextPan" >
+									   <tr  >
+									   	<td colspan="2" align="right">
+									   		
+									   	<p:commandLink value="X" oncomplete="showpDDLDiv();" style="background-color:transparent;border:none;font-weight:bolder;margin-right:5px;text-decoration:none;" />
+									   	</td>
+									   </tr>
+									   </table>
+									   <table  class="contentTextPan" style="padding-right:20px">
+										<tr><td width="15px" rowspan="7"></td>
+											<td >
+											     <h:outputText value="#{msg.lastName}"   style="font-weight:bold;" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"/>
+											</td>
+
+											<td>
+											   <p:inputText type="text" id="lname" styleClass="inputBox" size="28"
+													value="#{dashBoardManageBean.userDetailBeforeSearch.lastName}" style="border-radius:0px;" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"/>
+											</td>
+											<!-- <td width="10px" rowspan="7"></td> -->
+										</tr>
+
+										 <tr>
+											<td>
+											   <h:outputText value="#{msg.firstName} "  style="font-weight:bold;" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"/>
+											</td>
+											
+											<td>
+											  <p:inputText type="text" id="fname" styleClass="inputBox"
+													value="#{dashBoardManageBean.userDetailBeforeSearch.firstName}" size="28" style="border-radius:0px;" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"/>
+											</td>
+										</tr>
+
+									<!-- 	 <tr>
+											<td>
+											   <h:outputText value="#{msg.socSecNo}"  style="font-weight:bold;"/>
+											</td>
+
+											<td>
+											     <p:inputText type="text" id="socialsecNo"
+													value="#{dashBoardManageBean.userDetailBeforeSearch.socialSecurityNumber}" />
+													<p:inputMask mask="999-99-9999" value="#{dashBoardManageBean.userDetailBeforeSearch.socialSecurityNumber}" styleClass="inputBox"></p:inputMask>
+											</td>
+										</tr>
+
+										 <tr>
+
+											<td><h:outputText value="#{msg.birthDate} "  style="font-weight:bold;"/></td>
+
+											<td>
+                                   <p:calendar id="DateOfBirth"    pattern="MM/dd/yyyy"   showOn="button" navigator="true" yearRange="c-100:c+1" value="#{dashBoardManageBean.userDetailBeforeSearch.dateOfBirth}" onfocus="$('#queryForm\\:msgs > div').hide();$('#queryForm\\:msgs > div').eq(1).show();$(this).mask('99/99/9999');return false;"></p:calendar>
+											</td>
+									   </tr>  -->
+
+										<tr>
+
+											<td><h:outputText value="#{msg.patientID} "  style="font-weight:bold;"/></td>
+
+											<td>
+											    <p:inputText type="text" id="patientId" styleClass="inputBox"
+													value="#{dashBoardManageBean.userDetailBeforeSearch.searchKey}" size="28" style="border-radius:0px;">
+												
+												</p:inputText>
+											</td>
+										</tr>
+
+										 <tr>	
+											<td><h:outputText value="#{msg.phoneNo} "  style="font-weight:bold;" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"/></td>
+
+											<td><p:inputMask mask="999-999-9999" id="phno" styleClass="inputBox"
+													value="#{dashBoardManageBean.userDetailBeforeSearch.phoneNumber}" size="28" style="border-radius:0px;" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"/></td>
+										</tr>
+									</table>
+									<table style="padding-right:20px">
+										<tr>
+
+											<td  align="right" >
+											<div class="btnBoxDiv" >
+											 <p:commandButton   id="SubmitButton" 
+													value="#{msg.search}" icon="ui-icon-search" 
+													action="#{dashBoardManageBean.searchPatientforhomepage}" ajax="true"
+													 update=":patientSearch,:searchVirtual"  styleClass="btnSubmit" oncomplete="searchPatient.show();"/> 
+													 
+											</div>
+											
+											</td>
+											
+											<!-- <td>
+											<p:commandButton   value="HL7XMLFormat" actionListener="#{labDetailServiceClient.convertHL7MessageToXMLFormat}" ></p:commandButton></td> -->
+										</tr>
+										<tr height="6px"></tr>
+									</table>
+</td>
+
+</tr>
+</table>									  
+									
+								 </h:form>	
+			 
+   </td>
+   
+ </tr>
+
+</table>					 
+</div>
+
+</body>
+</html>
+
+
+
+

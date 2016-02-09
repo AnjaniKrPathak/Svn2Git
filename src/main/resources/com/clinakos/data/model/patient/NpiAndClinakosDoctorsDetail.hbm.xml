@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 24, 2014 4:48:59 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.NpiAndClinakosDoctorsDetail" table="npi_and_clinakos_doctors_detail">
+        <id name="doctorId" type="int">
+            <column name="doctor_id" />
+            <generator class="assigned" />
+        </id>
+        <property name="firstName" type="java.lang.String">
+            <column name="first_name" />
+        </property>
+        <property name="middleName" type="java.lang.String">
+            <column name="middle_name" />
+        </property>
+        <property name="lastName" type="java.lang.String">
+            <column name="last_name" />
+        </property>
+        <property name="npiNumber" type="java.lang.String">
+            <column name="npi" />
+        </property>
+        <property name="upinNumber" type="java.lang.String">
+            <column name="upin" />
+        </property>
+        <property name="phoneNumber" type="java.lang.String">
+            <column name="phone_number" />
+        </property>
+        <property name="providerId" type="int">
+            <column name="provider_id" />
+        </property>
+        <property name="clinakosUser">
+			<column name="clinakos_user" />
+		</property>
+		
+    </class>
+</hibernate-mapping>

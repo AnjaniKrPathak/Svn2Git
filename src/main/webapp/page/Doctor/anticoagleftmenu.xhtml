@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+ <h:head>
+ <!--  <style type="text/css">
+ .horizontalMenu li {
+    display:inline;
+    float:none;
+}
+
+   .ui-menubar   {mouseover: #ff0000; background-color:blue; !important; background:blue; display: block; text-color:#ffffff;}
+</style>-->
+  
+    <script src="tabmenu/Menu_Script.js" type="text/javascript"></script>
+    <link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+	
+
+</h:head>
+<!--<h:body bgcolor="blue">-->
+<body>
+<h:form>
+
+	
+	<!-- <div id="lefpmenu1" class="leftActiveLink">
+      <p:commandButton  value="#{msg.pmr}" actionListener="#{dashBoardManageBean.setPMIndex}" action="#{dashBoardManageBean.gotoPMRPage}" styleClass="btnLink"/>
+    </div>
+    <div id="lefpmenu2" class="leftDeactiveOtherLink">
+      <p:commandButton  value="#{msg.antico}" actionListener="#{dashBoardManageBean.setAPMIndex}" action="#{dashBoardManageBean.gotoanticoagPage}" styleClass="btnLink"/>
+    </div> 
+<div id="lefpmenu3" class="leftDeactiveLink">
+     <p:commandLink  value="Visit Summary" actionListener="#{dashBoardManageBean.setVSIndex}" action="go_to_VisitSummary"/>
+    </div>
+     <div id="lefpmenu3" class="leftDeactiveOtherLink">
+        <p:commandButton  value="#{msg.lr}"  actionListener="#{dashBoardManageBean.setlMedIndex}"  action="#{dashBoardManageBean.setLabResultIndex}"  styleClass="btnLink"/>
+    </div>
+    <div id="lefpmenu4" class="leftDeactiveOtherLink">
+      <p:commandButton  value="#{msg.pharmaco}" actionListener="#{dashBoardManageBean.setpMedIndex}" action="#{dashBoardManageBean.setPharmacogenomicProfileIndex}" styleClass="btnLink"/>
+    </div>	
+     <div  id="lefpmenu5"  class="leftDeactiveOtherLink">
+      <p:commandButton value="#{msg.dpo}"  actionListener="#{dashBoardManageBean.setDPOIndex}" action="#{dashBoardManageBean.setDPOptimizerIndex}" styleClass="btnLink"/>
+    </div> -->
+    
+	<input type="text" id="txtCTabIndex" value="#{dashBoardManageBean.indexValue}" style="display:none"></input>	
+
+</h:form>
+<script type="text/javascript">
+//initialize tab menu, by passing in ID of UL
+//initalizetab(document.getElementById('txtTab').value)
+changeLeftMenuIndex('clinic');
+</script>
+</body>
+<!--  </h:body>-->
+</html>
+
+
+
+

@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body>
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north"  size="85" minSize="60">
+				<ui:include src="patientHeader.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<ui:include src="mycare_team_leftmenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center" >
+				<h:form>
+				
+						<!-- <fieldset id="myMedicationTab" class="fieldContent">
+							<legend class="titleBar">#{msg.mycareteam}</legend> -->
+						<table style="min-height:165px;width: 100%">
+						  <tr >
+						    <td class="secHeadPart">#{msg.mycareteam}</td>
+						  </tr>
+						  <tr>
+						    <td class="secContentBorder" valign="top">
+							<p:dataTable emptyMessage="#{msg.nodataavailable}"
+								value="#{patientManageBean.careTeamListForPatient}" var="careTeam"
+								paginator="false" rows="10"  sortMode="multiple"
+								 scrollable="true" scrollHeight="455">
+								<f:facet name="Header"></f:facet>
+								<p:column sortBy="fName" width="13%">
+								<f:facet name="header">
+								<h:outputText value="#{msg.physicianname}" />
+								</f:facet>
+									<div align="left">
+									<h:outputText
+										value="#{careTeam.fName} #{careTeam.lName},#{careTeam.degree}" /></div>
+								</p:column>
+								<p:column sortBy="speciality" width="15%">
+								<f:facet name="header">
+								<h:outputText value="#{msg.specialty}"/>
+								</f:facet>
+									<div align="left">
+									<h:outputText value="#{careTeam.speciality}" /></div>
+								</p:column>
+								<p:column sortBy="doorNo" width="40%">
+								<f:facet name="header">
+								<h:outputText value="#{msg.address}"/>
+								</f:facet>
+									<div align="left">
+									<h:outputText
+										value="#{careTeam.doorNo}, #{careTeam.street}, #{careTeam.city},#{careTeam.state}-#{careTeam.pincode}" /></div>
+								</p:column>
+								<p:column sortBy="phoneNumber" style=" width:15%;">
+								<f:facet name="header">
+								
+								<h:outputText value="#{msg.phonenumber}"/>
+								</f:facet>
+									<div align="right">
+									<h:outputText value="#{careTeam.phoneNumber}" /></div>
+								</p:column>
+								<p:column sortBy="emailId" style=" width:18%;">
+								<f:facet name="header">
+								
+								<h:outputText value="#{msg.emailaddress}"/>
+								</f:facet>
+									<div align="left">
+									<a href="mailto:#{careTeam.emailId}"
+										style="color: #006; text-decoration: underline;"><h:outputText
+											value="#{careTeam.emailId}" /></a></div>
+								</p:column>
+							</p:dataTable>
+							</td>
+							</tr>
+							</table>
+                         <!--   </fieldset> -->
+						<!-- </p:tab>
+					</p:accordionPanel> -->
+
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+		</p:layout>
+
+	</f:view>
+
+</h:body>
+</html>

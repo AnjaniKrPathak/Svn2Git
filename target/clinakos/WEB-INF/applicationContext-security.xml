@@ -1,0 +1,99 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+								http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+								http://www.springframework.org/schema/security
+								http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+
+
+
+	<http pattern="/CSS/**" security="none" />
+	<http pattern="/Images/**" security="none" />
+	<http pattern="/JavaScript/**" security="none" />
+
+	<http disable-url-rewriting="true" auto-config="true"   >
+		<!-- <intercept-url pattern="/page/Admin/**" access="ROLE_ADMIN"  /> -->
+		<intercept-url pattern="/page/Super-Admin/**" access="ROLE_SUPER_ADMIN" />
+		<intercept-url pattern="/page/Doctor/**" access="ROLE_SUPER_ADMIN,ROLE_ADMIN,ROLE_DOCTOR,ROLE_NURSE, ROLE_MID_LEVEL_PRESCRIBER, ROLE_SUPERVISING_DOCTOR, ROLE_SUPERVISING_DOCTOR, ROLE_MEDICAL_ASSISTANT, ROLE_PAYER, ROLE_PHARMA" />
+		<intercept-url pattern="/page/Patient/**" access="ROLE_PATIENT" />
+		<!-- <intercept-url pattern="/page/Doctor/**" access="ROLE_NURSE" /> -->
+		<!-- <intercept-url pattern="/page/Doctor/**" access="MID_LEVEL_PRESCRIBER" /> -->
+
+		<form-login login-page="/page/core/login.jsf"
+			authentication-success-handler-ref="redirectRoleStrategy"
+
+			default-target-url="/login_success" authentication-failure-url="/page/core/login.jsf?login_error=1"
+			login-processing-url="/j_spring_security_check" />
+		<!-- <access-denied-handler error-page="/jsf/core/accessdenied.jsf"/> -->
+		<logout delete-cookies="JSESSIONID" success-handler-ref="myLogoutSuccessHandler" />
+		<session-management invalid-session-url="/page/core/login.jsf">
+			<!-- <concurrency-control max-sessions="1" error-if-maximum-exceeded="true" 
+				/> -->
+		</session-management>
+		<!-- <access-denied-handler error-page="404"/> -->
+
+	</http>
+
+
+	<beans:bean id="redirectRoleStrategy"
+		class="com.clinakos.viewController.controller.RoleBasedAuthenticationSuccessHandler">
+		<beans:property name="roleUrlMap">
+			<beans:map>
+				<!-- <beans:entry key="ROLE_ADMIN" value="/page/Admin/AdminDashboard.jsf" />
+				<beans:entry key="ROLE_ADMIN" value="/page/Admin/AdminUI.jsf" /> -->
+				<beans:entry key="ROLE_SUPER_ADMIN" value="/page/Doctor/AddOrganization.jsf" />
+				<beans:entry key="ROLE_ADMIN" value="/page/Doctor/AdminUI.jsf" />
+				<beans:entry key="ROLE_DOCTOR" value="/page/Doctor/doctorProfile.jsf" />
+				<beans:entry key="ROLE_PATIENT" value="/page/Patient/patientProfile.jsf" />
+				<beans:entry key="ROLE_NURSE" value="/page/Doctor/doctorProfile.jsf"/>
+				<beans:entry key="ROLE_MID_LEVEL_PRESCRIBER" value="/page/Doctor/doctorProfile.jsf" />
+				<beans:entry key="ROLE_SUPERVISING_DOCTOR" value="/page/Doctor/doctorProfile.jsf" />
+				<beans:entry key="ROLE_MEDICAL_ASSISTANT" value="/page/Doctor/doctorProfile.jsf" />
+				<beans:entry key="ROLE_PHARMA" value="/page/Pharma/pharmaDashboard.jsf" />
+				<beans:entry key="ROLE_PAYER" value="/page/Doctor/doctorProfile.jsf" />
+			</beans:map>
+		</beans:property>
+
+		<beans:property name="userDAO" ref="userDAO"></beans:property>
+		<beans:property name="roleAuthService" ref="roleAuthService"></beans:property>
+	</beans:bean>
+
+	<beans:bean id="myLogoutSuccessHandler"
+		class="com.clinakos.viewController.controller.LogOutSuccessHandler">
+		<beans:property name="userDAO" ref="userDAO"></beans:property>
+
+	</beans:bean>
+
+
+
+
+
+	<authentication-manager>
+		<authentication-provider>
+			<!-- <password-encoder hash="sha-256" /> -->
+			<!-- <password-encoder hash='md5'/> -->
+			<password-encoder ref="bCryptPasswordEncoder"/>
+			<jdbc-user-service data-source-ref="dataSource"
+
+				users-by-username-query="
+						     select user_id as username ,password as password  ,status as enabled
+							 from login_security where user_id=?"
+
+				authorities-by-username-query="
+						  		   		select ho.user_id as username,rm.role_name as authority from  login_security ho
+									    inner join role_security rm on ho.role_id = rm.id
+									    where ho.user_id =?" />
+
+
+
+		</authentication-provider>
+	</authentication-manager>
+	<!-- <beans:bean id="accessDeniedHandler" class="com.clinikos.common.Controller.MyAccessDeniedHandler"> 
+		<beans:property name="accessDeniedUrl" value="403" /> </beans:bean> -->
+	<beans:bean id='bCryptPasswordEncoder' class='org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'>
+		<beans:constructor-arg name="strength" value="11" />
+	</beans:bean>
+
+</beans:beans>
+          

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 14, 2013 12:19:23 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.WSDrug" table="msacess_view_ws_drug">
+        <id name="Id" type="int">
+            <column name="Id" />
+            <generator class="increment" />
+        </id>
+        <property name="genericName" type="java.lang.String">
+            <column name="GenericName" />
+        </property>
+         <property name="drugName" type="java.lang.String">
+            <column name="DrugName" />
+        </property>
+        
+        <property name="drugNameId" type="java.lang.Double">
+            <column name="DrugNameID" />
+        </property>
+         <!--  <property name="drug" type="java.lang.String">
+            <column name="drug" />
+        </property>   -->
+        <property name="drugId" type="java.lang.Double">
+            <column name="DrugID" />
+        </property>
+        
+        <property name="dose" type="java.lang.String">
+            <column name="dosage" />
+        </property>
+        
+        <property name="dataProvider" type="java.lang.String">
+            <column name="dataProvider" />
+        </property>
+        
+         <property name="dosageForm" type="java.lang.String">
+            <column name="DosageForm" />
+        </property>
+        
+        <property name="dosageFormoverride" type="java.lang.String">
+            <column name="DosageFormOverride" />
+        </property>
+        
+         <property name="route" type="java.lang.String">
+            <column name="route" />
+        </property>
+          <property name="drugDetail" type="java.lang.String">
+            <column name="drug" />
+        </property> 
+                
+          <property name="therapeuticCategory" type="java.lang.String" >
+            <column name="TheraputicCategory" />
+        </property> 
+        
+          <property name="drugCategory" type="java.lang.String" >
+            <column name="DrugCategory" />
+        </property> 
+            
+        
+    </class>
+</hibernate-mapping>

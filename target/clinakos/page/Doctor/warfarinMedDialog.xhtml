@@ -1,0 +1,960 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">	
+
+<ui:composition>
+<p:dialog id="WarfarinPopUpID" widgetVar="WarfarinPopUp"
+	    resizable="true"  appendTo="@(body)" modal="true" height="460" width="80%"
+	    dynamic="true" closable="false" position="260,160">
+	     <f:facet name="header">
+      		<h:outputText id="warfarinheaderIdValue" value="#{patientMedicineManageBean.patientMedicationData.drugs}" />
+   		</f:facet>
+	 <h:form id="WarfarinPopUpFormId">
+	 
+	 <table  width="100%" border="0"><tr><td width="92%" valign="top">
+	 	 <p:wizard flowListener="#{patientMedicineManageBean.onFlowProcessForwarfarin}">  
+	 	 	
+	 	 	 <p:tab id="step1" title="Step 1" titleStyleClass="popupStepFont">  
+	 	 	 
+	 	 	 <p:outputPanel>
+				 	   <h:panelGrid columns="3">
+							<h:outputText value="#{msg.diagnoses}" /><h:outputText value="*" styleClass="mandatoryField"/>	
+							<p:selectOneMenu required="true" requiredMessage="Please select diagnosis" style="width:350px;"
+							          value="#{patientMedicineManageBean.medActionPlan.diagnosis}">
+							<!-- <f:selectItem itemLabel="Select One" itemValue="" /> -->
+							 <!-- <f:selectItem  itemLabel="#{patientMedicineManageBean.medActionPlan.diagnosis}"  itemValue="#{patientMedicineManageBean.medActionPlan.diagnosis}"/>  -->
+							<f:selectItems id="diagnosisListId"
+								value="#{patientMedicineManageBean.clinicDiagnosisList}"
+								var="clinick" itemLabel="#{clinick.diagnosisName}"
+								itemValue="#{clinick.diagnosisName}" />
+								
+						<p:ajax
+							listener="#{patientMedicineManageBean.changediagnosisForSubdiagnosis}"
+							></p:ajax>
+						</p:selectOneMenu>
+				
+				 	</h:panelGrid>
+				 </p:outputPanel>
+	 	 	 </p:tab>
+	 	 	 
+	 	 	 <p:tab id="Step2" title="Step 2" titleStyleClass="popupStepFont">  
+	 	 	 		
+	 	 	 		
+	 	 	 		<!--    <h:panelGrid columns="2" border="3"> -->
+	 	 	 		<h:outputText value="#{msg.diagnosis}:" style="font-weight:bold;"/><h:outputText value="#{patientMedicineManageBean.medActionPlan.diagnosis}" /><br/>
+	 	 	 		
+	 	 	 		<p:outputPanel id="chadsOutputPanelId" rendered="#{patientMedicineManageBean.medActionPlan.diagnosis eq 'Atrial fibrillation (non-valvular/non-rheumatic)'}" >
+	 	 	 		<h:outputText value="Calculate CHAD Score:" style="font-weight:bold;"/><br/>
+	 	 	 		<table>
+	 	 	 			<tr>
+	 	 	 			<td>
+	 	 	 			
+	 	 	 			
+							     <h:panelGrid columns="6" >
+							     	  <h:selectBooleanCheckbox value="#{patientMedicineManageBean.chadsScore.heartFailure}"  class="checkall">
+							     	  		<p:ajax listener="#{patientMedicineManageBean.submitChadsScore}"  update="chadScoreValue"/>
+							     	  </h:selectBooleanCheckbox>
+								  	  <h:outputText value="Congestive Heart Failure " />  
+								     
+								     <h:selectBooleanCheckbox  value="#{patientMedicineManageBean.chadsScore.hyperTension}" class="checkall">
+								     	<p:ajax listener="#{patientMedicineManageBean.submitChadsScore}" update="chadScoreValue" />
+								     </h:selectBooleanCheckbox>
+								     <h:outputText value="Hypertension" />   
+								  	 
+								  	  <h:selectBooleanCheckbox value="#{patientMedicineManageBean.chadsScore.age}" class="checkall">
+								  	  		<p:ajax listener="#{patientMedicineManageBean.submitChadsScore}"  update="chadScoreValue"/>
+								  	  </h:selectBooleanCheckbox>
+								  	 <h:outputText value="Age &gt; or = 75 " />  
+								  	 
+								  	 <h:selectBooleanCheckbox value="#{patientMedicineManageBean.chadsScore.diabetes}" class="checkall">
+								  	 		<p:ajax listener="#{patientMedicineManageBean.submitChadsScore}"  update="chadScoreValue"/>
+								  	 </h:selectBooleanCheckbox>
+								  	 <h:outputText value="Diabetes " />  
+								  	 
+								  	 <h:selectBooleanCheckbox value="#{patientMedicineManageBean.chadsScore.stroke}" class="checkall">
+								  	 		<p:ajax listener="#{patientMedicineManageBean.submitChadsScore}"  update="chadScoreValue"/>
+								  	 </h:selectBooleanCheckbox>		
+								  	 <h:outputText value="Secondary prevention in  &lt;br /&gt; patients with prior ischemic stroke, &lt;br /&gt; TIA, or systemic thromboembolic event" escape="false" />  
+								  	 
+								  	 <!--  <h:selectBooleanCheckbox value="#{patientMedicineManageBean.chadsScore.stroke}" disabled="#{!patientMedicineManageBean.showChadTab}"/>
+								  	 <h:outputText value="Congestive Heart Failure " />   -->
+								  	</h:panelGrid>
+								  	</td>
+								  	
+	 	 	 			</tr>
+	 	 	 			
+	 	 	 			<tr>
+	 	 	 				<td>
+								   <!--  <p:commandButton value="Submit CHAD score" actionListener="#{patientMedicineManageBean.submitChadsScore}" 
+								  		update="chadScoreValue"></p:commandButton> -->
+								  	&nbsp;&nbsp;
+								  	<h:outputText value="Chad Score=#{patientMedicineManageBean.chadsScore.score}" style="font-size: 12px;font-weight: bold;" id="chadScoreValue"/>
+								  		
+								  
+							  </td>
+	 	 	 			</tr>
+	 	 	 			
+	 	 	 		</table>
+	 	 	 		</p:outputPanel>
+	 	 	 		<h:outputText value="Subdiagnosis:" style="font-weight:bold;"/>
+	 	 	 		<p:selectOneRadio  value="#{patientMedicineManageBean.subDiagnosisDetail}"
+													            layout="pageDirection">  
+						<f:selectItems id="subdiagnosisListId"
+								value="#{patientMedicineManageBean.clinicSubDiagnosisList}"
+								var="clinicSubDiagnosis" itemLabel="#{clinicSubDiagnosis.subDiagnosisName}"
+								itemValue="#{clinicSubDiagnosis.subDiagnosisName}" />
+								
+					</p:selectOneRadio>  
+						  
+	 	 	   </p:tab>
+	 	 	 
+	 	 	 <p:tab id="Step3" title="Step 3" titleStyleClass="popupStepFont"> 
+	 	 	 
+	 	 	  <p:outputPanel deferred="true" deferredMode="visible" rendered="#{patientMedicineManageBean.pharmacogenomicInteractionDetailList.size() ge 1}">
+						
+							
+							<table>	
+							<tr>
+							
+							<td><h:outputText value="Pharmacogenomics:"  style="font-weight:bold;color:red;"/></td>
+								<td>
+									
+										<p:commandLink id="grow3"   style="text-decoration:underline;" onmouseover="showDetails3.show();" onmouseout="showDetails3.hide();">
+											<h:outputText value="#{patientMedicineManageBean.pharmacogenomicInteractionDetailList.size()}" escape="false" style="color:red;"/>		
+								             &nbsp;<h:outputText value="Interactions detected" style="color:red;"/>
+								          </p:commandLink>  
+								          
+								          <!-- <p:tooltip for="grow3"  showEffect="clip" style="width:44%; position:relative; margin-left:-8%;" > -->
+								          
+								          <p:dialog widgetVar="showDetails3" showEffect="clip" hideEffect="clip" width="600" 
+								              			closable="false" appendTo="@(body)">
+								             		
+								             	<f:facet name="header">
+								             					<h:outputText value="Pharmacogenomics"></h:outputText>
+								             				</f:facet>
+								             
+								             					<p:dataTable value="#{patientMedicineManageBean.pharmacogenomicInteractionDetailList}" var="pharmacogenomicInteractionDetail" emptyMessage="#{msg.noMedFound}">
+																	
+																	<p:column styleClass="wrap">
+																		<f:facet name="header">
+																			<h:outputText value="Gene" />
+																		</f:facet>
+																		<h:outputText value="#{pharmacogenomicInteractionDetail.gene1}"  />  
+																	</p:column> 
+																	
+																	<p:column styleClass="wrap">
+																		<f:facet name="header">
+																			<h:outputText value="Phenotype" />
+																		</f:facet>
+																		<h:outputText value="#{pharmacogenomicInteractionDetail.phenotype}"  />  
+																	</p:column> 
+																	
+																	<p:column styleClass="wrap">
+																		<f:facet name="header">
+																			<h:outputText value="Impact" />
+																		</f:facet>
+																		<h:outputText value="#{pharmacogenomicInteractionDetail.impact}"  />  
+																	</p:column>
+																	
+																	<p:column styleClass="wrap">
+																		<f:facet name="header">
+																			<h:outputText value="Implications" />
+																		</f:facet>
+																		<h:outputText value="#{pharmacogenomicInteractionDetail.implications}"  />  
+																	</p:column>
+																	
+																	<p:column styleClass="wrap">
+																		<f:facet name="header">
+																			<h:outputText value="Recommendation" />
+																		</f:facet>
+																		<h:outputText value="#{pharmacogenomicInteractionDetail.recommendation}"  />  
+																	</p:column>
+																	
+																	
+																</p:dataTable>
+								             			
+								             	 <!-- </p:tooltip> -->
+								             	 
+								             	 </p:dialog>
+								             	 
+								        
+								      
+								</td>
+								<td>
+										<h:outputText value="Highest Severity:"  style="font-weight:bold;color:red;"/>&nbsp;
+										<!-- <h:outputText value="#{patientMedicineManageBean.highestServityForpharmacogenomic}"  /> -->
+										
+										<h:outputText value="#{patientMedicineManageBean.highestServityForpharmacogenomic}" rendered="#{patientMedicineManageBean.highestServityForpharmacogenomic eq 'High'}"
+										style="text-decoration:none;color:red;"/>
+										<h:outputText value="#{patientMedicineManageBean.highestServityForpharmacogenomic}" rendered="#{patientMedicineManageBean.highestServityForpharmacogenomic eq 'Medium'}"
+										style="text-decoration:none;color:orange;"/>
+										<h:outputText value="#{patientMedicineManageBean.highestServityForpharmacogenomic}" rendered="#{patientMedicineManageBean.highestServityForpharmacogenomic eq 'Low'}"
+										style="text-decoration:none;color:green;"/>				
+												
+												<!-- <ui:repeat var="drugServityDetail" 
+														value="#{patientMedicineManageBean.drugPharmaInterectionListDetail}"
+														varStatus="loop">
+											         #{drugServityDetail.severityLevel}
+											              #{!loop.last ? ', ' : ''} 
+								            
+										</ui:repeat> -->
+								</td>
+							</tr>
+					</table>
+							
+				</p:outputPanel>
+	 	 	 
+	 	 	 <table >
+	 	 	 	<tr>
+	 	 	 		<td>
+	 	 	 			<h:outputText value="#{msg.diagnosis}:" style="font-weight:bold;" /></td>
+	 	 	 		
+	 	 	 		<td><h:outputText value="#{patientMedicineManageBean.medActionPlan.diagnosis}" /></td>
+	 	 	 		
+	 	 	 		<td>
+	 	 	 			<h:outputText value="Subdiagnosis:" style="font-weight:bold;"/>
+	 	 	 		</td>
+	 	 	 		
+	 	 	 		<td><h:outputText value="#{patientMedicineManageBean.subDiagnosisDetail}" /></td>
+	 	 	 	</tr>
+	 	 	 	
+	 	 	 	<tr><td></td></tr>
+	 	 	 	
+	 	 	 	<tr>
+	 	 	 		<td>
+	 	 	 			<h:outputText value="Recommendation:" style="font-weight:bold;"/>
+	 	 	 		</td>
+	 	 	 		<td><h:outputText value="#{patientMedicineManageBean.patientMedicationData.recommendedDose}" /></td>
+	 	 	 		
+	 	 	 		<td>
+	 	 	 			<h:outputText value="Comment:"  style="font-weight:bold;"/>
+	 	 	 		</td>
+	 	 	 		
+	 	 	 		<td>
+	 	 	 			<h:outputText value="#{patientMedicineManageBean.patientMedicationData.comments}" />
+	 	 	 		</td>
+	 	 	 		
+	 	 	 	</tr>
+	 	 	 	
+	 	 	 	<tr><td></td></tr>
+	 	 	 	
+	 	 	 	<tr>
+	 	 	 		<td>
+	 	 	 			<h:outputText value="Recommended target INR range: " style="font-weight:bold;"/>
+	 	 	 		</td>
+	 	 	 		
+	 	 	 		<td><h:outputText value="#{patientMedicineManageBean.medActionPlan.recommendedTarget}" /></td>
+	 	 	 		
+	 	 	 		<td><h:outputText value="Recommended duration of therapy:  " style="font-weight:bold;"/></td>
+	 	 	 		
+	 	 	 		<td><h:outputText value="#{patientMedicineManageBean.medActionPlan.recommendedDurationOfTherapy}"  escape="false" /></td>
+	 	 	 		
+	 	 	 	</tr>
+	 	 	 	
+	 	 	 	<tr><td></td></tr>
+	 	 	 	
+	 	 	 	<tr>
+	 	 	 		<td>
+	 	 	 			 <p:outputPanel  rendered="#{patientMedicineManageBean.medActionPlan.diagnosis eq 'Atrial fibrillation (non-valvular/non-rheumatic)'}" >
+					 	 		<h:outputText value="Chad Score:" style="font-weight:bold;" />&nbsp;&nbsp;
+					 	 		<h:outputText value="#{patientMedicineManageBean.chadsScore.score}"/><br/>
+	 	 				 </p:outputPanel>
+	 	 	 		</td>
+	 	 	 	</tr>
+	 	 	 	
+	 	 	 </table>
+	 	 		
+	 	 		<br />
+	 	 		 
+	 	 		
+	 	 		 
+	 	 		
+	 	 		
+	 	 		
+	 	 		<!-- <p:outputPanel rendered="#{!(patientMedicineManageBean.patientMedicationData.additionalRecommendation.length() eq '0')}">
+	 	 			<h:outputText value="Additional recommendation:   " style="font-weight:bold;"/>&nbsp;&nbsp;
+	 	 				<h:outputText value="#{patientMedicineManageBean.patientMedicationData.additionalRecommendation}" /><br/>
+	 	 		</p:outputPanel> -->
+	 	 		
+	 	 		
+	 	 		
+	 	 		
+	 	 		
+	 	 		
+	 	 		<table width="80%">
+	 	 			<tr>
+	 	 				<td>
+	 	 					<h:outputText value="Goal target INR range " />
+	 	 					<h:outputText value="*" styleClass="mandatoryField"/>	
+	 	 					</td><td>
+							<p:selectOneMenu required="true" 
+							          value="#{patientMedicineManageBean.medActionPlan.acceptableRange}">
+							<!-- <f:selectItem itemLabel="#{patientMedicineManageBean.medActionPlan.recommendedTarget}" itemValue="#{patientMedicineManageBean.medActionPlan.recommendedTarget}" /> -->
+							<!-- <f:selectItems value="#{patientMedicineManageBean.clinicDiagnosisList}" var="clinick" itemLabel="{clinick}" itemValue="{clinick}"/> -->
+							<f:selectItems id="targetInrId"
+								value="#{patientMedicineManageBean.inrGoalTargetList}"
+								var="inrTarget" itemLabel="#{inrTarget}"
+								itemValue="#{inrTarget}" />
+						
+						</p:selectOneMenu>
+	 	 				</td>
+	 	 				
+	 	 				<td >
+	 	 					<h:outputText value="Duration of therapy " />
+	 	 					<h:outputText value="*" styleClass="mandatoryField"/>	
+	 	 					</td><td>
+							<p:selectOneMenu required="true" 
+							          value="#{patientMedicineManageBean.medActionPlan.durationOfTherapy}">
+
+							<!-- <f:selectItem itemLabel="#{patientMedicineManageBean.medActionPlan.recommendedDurationOfTherapy}" itemValue="#{patientMedicineManageBean.medActionPlan.recommendedDurationOfTherapy}"/> -->
+
+							<!-- <f:selectItem itemLabel="#{patientMedicineManageBean.medActionPlan.recommendedDurationOfTherapy}"   escapeItem="false" 
+								itemValue="#{patientMedicineManageBean.medActionPlan.recommendedDurationOfTherapy}" /> -->
+
+							<!-- <f:selectItems value="#{patientMedicineManageBean.clinicDiagnosisList}" var="clinick" itemLabel="{clinick}" itemValue="{clinick}"/> -->
+							<f:selectItems id="therapyID"  
+								value="#{patientMedicineManageBean.durationOfTherapy}"
+								var="durationTherapy" itemLabel="#{durationTherapy}"
+								itemValue="#{durationTherapy}" itemLabelEscaped="false"  />
+						
+						</p:selectOneMenu>
+	 	 				
+	 	 				</td>
+	 	 			</tr>
+	 	 		</table>
+	 	 		
+	 	 		<table>
+	 	 			<tr>
+	 	 				<td>
+	 	 					<h:outputText value="Comments :" />
+	 	 				</td>
+	 	 				<td>
+	 	 					<p:inputTextarea id="commentEditor" value="#{patientMedicineManageBean.patientMedicationData.doctorComments}"  cols="75" rows="3">
+											<!-- <p:ajax update="notesEditor"></p:ajax> -->
+								</p:inputTextarea>
+	 	 				</td>
+	 	 			</tr>
+	 	 		</table>
+	 	 		
+	 	 		
+	 	 	   <p:outputPanel>
+		 	 	 	
+				</p:outputPanel>	
+									 	 
+	 	  </p:tab> 
+	 	 	 
+	 	 	 <p:tab id="Step4" title="Step 4" titleStyleClass="popupStepFont"> 
+	 	 	 
+	 	 	 	 <p:outputPanel id="doseCalId" >
+	 	 	 	 
+	 	 	 	 <table>
+	 	 	 	 	<tr>
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="#{msg.diagnosis}:" style="font-weight:bold;"/>&nbsp;&nbsp;<h:outputText value="#{patientMedicineManageBean.medActionPlan.diagnosis}" />
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="#{msg.subdiagnoses}:" style="font-weight:bold;"/>&nbsp;&nbsp;<h:outputText value="#{patientMedicineManageBean.subDiagnosisDetail}" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 		
+	 	 	 	 	</tr>
+	 	 	 	 	
+	 	 	 	 	<tr><td></td></tr>
+	 	 	 	 		
+	 	 	 	 	
+	 	 	 	 	 <tr>
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="Recommendation:" style="font-weight:bold;"/>&nbsp;&nbsp;
+	 	 	 	 			<h:outputText value="#{patientMedicineManageBean.patientMedicationData.recommendedDose}" />
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="Recommended Dose:" style="font-weight:bold;"/>&nbsp;&nbsp;
+	 	 	 	 			<h:outputText value="#{patientMedicineManageBean.patientMedicationData.strengths}"  
+	 	 	 	 				rendered="#{patientMedicineManageBean.patientMedicationData.recommendedDose ne 'Warfarin not recommended.'}"/>
+	 	 	 	 			<h:outputText value="NA"  
+	 	 	 	 				rendered="#{patientMedicineManageBean.patientMedicationData.recommendedDose eq 'Warfarin not recommended.'}"/>
+	 	 	 	 		</td>
+	 	 	 	 	</tr>
+	 	 	 	 	
+	 	 	 	 	<tr><td></td></tr>
+	 	 	 	 	
+	 	 	 	 	<tr>
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="Duration of therapy:" style="font-weight:bold;"/>&nbsp;&nbsp;<h:outputText value="#{patientMedicineManageBean.medActionPlan.durationOfTherapy}" />
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="Goal target INR range: " style="font-weight:bold;"/><h:outputText value="#{patientMedicineManageBean.medActionPlan.acceptableRange}" />
+	 	 	 	 		</td>
+	 	 	 	 	</tr>
+	 	 	 	 	
+	 	 	 	 	<tr><td></td></tr>
+	 	 	 	 	
+	 	 	 	 	<tr>
+	 	 	 	 		<td>
+	 	 	 	 			<p:outputPanel  rendered="#{patientMedicineManageBean.medActionPlan.diagnosis eq 'Atrial fibrillation (non-valvular/non-rheumatic)'}" >
+					 	 		<h:outputText value="Chad Score:" style="font-weight:bold;" />&nbsp;&nbsp;
+					 	 		<h:outputText value="#{patientMedicineManageBean.chadsScore.score}"/><br/>
+	 	 		 		</p:outputPanel>
+	 	 	 	 		
+	 	 	 	 		</td>
+	 	 	 	 	</tr>
+	 	 	 	
+	 	 	 	
+	 	 	 	 </table>
+	 	 	 	 <table align="center">
+	 	 	 	 	<tr>
+	 	 	 	 		<td>
+	 	 	 	 		<h:outputText value="#{msg.notes}"  style="font:10;font-weight:bold;"/><br/>
+								<p:commandLink id="grow"  value="#{msg.highSensitivitytoWarfarin}" action="#" style="text-decoration:underline;" />
+										 
+										 <p:tooltip for="grow"  showEffect="clip"  >
+											 <h:outputText value=" Baseline INR &gt; or = 1.5 " /><br />
+											 <h:outputText value=" Age &gt; 65 	" /><br />
+											 <h:outputText value=" Actual body weight &lt; 45 kg or actual  ideal " /><br />
+											 <h:outputText value=" Malnourished/ NPO &gt;3 days" /><br />
+											 <h:outputText value=" Hypoalbuminemia &lt; 2 g/dl" /><br />
+											 <h:outputText value=" Chronic diarrhea" /><br />
+											 <h:outputText value=" Significant drug interactions " /><br />
+											 <h:outputText value=" Decompensated heart failure" /><br />
+											 <h:outputText value=" Cancer" /><br />
+											 <h:outputText value=" Current antiplatelet therapy" /><br />
+											 <h:outputText value=" Thrombocytopenia: platelet &lt; 75 K/uL" /><br />
+											 <h:outputText value=" Alcohol abuse history" /><br />
+											 <h:outputText value=" Significant hepatic disease:" /><br />
+											 <h:outputText value=" cirrhosis or total bilirubin.&gt;2.4 mg/dl" /><br />
+											 <h:outputText value=" End stage renal disease" /><br />
+											 <h:outputText value=" GI bleed within past 30 days" /><br />
+											 <h:outputText value=" Surgery within past 2 weeks" /><br />
+											 <h:outputText value=" Intracranial bleed within past 30 days" /><br />
+										 </p:tooltip>  
+	 	 	 	 		
+	 	 	 	 		</td>	 	 	 	 	
+	 	 	 	 	</tr>
+	 	 	 	 	<tr>
+	 	 	 	 		<td>
+	 	 	 	 			<p:commandLink id="grow1" value="#{msg.LowSensitivitytoWarfarin}" action="#"  style="text-decoration:underline;"/>
+									 <p:tooltip for="grow1"  showEffect="clip"  escape="false">
+									 
+										 <h:outputText value=" Baseline INR  &lt; 1.5" /><br />
+										 <h:outputText value=" Age &gt; or = 65" /><br />
+										 <h:outputText value=" No other risk factors" /><br />
+									
+									 </p:tooltip>
+	 	 	 	 		</td>
+	 	 	 	 	</tr>
+	 	 	 	 </table>
+	 	 	 	 
+	 	 	 	<table>
+	 	 	 	 	<tr>
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="Strength" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<p:selectOneMenu  required="true" requiredMessage="Please Select Strength"
+										value="#{patientMedicineManageBean.patientMedicationData.strengths}"
+										style="width:122px;">
+										<!-- <f:selectItem
+											itemLabel="#{patientMedicineManageBean.patientMedicationData.strengths}"
+											itemValue="#{patientMedicineManageBean.patientMedicationData.strengths}" /> -->
+										<f:selectItems value="#{patientMedicineManageBean.doseDetailList}"
+											var="doseList" itemLabel="#{doseList.dose}" itemValue="#{doseList.dose}" />
+									</p:selectOneMenu>
+	 	 	 	 	</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	<td>
+	 	 	 	 				<h:outputText value="Unit" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<p:selectOneMenu required="true" 
+										value="#{patientMedicineManageBean.patientMedicationData.unit}"
+										style="width:145px;">
+										
+										<f:selectItems value="#{patientMedicineManageBean.unitSummaryList}"
+											var="unitList" itemLabel="#{unitList.unit}" itemValue="#{unitList.unit}" />
+										<p:ajax listener="#{patientMedicineManageBean.calculateTotalDispence}" update="dispenceNumber,input"></p:ajax>		
+											<!-- <p:ajax   update="input"/> -->
+									</p:selectOneMenu>
+	 	 	 	 	</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="Dosage form" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 		
+	 	 	 	 		
+	 	 	 	 		<!-- <p:selectOneMenu required="true" 
+										value="#{patientMedicineManageBean.patientMedicationData.dosageForm}"
+										style="width:122px;">
+	 	 	 	 				<f:selectItem itemLabel="#{patientMedicineManageBean.patientMedicationData.dosageForm}" itemValue="#{patientMedicineManageBean.patientMedicationData.dosageForm}" />
+										<f:selectItem
+											itemLabel="#{patientMedicineManageBean.patientMedicationData.directions}"
+											itemValue="#{patientMedicineManageBean.patientMedicationData.directions}" />
+											
+										<f:selectItems value="#{patientMedicineManageBean.unitDetailsList}"
+											var="unitList" itemLabel="#{unitList.unitName}" itemValue="#{unitList.unitName}" />
+										 <p:ajax   update="input"/>
+									</p:selectOneMenu> -->
+									<p:selectOneMenu required="true" requiredMessage="Please insert Dosage form"
+															value="#{patientMedicineManageBean.patientMedicationData.dosageForm}"
+															style="width:122px;">
+															<f:selectItem itemLabel="#{patientMedicineManageBean.patientMedicationData.dosageForm}" itemValue="#{patientMedicineManageBean.patientMedicationData.dosageForm}" />
+											
+													<f:selectItems value="#{patientMedicineManageBean.unitDetailsList}"
+															var="unitList" itemLabel="#{unitList.unitName}" itemValue="#{unitList.unitName}" />
+													</p:selectOneMenu>
+								<!-- <p:inputText  value="#{patientMedicineManageBean.patientMedicationData.dosageForm}" readonly="true"></p:inputText> -->	
+	 	 	 	 	 </td>
+	 	 	 	 	</tr>
+	 	 	 	 	
+	 	 	 	 	<tr>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	<td>
+	 	 	 	 				<h:outputText value="Route" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<!-- <p:selectOneMenu required="true" 
+										value="#{patientMedicineManageBean.patientMedicationData.byRoute}"
+										style="width:122px;">
+										
+										<f:selectItem
+											itemLabel="#{patientMedicineManageBean.patientMedicationData.directions}"
+											itemValue="#{patientMedicineManageBean.patientMedicationData.directions}" />
+										<f:selectItem itemLabel="#{patientMedicineManageBean.patientMedicationData.byRoute}" itemValue="#{patientMedicineManageBean.patientMedicationData.byRoute}" />
+										<f:selectItems value="#{patientMedicineManageBean.routeDetailsList}"
+											var="routeDetailList" itemLabel="#{routeDetailList.routeName}" itemValue="#{routeDetailList.routeName}" />
+											<p:ajax   update="input"/>
+									</p:selectOneMenu> -->
+									
+									<p:selectOneMenu  required="true" requiredMessage="Please insert Route"
+															value="#{patientMedicineManageBean.patientMedicationData.byRoute}"
+															style="width:122px;">
+															<f:selectItem itemLabel="#{patientMedicineManageBean.patientMedicationData.byRoute}" itemValue="#{patientMedicineManageBean.patientMedicationData.byRoute}" />
+															<f:selectItems value="#{patientMedicineManageBean.routeDetailsList}"
+																var="routeDetailList" itemLabel="#{routeDetailList.routeName}" itemValue="#{routeDetailList.routeName}" />
+												</p:selectOneMenu>
+									
+									<!-- <p:inputText  value="#{patientMedicineManageBean.patientMedicationData.byRoute}" readonly="true"></p:inputText> -->
+	 	 	 	 		</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	<td>
+	 	 	 	 				<h:outputText value="Regimen" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<p:selectOneMenu required="true" requiredMessage="Please Select Regimen"
+										value="#{patientMedicineManageBean.patientMedicationData.directions}"
+										style="width:145px;">
+										<f:selectItem
+											itemLabel=""
+											itemValue="" />
+										<f:selectItems value="#{patientMedicineManageBean.regimenList}"
+											var="regimen" itemLabel="#{regimen}" itemValue="#{regimen}" />
+										
+										<p:ajax listener="#{patientMedicineManageBean.calculateTotalDispence}" update="dispenceNumber,input"></p:ajax>	
+										
+									</p:selectOneMenu>
+	 	 	 	 	</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="PRN" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 		 <td>
+	 	 	 	 			<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.prn}" />  
+	 	 	 	 		</td> 
+	 	 	 	 		
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="Allow substitution" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 		 <td>
+	 	 	 	 			<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.allowSubstitution}" />  
+	 	 	 	 		</td> 
+	 	 	 	 		
+	 	 	 	 		
+	 	 	 	 </tr>
+	 	 	 	 <tr>
+	 	 	 	 <table width="100%">
+				<tr align="center">
+					
+					<td>
+						<h:outputText value="DAW / DNS"/>
+					</td>
+					&nbsp;
+					<td>
+						<h:outputText value="One Time"/>
+					</td>
+					<!-- &nbsp;
+					<td>
+						<h:outputText value="2nd rx 90 Day"/>
+					</td>
+					&nbsp;
+					<td>
+						<h:outputText value="Save this sig and add to Doctor's List"/>
+					</td> -->
+				</tr>
+				
+				
+				<tr>
+					<td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.daw_dns}" />  
+					</td>
+					<td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.one_Time}" />  
+					</td>
+				<!-- 	<td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.secondrx_90days}" />  
+					</td>
+					<td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.savetodoctorlist}" />  
+					</td> -->
+				</tr>
+			</table>
+	 	 	 	 
+	 	 	 	 </tr>
+	 	 	 
+	 	 	  	<tr>
+	 	 	  		<td>
+	 	 	  			<h:outputText value="Dispense" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	  		</td>
+						<td>
+							<p:inputText id="dispenceNumber" style="width:50px;"   converter="#{Integer}" maxlength="3"
+										value="#{patientMedicineManageBean.patientMedicationData.quantity}" >
+								<f:convertNumber  pattern="#0" integerOnly="true"  minFractionDigits="3" maxIntegerDigits="3" type="number"/>
+							</p:inputText>
+						</td>
+						
+					<td>
+	 	 	  			<h:outputText value="Days Supply" />
+	 	 	  		</td>
+						<td>
+							<!-- <p:inputText style="width:50px;" required="true" 
+										value="#{patientMedicineManageBean.patientMedicationData.daySupply}" /> -->
+										
+							<p:selectOneMenu 
+										value="#{patientMedicineManageBean.patientMedicationData.daySupply}"
+										style="width:80px;">
+											<!-- <f:selectItem itemValue="#{patientMedicineManageBean.patientMedicationData.daySupply}" 
+													itemLabel="#{patientMedicineManageBean.patientMedicationData.daySupply}"></f:selectItem> -->
+										<f:selectItems value="#{patientMedicineManageBean.daySupplyList}"
+											var="daySupplyDetailList" itemLabel="#{daySupplyDetailList}" itemValue="#{daySupplyDetailList}" />
+										
+										<p:ajax listener="#{patientMedicineManageBean.calculateTotalDispence}" update="dispenceNumber"></p:ajax>	
+										
+									</p:selectOneMenu>
+						</td>
+	 	 	  		
+	 	 	  		<td>
+	 	 	  			<h:outputText value="Refill"/>
+	 	 	  		</td>
+						<td>
+							
+										<!-- <p:inputText required="true" requiredMessage="Please insert reffils" maxlength="2" 
+							 value="#{patientMedicineManageBean.patientMedicationData.reffils}" style="width:50px;">
+							 
+							 <pe:keyFilter mask="num"></pe:keyFilter>
+						</p:inputText> -->
+						
+						<p:selectOneMenu required="true" 
+										value="#{patientMedicineManageBean.patientMedicationData.reffils}"
+										style="width:60px;">
+										
+										<f:selectItems value="#{patientMedicineManageBean.refillDetailsList}"
+											var="refillList" itemLabel="#{refillList}" itemValue="#{refillList}" />
+										
+									</p:selectOneMenu>
+						
+						</td>
+	 	 	  		 <td>
+	 	 					<h:outputText value="Instructions" />
+	 	 				</td>
+	 	 				<td>
+	 	 					<p:inputTextarea readonly="true" id="input" 
+	 	 							value="Take #{patientMedicineManageBean.patientMedicationData.unit} &nbsp;&nbsp;
+	 	 									 #{patientMedicineManageBean.patientMedicationData.dosageForm} &nbsp;&nbsp;
+	 	 									#{patientMedicineManageBean.patientMedicationData.byRoute} &nbsp;&nbsp;
+	 										 #{patientMedicineManageBean.patientMedicationData.directions}" cols="15" rows="4">
+											
+								</p:inputTextarea>
+	 	 				</td> 
+	 	 	  	</tr>
+	 	 	  </table>
+	 	 	 	 
+	 	 	 	  
+			</p:outputPanel>
+	 	 	 
+	 	 	 </p:tab>
+	 	 	  <p:tab id="Step5" title="Step 5" titleStyleClass="popupStepFont"> 
+	 	 	  
+	 	 	    <table>
+	 	 	  		<tr>
+	 	 	  			
+	 	 	  			<td  >
+	 	 	  				<h:outputText value="#{msg.diagnosis}:" style="font-weight:bold;"/>
+	 	 	  			</td>
+	 	 	  			
+	 	 	  			<td><h:outputText value="#{patientMedicineManageBean.medActionPlan.diagnosis}" /></td>
+	 	 	  			
+	 	 	  			<td >
+	 	 	  				<h:outputText value="#{msg.subdiagnoses}:" style="font-weight:bold;" />
+	 	 	  			</td>
+	 	 	  			
+	 	 	  			<td><h:outputText value="#{patientMedicineManageBean.subDiagnosisDetail}" /></td>
+	 	 	  			
+	 	 	  		</tr>
+	 	 	  		
+	 	 	  		<tr><td></td></tr>
+	 	 	  		
+	 	 	  		<tr>
+	 	 	  			
+	 	 	  			<td>
+	 	 	  				<h:outputText value="Duration of therapy:" style="font-weight:bold;"/>
+	 	 	  			</td>
+	 	 	  			
+	 	 	  			<td><h:outputText value="#{patientMedicineManageBean.medActionPlan.durationOfTherapy}" /></td>
+	 	 	  			<td >
+	 	 	  				<h:outputText value="Dose:" style="font-weight:bold;"/>
+	 	 	  			</td>
+	 	 	  			
+	 	 	  			<td><h:outputText value="#{patientMedicineManageBean.patientMedicationData.strengths}" /></td>
+	 	 	  		</tr>
+	 	 	  		
+	 	 	  		<tr><td></td></tr>
+	 	 	  		
+	 	 	  		<tr>
+	 	 	  			
+	 	 	  			
+	 	 	  			
+	 	 	  			<td >
+	 	 	  				<h:outputText value="Sig:" style="font-weight:bold;"/>
+	 	 	  			</td>
+	 	 	  			
+	 	 	  			<td><h:outputText value="#{patientMedicineManageBean.patientMedicationData.directions}" /></td>
+	 	 	  			
+	 	 	  			<td >
+	 	 	  				<h:outputText value="Goal target INR range:" style="font-weight:bold;"/>
+	 	 	  			</td>
+	 	 	  			
+	 	 	  			<td><h:outputText value="#{patientMedicineManageBean.medActionPlan.acceptableRange}" /></td>
+	 	 	  		</tr>
+	 	 	  		
+	 	 	  		<tr><td></td></tr>
+	 	 	  		
+	 	 	  		<tr>
+		 	 	  		<td >
+		 	 	  			<p:outputPanel  rendered="#{patientMedicineManageBean.medActionPlan.diagnosis eq 'Atrial fibrillation (non-valvular/non-rheumatic)'}" >
+							 	 		<h:outputText value="Chad Score:" style="font-weight:bold;" />&nbsp;&nbsp;
+							 	 		<h:outputText value="#{patientMedicineManageBean.chadsScore.score}"/><br/>
+	 	 					 </p:outputPanel>
+		 	 	  		</td>
+	 	 	  		</tr>
+	 	 	  </table>
+	 	 	  
+	 	 	  <table width="100%">
+	 	 	  	<tr>
+	 	 	  		<td colspan="3">
+	 	 	  		
+	 	 	  		<h:outputText value="Recommended INR check every 2-3 days until INR within therapeutic range on 2 consecutive INR checks" style="font-weight:bold;"/>
+	 	 	  		
+	 	 	  		</td>
+	 	 	  	</tr>
+	 	 	  	
+	 	 	  
+	 	 	  	<tr>
+	 	 	  		<td>
+	 	 	  			<h:outputText value="Frequency of INR monitoring after initiation of warfarin" style="font-weight:bold;"/>
+	 	 	  		</td>
+	 	 	  	</tr>
+	 	 	  	
+	 	 	  	<tr>
+	 	 	  		<td>
+	 	 	  			<h:outputText value="INR Check" style="font-weight:bold;"/>
+	 	 	  		</td>
+	 	 	  	</tr>
+	 	 	  	
+	 	 	  	 </table>
+	 	 	  	 <br/>
+	 	 	  	 
+	 	 	  	<table border="1">
+	 	 	  	<tr >
+	 	 	  		<td>
+	 	 	  			<h:outputText value="Every 2-3 days" />
+	 	 	  		</td >
+	 	 	  		<td><h:outputText value="Until INR within therapeutic range on 2 consecutive INR checks" /></td>
+	 	 	  	</tr>
+	 	 	  	
+	 	 	  	<tr >
+	 	 	  		<td>
+	 	 	  			<h:outputText value="Then every week" />
+	 	 	  		</td >
+	 	 	  		<td><h:outputText value="Until INR within therapeutic range on 2 consecutive INR checks" /></td>
+	 	 	  	</tr>
+	 	 	  	
+	 	 	  	
+	 	 	  	<tr >
+	 	 	  		<td>
+	 	 	  			<h:outputText value="Then every 2 weeks" />
+	 	 	  		</td >
+	 	 	  		<td><h:outputText value="Until INR within therapeutic range on 2 consecutive INR checks" /></td>
+	 	 	  	</tr>
+	 	 	  	
+	 	 	  	<tr >
+	 	 	  		<td>
+	 	 	  			<h:outputText value="Then every 4 weeks" />
+	 	 	  		</td >
+	 	 	  		<td><h:outputText value="When dose is stable check monthly" /></td>
+	 	 	  	</tr>
+	 	 	  </table>
+	 	 	   	 <br/>
+	 	 	  	<!-- <tr>
+	 	 	  		<td colspan="3">
+	 	 	  			<h:outputText value="[Refer table from Anticoag_algorithms Warfarin AC cells B135-D135]" style="font-weight:bold;"/>
+	 	 	  		</td>
+	 	 	  	</tr> -->
+	 	 	  
+	 	 	  	<table>
+	 	 	  		<tr>
+	 	 	  		<td align="center">
+											<h:outputText value="Phase" styleClass="outputtext"/>
+										</td>
+	 	 	  			<td>
+	 	 	  								<p:selectOneMenu 
+															value="#{patientMedicineManageBean.medActionPlan.medicineStage}" style="width:180px;">
+														<f:selectItem
+															itemLabel="Initiation" itemValue="Initiation" />
+														<f:selectItem
+															itemLabel="Maintenance" itemValue="Maintenance" />
+												<p:ajax update="labdetailId" />
+												</p:selectOneMenu>
+	 	 	  			</td>
+	 	 	  		</tr>
+	 	 	  	</table>
+	 	 	  		 <br/>
+	 	 	  	 <table  width="70%">
+	 	 	  	<tr>
+	 	 	  	
+	 	 	  	<td valign="top">
+									
+	 	 	  	<p:dataTable value="#{patientMedicineManageBean.labDetailList}" var="labDetail" id="labdetailId" emptyMessage="#{msg.noMedFound}">
+																
+																<!-- <p:column>
+																	<f:facet name="header">
+																		<h:outputText value="Select" />
+																	</f:facet>
+																	<p:selectBooleanCheckbox value="#{labDetail.selected}"  />  
+																</p:column>
+																 -->
+																<p:column>
+																	<f:facet name="header">
+																		<h:outputText value="Lab Name" />
+																	</f:facet>
+																	<h:outputText value="#{labDetail.labName}" />
+																</p:column>
+																
+																<p:column>
+																	<f:facet name="header">
+																		<h:outputText value="Monitory Frequency" />
+																	</f:facet>
+																	<p:selectOneMenu value="#{labDetail.labfrequencyDetail}" 
+																		rendered="#{patientMedicineManageBean.medActionPlan.medicineStage eq 'Initiation' or  patientMedicineManageBean.medActionPlan.medicineStage eq null}" style="width:90px;">
+																					<f:selectItem
+																						itemLabel=""
+																						itemValue="" /> 
+																					<f:selectItems 
+																							value="#{patientMedicineManageBean.labFrequencyList}"
+																							var="labFreq" itemLabel="#{labFreq}" itemValue="#{labFreq}" />
+																				<p:ajax 
+																					listener="#{patientMedicineManageBean.findNextlabDate}" update="@form"
+																					></p:ajax>
+																		</p:selectOneMenu>
+																		
+																		
+																		<p:selectOneMenu value="#{labDetail.labfrequencyDetail}" 
+																		rendered="#{patientMedicineManageBean.medActionPlan.medicineStage eq 'Maintenance'}" style="width:90px;">
+																					<f:selectItem
+																						itemLabel=""
+																						itemValue="" /> 
+																					<f:selectItems 
+																							value="#{patientMedicineManageBean.labFrequencyListForQuickPrescribe}"
+																							var="labFreq" itemLabel="#{labFreq}" itemValue="#{labFreq}" />
+																				<p:ajax 
+																					listener="#{patientMedicineManageBean.findNextlabDate}" update="@form"
+																					></p:ajax>
+																					
+																					
+																		</p:selectOneMenu>
+																</p:column> 
+																							
+															
+															</p:dataTable>
+												
+								</td>
+	 	 	  	<td> &nbsp;&nbsp;&nbsp;&nbsp;</td>
+	 	 	  	
+	 	 	  			
+	 	 	  			<td >
+	 	 	  				<h:outputText value="Date of the next Lab: " style="font-weight:bold;"/>&nbsp;&nbsp;
+	 	 	  				<h:outputText id="nextLab" value="#{patientMedicineManageBean.medActionPlan.nextLabDate}" >
+	 	 	  					<f:convertDateTime pattern="#{msg.dateFormat}" timeZone="#{userManageBean.loggedUsertimeZone}" dateStyle="full" type="date"/>
+	 	 	  				</h:outputText>
+	 	 	  			</td>
+	 	 	  	</tr>
+	 	 	  	
+	 	 	  </table>
+	 	 	
+	 	 	  <table width="95%">
+		 	 	  <tr align="right">
+		 	 	  	<td>
+		 	 	  		<p:commandButton value="Done" action="#{patientMedicineManageBean.addMedicine}" ></p:commandButton>
+      
+		 	 	  	</td>
+		 	 	  </tr>
+	 	 	  
+	 	 	  </table>
+	 	 	
+	 	 	   
+	 	 	
+	 	 	   
+	 	 	  </p:tab>
+	 	 	 
+	 	 </p:wizard>
+	 	 </td>
+	 	 <td valign="top" align="right" width="8%">
+	 	   <p:commandButton value="#{msg.cancel}" action="#{patientMedicineManageBean.duplicatesubmitCancelButtonforoverviewfilter}" immediate="true"
+						></p:commandButton>
+	 	 </td>
+	 	</tr>
+	 
+	 </table>
+		<table>
+			
+	 	<tr>
+	 		<td>
+	 			<h:outputText value="Source:" style="font-weight:bold;"/>&nbsp;&nbsp;
+	 		</td>
+	 		
+	 		<td>
+	 			<h:outputText value="Dosing Guideline based on University of Washington Anticoag Clinic
+	 			 (http://depts.washington.edu/anticoag) in accordance with 9th ed ACCP Guidelines on Antithrombotic 
+	 			 Therapy (You, J. J., D. E. Singer, et al. (2012). Chest 141(2 Suppl): e531S-575S)" />
+	 		</td>
+	 	</tr>
+		</table>		 	 
+	 
+	 
+	 </h:form>
+	</p:dialog>
+	</ui:composition>
+	</html>

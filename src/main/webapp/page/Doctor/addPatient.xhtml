@@ -1,0 +1,1354 @@
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+<h:body onload="#{dashBoardManageBean.reset()}">
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+	 <script type="text/javascript">
+
+	
+	 function validationFields(){
+		 
+		//alert("userenterd:::::email"+email);
+		 var email = document.getElementById('addpateintId:emailAddress').value;
+		 //validation
+		    var fName = document.getElementById('addpateintId:fName').value;
+	        var lName = document.getElementById('addpateintId:lName').value;
+	        var dob = addCalender.getDate();
+	       // alert(dob);
+	        //var sosecNo = document.getElementById('addpateintId:soscNumber').value;
+	        var gender = patientGender.getSelectedValue();
+	       // alert(gender);
+	        var timeZone = document.getElementById('addpateintId:timeZoneId').value;
+	        //var mbnNo = document.getElementById('addpateintId:mobileNo').value;
+	        var addL1 = document.getElementById('addpateintId:addLine1').value;
+	        var city = document.getElementById('addpateintId:cityId').value;
+	        var state = document.getElementById('addpateintId:stateId').value;
+	        var country = document.getElementById('addpateintId:countryId').value;
+	        var zipcode = document.getElementById('addpateintId:zipCodeId').value;
+	        var isValidImail;
+	        var validationFailed;
+	       // document.getElementById('formId:btnForScrollTop').click();
+	       // alert("outside jquery::::::");
+	       
+		if(email != "")
+			 {
+			//alert("userenterd:::::email"+email);
+	         var pattern = new RegExp(/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i);
+	       //var pattern = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9\-_]+)*@[a-z0-9]+(\-[a-z0-9]+)*(\.[a-z0-9]+(\-[a-z0-9]+)*)*\.[a-z]{2,4}$/;
+	       isValidImail = pattern.test(email);
+	       //alert("email checking::::"+isValidImail);
+	       if(!isValidImail){
+		      // alert("email checking::::"+isValidImail);
+	    	   growlForErrorFromBean.show([{summary:'', detail: 'Please enter Valid Email', severity: 'error'}])
+			 }
+       }
+	       
+		
+		 if(isValidImail ||email == ""){
+			// alert("email "+isValidImail)
+           // alert(fName+"fN "+lName+"lN "+sosecNo+"SSN "+timeZone+"tm "+mbnNo+"mb "+addL1+"adLi "+city+"city "+state+"state "+country+"country "+zipcode+"zip "+gender+"gender "+dob+"dob ")
+			if(fName=="" || lName=="" || timeZone=="" || addL1=="" || city=="" || state=="" || country=="" || zipcode=="" || gender=="" 
+				|| dob==null)
+				 {
+				//alert("alert inside isValidEmail||email condition check")
+				scrollTop();
+	         growlForErrorFromBean.show([{summary:'', detail: 'Please Fill All Mandatory Fields', severity: 'error'}])
+	          }
+		}
+         
+        }
+
+      function processFailed(xhr, status, args){
+        if(args.processFailed==true){
+        	growlForProcessFailed.show([{summary:'', detail: 'Sorry,Your Process Has Been Failed! Please Try Again', severity: 'error'}]);
+            }
+         } 
+   
+     function allergyValidation(xhr, status, args){
+    	 if(args.validationFailed==false) {  
+    		 addAllergyDialog.show();
+                }   
+             else {  
+            	 addAllergyDialog.hide();
+           }
+         }
+
+     function addInsurance(id) {
+      /*    alert("selected insurance Level ::::"+id) */
+         //document.getElementById('').value=id;
+         document.getElementById('hiddenFormInsuranceId:insuranceLeveltxtHiddenId').value=id;
+         document.getElementById('hiddenFormInsuranceId:btnforselectinsuranceHiddenId').click();
+	}
+
+     function validateInsuranceData(xhr, status, args){
+    	 if(args.isInsuranceValidationSuccess==false){
+    		 selectInsuranceAddedValuesPopup.show();
+    	 }else if(args.isInsuranceValidationSuccess==true){
+    		 selectInsuranceAddedValuesPopup.hide();
+    	 }
+    	 
+     }
+   	function scrollTop(){
+   	   //	alert("starting scrolltop");
+   	  document.getElementById('addpateintId:fName').focus();
+   	/*  $('#donePatientId').click(function() {
+   	    $('html,body').animate({
+   	        scrollTop:500
+   	    }, 800, function() {
+
+   	        $('html, body').animate({
+   	            scrollTop: 0
+   	        }, 800);
+
+   	    });
+   	}); */
+    	//alert("hiiiiiiiiiiiiii");
+   	}
+ 
+	 </script>
+	     </h:head>
+	     <div id="addpatient"></div>
+	     <p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="85" minSize="60">
+				<ui:include src="doctorheader2.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="27">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<h:form class="tab">
+					<ui:include src="doctor_profile_leftmenu.xhtml">
+					</ui:include>
+				</h:form>
+				</p:layoutUnit>
+				
+				<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit  position="center">
+			<h:form id="hiddenFormInsuranceId">
+				<h:inputHidden  value="#{dashBoardManageBean.selectInsuranceLevel}" id="insuranceLeveltxtHiddenId"/>
+					<p:commandButton id="btnforselectinsuranceHiddenId" style="display: none" actionListener="#{dashBoardManageBean.addInsuranceLevel}"/>
+			</h:form>
+			
+			
+			<div id="messagesDivId" >
+			  <p:growl id="growlId" widgetVar="growlForProcessFailed"  redisplay="false" showDetail="false" showSummary="true"/> 
+			 <p:growl id="validateMessage" widgetVar="growlForErrorFromBean"  redisplay="false" showDetail="false" showSummary="true"/> 
+			</div>
+            
+			<h:form id="addpateintId">
+			
+			 <table width="100%">
+			 <tr>
+			   <td colspan="2">
+			  <table width="100%" class="secContentBorder" cellpadding="0" cellspacing="0">	
+			    <tr>
+			      <td class="secHeadPart">
+			         #{msg.perDetails}
+			      </td>
+			    </tr>
+			    <tr>
+			      <td >
+			        <table width="100%">
+			        <tr>
+			           <td><h:outputText value="#{msg.firstName}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+			           <td><p:inputText id="fName" value="#{dashBoardManageBean.userLoginDetailsNewPatient.firstName}" styleClass="inputfield" required="true" 
+			             requiredMessage="Please Enter FirstName"/>
+			         <!--  <p:message for="fName"/>--></td> 
+			           <td><h:outputText value="#{msg.middleName}" /><!-- <h:outputText value="*" styleClass="mandatoryField"/> --></td>
+			           <td><p:inputText id="mName" value="#{dashBoardManageBean.userLoginDetailsNewPatient.middleName}" styleClass="inputfield"/></td>
+			           <td><h:outputText value="#{msg.lastName}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+			           <td><p:inputText id="lName" value="#{dashBoardManageBean.userLoginDetailsNewPatient.lastName}" styleClass="inputfield" required="true"
+			           requiredMessage="Please Enter LastName"/></td>
+			        </tr>
+			        <tr>
+			           <td><h:outputText value="#{msg.DOB}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+			           <td><!-- <p:inputText  style="width: 160px">
+			               <f:convertDateTime pattern="MM-dd-yyyy" />
+			           </p:inputText> -->
+			           <p:calendar widgetVar="addCalender"  value="#{dashBoardManageBean.userLoginDetailsNewPatient.dateOfBirth}"  style="width:160px" 
+			           showOn="button" navigator="true" pattern="MM/dd/yyyy" yearRange="c-100:c+1" readonlyInput="true" required="true"  
+			           onfocus="$('#queryForm\\:msgs > div').hide();$('#queryForm\\:msgs > div').eq(1).show();$(this).mask('99/99/9999');return false;"
+			           requiredMessage="Please Enter DateOfBirth" maxdate="#{patientMedicineManageBean.commonTodayDateForVallidation}"></p:calendar>
+			          <!--  <p:inputMask mask="99/99/9999" styleClass="inputfield"/>--> 
+			           </td>
+			           <td><h:outputText value="#{msg.socSecNo}" /></td>
+			           <td><p:inputMask id="soscNumber" mask="999-99-9999" value="#{dashBoardManageBean.userLoginDetailsNewPatient.socialSecurityNumber}" styleClass="inputfield"
+							/></td>
+			           <td><h:outputText value="#{msg.gender}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+			           <td>
+			              <p:selectOneMenu widgetVar="patientGender" value="#{dashBoardManageBean.userLoginDetailsNewPatient.gender}"  style="width:160px"  required="true"
+			           requiredMessage="Please Enter Gender">
+			              <f:selectItem itemValue="Male" itemLabel="Male"/>
+			              <f:selectItem  itemValue="Female" itemLabel="Female"/>
+			              <f:selectItem itemValue="Others" itemLabel="Others"/>
+			              </p:selectOneMenu>
+			           </td>
+			        </tr>
+			        <tr>
+			          <td><h:outputText value="#{msg.bloodgroup}" /><!-- <h:outputText value="*" styleClass="mandatoryField"/> --></td>
+			          <td><p:inputText value="#{dashBoardManageBean.userLoginDetailsNewPatient.bloodGroup}" styleClass="inputfield"/></td>
+			          <td><h:outputText value="#{msg.status}" /><!-- <h:outputText value="*" styleClass="mandatoryField"/> --></td>
+			          <td>
+			              <p:selectOneMenu id="pateintStatus" value="#{dashBoardManageBean.userLoginDetailsNewPatient.martailStatus}" style="width:160px">
+			              <f:selectItem itemValue="single" itemLabel="Single"/>
+			              <f:selectItem  itemValue="married" itemLabel="Married"/>
+			              </p:selectOneMenu>
+			              
+			           </td>
+			           <td><h:outputText value="#{msg.email}" /><!-- <h:outputText value="*" styleClass="mandatoryField"/> --></td>
+			           <td><p:inputText id="emailAddress" value="#{dashBoardManageBean.userLoginDetailsNewPatient.email}" 
+			            styleClass="inputfield">
+			             <!-- <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" for="email" />
+			              <f:validateLength minimum="2"/>  -->
+			           </p:inputText></td>
+			        </tr>
+			        <tr>
+			           <td><h:outputText value="#{msg.dlNo}" /><!-- <h:outputText value="*" styleClass="mandatoryField"/> --></td>
+			           <td><p:inputText value="#{dashBoardManageBean.userLoginDetailsNewPatient.dlNumber}" styleClass="inputfield"/></td>
+			           <td><h:outputText value="#{msg.race}" /><!-- <h:outputText value="*" styleClass="mandatoryField"/> --></td>
+			           <td><p:inputText value="#{dashBoardManageBean.userLoginDetailsNewPatient.race}" styleClass="inputfield"/></td>
+			           <td><h:outputText value="#{msg.timeZone}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+			           <td><p:selectOneMenu  id="timeZoneId" value="#{dashBoardManageBean.userLoginDetailsNewPatient.loginTimeZone}" style="width:160px;" styleClass="inputfield"  required="true"
+							           requiredMessage="Please Enter TimeZone">
+				       		<f:selectItems value="#{dashBoardManageBean.timeZoneList}"
+								var="timeZone" itemLabel="#{timeZone.timeZone}" itemValue="#{timeZone.timeZone}" />
+						 </p:selectOneMenu></td>
+			        </tr>
+			        <tr>
+			           <td><h:outputText value="#{msg.phno}" /><!-- <h:outputText value="*" styleClass="mandatoryField"/> --></td>
+			           <td><p:inputMask mask="(999) 999-9999" value="#{dashBoardManageBean.userLoginDetailsNewPatient.phoneNumber}" styleClass="inputfield"/></td>
+			           <td><h:outputText value="#{msg.extn}"/></td>
+			           <td><p:inputMask id="extn" mask="9?9999"  value="#{dashBoardManageBean.userLoginDetailsNewPatient.extensionPhone}" styleClass="inputfield"/></td>
+			           <td><h:outputText value="#{msg.mobNo}" /></td>
+			           <td><p:inputMask id="mobileNo" mask="(999) 999-9999" value="#{dashBoardManageBean.userLoginDetailsNewPatient.mobileNumber}" styleClass="inputfield" />
+			           </td>
+			        </tr>
+			        <tr>
+			           <td><h:outputText value="#{msg.addressline1}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+			           <td><p:inputText id="addLine1" value="#{dashBoardManageBean.userLoginDetailsNewPatient.doorNo}" styleClass="inputfield"  required="true"
+			           requiredMessage="Please Enter DoorNo"/></td>
+			           <td><h:outputText value="#{msg.addressline2}" /></td>
+			           <td><p:inputText value="#{dashBoardManageBean.userLoginDetailsNewPatient.street}" styleClass="inputfield" 
+			           requiredMessage="Please Enter Street"/></td>
+			           <td><h:outputText value="#{msg.city}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+			           <td><p:inputText id="cityId" value="#{dashBoardManageBean.userLoginDetailsNewPatient.city}" styleClass="inputfield"  required="true"
+			           requiredMessage="Please Enter City"/></td>
+			        </tr>
+			        <tr>
+			            <td><h:outputText value="#{msg.state}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+			           <td><!-- <p:inputMask id="stateId" mask="a*" value="#{dashBoardManageBean.userLoginDetailsNewPatient.state}" styleClass="inputfield"  required="true"
+			           requiredMessage="Please Enter State" /> -->
+			           <p:selectOneMenu  id="stateId" value="#{dashBoardManageBean.userLoginDetailsNewPatient.state}" style="width:160px">
+			           <f:selectItem itemValue="CA" itemLabel="CA"/>
+			           <f:selectItems value="#{dashBoardManageBean.usStateList}" ></f:selectItems>
+			           </p:selectOneMenu>
+			           
+			           </td>
+			           <td><h:outputText value="#{msg.country}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+			           <td><!-- <p:inputMask mask="a*" id="countryId" value="#{dashBoardManageBean.userLoginDetailsNewPatient.country}" styleClass="inputfield"  required="true"
+			           requiredMessage="Please Enter Country" /> -->
+			           <p:selectOneMenu id="countryId" value="#{dashBoardManageBean.userLoginDetailsNewPatient.country}" style="width:160px">
+			           <f:selectItem itemValue="US" itemLabel="United States"></f:selectItem>
+			           </p:selectOneMenu>
+			           </td>
+			           <td><h:outputText value="#{msg.zipCode}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+			           <td><p:inputText id="zipCodeId" value="#{dashBoardManageBean.userLoginDetailsNewPatient.pincode}" styleClass="inputfield"  required="true"
+			           requiredMessage="Please Enter zipCode" maxlength="5"/></td>
+			        </tr>
+			        
+			        <tr>
+			        <td>
+			         <h:outputText value="#{msg.patient_consent}"/>
+			         </td>
+			         <td>
+			        <p:selectOneMenu value="#{dashBoardManageBean.userLoginDetailsNewPatient.patientConsent}">
+			         <f:selectItem itemValue="" itemLabel="Select Patient Consent"/>
+			         <f:selectItem itemValue="Y" itemLabel="Yes"/>
+			         <f:selectItem itemLabel="No" itemValue="N"/>
+			         <f:selectItem itemLabel="Withdrawn" itemValue="W"/>
+			        </p:selectOneMenu>
+			        </td>
+			        
+			        <td>
+			         <h:outputText value="#{msg.consent_grant_date}"/>
+			        </td>
+			        
+			        <td>
+			        <p:calendar value="#{dashBoardManageBean.userLoginDetailsNewPatient.consentWithdrawnDate}" showOn="button" navigator="true" yearRange="c-100:c+1">
+			        </p:calendar>
+			        </td>
+			        <td>
+			         <h:outputText value="#{msg.consent_withdrawn_date}"/>
+			        </td>
+			        <td>
+			         <p:calendar value="#{dashBoardManageBean.userLoginDetailsNewPatient.consentGrantDate}" showOn="button" navigator="true" yearRange="c-100:c+1"/>
+			        </td>
+			        
+			        </tr>
+			        </table> 
+			      </td>
+			    </tr>
+			    </table>
+			    </td>
+			 </tr>
+			 <tr>
+			   <td colspan="2">
+			   <br />
+			    <table width="100%" class="secContentBorder" cellpadding="0" cellspacing="0">
+			    <tr>
+			      <td class="secHeadPart">
+			        #{msg.empDetails}
+			      </td> 
+			    </tr>
+			    <tr>
+			      <td >
+			         <table width="100%">
+			             <tr>
+			              <td><h:outputText value="#{msg.cname}" /></td>
+			              <td><p:inputText value="#{dashBoardManageBean.employerDetails.companyName}" styleClass="inputfield" /></td>
+			              <td><h:outputText value="#{msg.addressline1}" /></td>
+			              <td><p:inputText value="#{dashBoardManageBean.employerDetails.addressLine1}" styleClass="inputfield"/></td>
+			              <td><h:outputText value="#{msg.addressline2}" /></td>
+			              <td><p:inputText value="#{dashBoardManageBean.employerDetails.addressLine2}" styleClass="inputfield"/></td>
+			              <td><h:outputText value="#{msg.city}" /></td>
+			              <td><p:inputText value="#{dashBoardManageBean.employerDetails.companyCity}" styleClass="inputfield"/></td>
+			             </tr>
+			             <tr>
+			               <td><h:outputText value="#{msg.state}" /></td>
+			               <td><p:inputText value="#{dashBoardManageBean.employerDetails.companyState}" styleClass="inputfield"/></td>
+			               <td><h:outputText value="#{msg.country}" /></td>
+			               <td><p:inputText value="#{dashBoardManageBean.employerDetails.companyCountry}" styleClass="inputfield"/></td>
+			               <td><h:outputText value="#{msg.zipCode}" /></td>
+			               <td><p:inputText value="#{dashBoardManageBean.employerDetails.companyZipCode}" styleClass="inputfield"/></td>
+			               <td><h:outputText value="#{msg.phno}" /></td>
+			               <td><p:inputMask mask="(999) 999-9999" value="#{dashBoardManageBean.employerDetails.companyPhoneNumber}" styleClass="inputfield"/></td>
+			             </tr>
+			         </table>
+			      </td>
+			    </tr>
+			  </table>
+			   </td>
+			 </tr>
+			 <tr>
+			   <td width="50%" valign="top" >
+			    <br />
+			  <table width="100%" class="secContentBorder" cellpadding="0" cellspacing="0" >
+			    <tr>
+			      <td  class="secHeadPart">
+			        #{msg.vitaldetais}
+			      </td>
+			    </tr>
+			    <tr>
+			      <td  valign="top">
+			        <table style="height:70px" >
+			          <tr>
+			            <td><h:outputText value="#{msg.height}" /></td>
+			              <td><p:inputText value="#{dashBoardManageBean.patientVitalNewPatient.heightinfeet}" size="12"/>&nbsp;
+			             <h:outputText value="ft" style="font-size: 15px; font-weight: bold;" /> 
+			              </td>
+			              <td><p:inputText value="#{dashBoardManageBean.patientVitalNewPatient.heightininches}"  size="12"/>&nbsp;
+			             <h:outputText value="in" style="font-size: 15px; font-weight: bold;" /> 
+			              </td>
+			              <td width="10%"></td>
+			              <td><h:outputText value="#{msg.weight}" /></td>
+			              <td><p:inputText id="weightId" value="#{dashBoardManageBean.patientVitalNewPatient.weight}" styleClass="inputfield" >
+			              <p:ajax update="weightId ,patWeightId,patWeightUnitId" listener="#{dashBoardManageBean.changePateintWeight}" process="@this,weightUnitID"/>
+			              </p:inputText>
+			              </td>
+			              <td>
+			               <p:selectOneMenu id="weightUnitID"
+						           value="#{dashBoardManageBean.patientVitalNewPatient.weightUnits}">
+						           <f:selectItem itemLabel="Kg"  itemValue="Kg"/>
+						           <f:selectItem itemLabel="Lbs" itemValue="Lbs" />
+						           <p:ajax update="patWeightId,patWeightUnitId" listener="#{dashBoardManageBean.changePateintWeight}" process="@this,weightId"/>
+						   </p:selectOneMenu>
+			              </td>
+			              <td>
+			              <h:outputText style="width:50px; font-weight:bold; " id="patWeightId" value="#{dashBoardManageBean.patientVitalNewPatient.convertWeight}"/>
+			              <h:outputText style="width:50px; font-weight:bold; " id="patWeightUnitId"  value="#{dashBoardManageBean.patientVitalNewPatient.updateUnites}"/>
+			              </td>
+			          </tr>
+			        </table>
+			      </td>
+			    </tr>
+			  </table>
+			  </td>
+			  <td width="50%" valign="top">
+			    <br />
+			      <table width="100%" class="secContentBorder" cellpadding="0" cellspacing="0">
+			    <tr>
+			      <td  class="secHeadPart">
+			        #{msg.clinicdetails}
+			      </td>
+			    </tr>
+			    <tr>
+			      <td  valign="top">
+			        <table width="100%" style="margin-top:5px;margin-bottom:5px">
+			          <tr>
+			            <!-- <td width="16%"> <h:outputText value="#{msg.clinicname}"/> </td> -->
+			            <td align="right">
+			              	<p:commandButton value="#{msg.addclinic}"  onclick="selectClinic.show();" type="button"></p:commandButton>
+			            </td>
+			            </tr>
+			        </table>
+			           <p:dataTable id="clinicNameID" value="#{dashBoardManageBean.patientProviderClinicListNewPatient}" var="clinic"
+			           binding="#{dashBoardManageBean.clinicRowDataBinding}" rowIndexVar="editDeleteClinicRowData" emptyMessage="#{msg.noMedFound}">
+			            <p:column headerText="#{msg.clinicid}">
+			               <h:outputText value="#{clinic.clinicId}" />
+			            </p:column>
+			            <p:column headerText="#{msg.clinicname}">
+			                <h:outputText value="#{clinic.clinicName}" />
+			            </p:column>
+			            <p:column headerText="#{msg.action}">
+			              <div align="center">
+			                <p:commandLink action="#{dashBoardManageBean.editDeleteClinicData}" immediate="true"
+											 oncomplete="deleteClinicsPopup.show();"
+											 process="@form" update=":addpateintId:clinicNameID" >
+			                <h:graphicImage value="./../../Images/delIcon.jpg" 
+									                   width="25px" height="20px" id="deleteClinicId"/>
+									                   <p:tooltip for="deleteClinicId">
+									                   	<h:outputText value="#{msg.delete}" />
+									                   </p:tooltip>
+								 <f:param name="rowIndexForclinic" value="#{editDeleteClinicRowData}"></f:param>
+								 <!-- <f:param name="clinicId" value="#{clinic.clinicId}"></f:param> -->                 
+			                </p:commandLink>
+			              </div>
+			            </p:column>
+			            </p:dataTable>  
+			              <!-- <p:outputPanel id="clinicNameID">
+			             <h:outputText value="#{dashBoardManageBean.patientProviderClinicDetail.clinicName}"></h:outputText>
+			             <ui:repeat  var="clinic" value="#{dashBoardManageBean.patientProviderClinicListNewPatient}" varStatus="loop">
+			                #{clinic.clinicName}
+			                #{!loop.last ? ',' : ''}
+			             </ui:repeat>
+			             </p:outputPanel>   -->
+			         
+			      </td>
+			    </tr>
+			  </table>
+			   </td>
+			  </tr>
+			  <tr>
+				<td colspan="2" valign="top">
+				<br />
+			   	 <table width="100%">
+					<tr>
+					 <td>
+					<table width="100%" class="secContentBorder" cellpadding="0" cellspacing="0">
+					 <tr>
+					  <td class="secHeadPart" colspan="2">
+					#{msg.insurancedet}</td>
+					</tr>
+					<tr>
+					 <td >
+					  <table cellspacing="1" align="right" style="margin-top:5px;margin-bottom:5px">
+						<tr>
+						 <td >
+							<p:commandButton  value="#{msg.primaryInsurance}"  onclick="addInsurance(1);" type="button" />
+							</td>
+							  <td>
+								<p:commandButton  value="#{msg.secInsurance}"  onclick="addInsurance(2);" type="button"/>
+							  </td>
+							  
+						 <td >
+								<p:commandButton  value="#{msg.triInsurance}"  onclick="addInsurance(3);" type="button"/>
+								 </td>
+								 <!-- 
+								 
+								 <td >
+								  <p:outputPanel id="insuranceID">
+								    <ui:repeat var="insurance" value="#{dashBoardManageBean.patientInsuranceDetailList}" varStatus="loop">
+									 #{insurance.companyName}
+									 #{!loop.last ? ',':''}				          				         
+									 </ui:repeat>
+										 </p:outputPanel>			       
+								  </td>				     -->
+								  </tr>					 
+								 </table>								         
+								<p:dataTable id="insuranceDataTable" value="#{dashBoardManageBean.patientInsuranceDetailList}" var="insurancelist" 
+								binding="#{dashBoardManageBean.newPatientInsuranceBinding}" rowIndexVar="rowEditDeleteInsurance" emptyMessage="#{msg.noMedFound}">
+								  <p:column headerText="#{msg.insuranceid}">
+								  <div align="right">
+								  <h:outputText value="#{insurancelist.insuranceId}" />
+								  </div>
+								  </p:column>
+								  <p:column headerText="#{msg.insuranceName}">
+								   <h:outputText value="#{insurancelist.companyName}" />
+								  </p:column>
+								  <p:column headerText="#{msg.insuranceype}">
+								     <h:outputText value="#{msg.primryinsurance}" rendered="#{insurancelist.primaryInsurance eq 'yes'}" />
+								     <h:outputText value="#{msg.secondryInsurance}" rendered="#{insurancelist.secondaryInsurance eq 'yes'}" />
+								     <h:outputText value="#{msg.tertarinsurance}" rendered="#{insurancelist.tertiaryInsurance eq 'yes'}" />
+								  </p:column>
+								  <p:column headerText="#{msg.action}">
+								  <div align="center">
+								      <p:commandLink   
+								           action="#{dashBoardManageBean.editDeleteRowForInsurance}" immediate="true"
+											 oncomplete="deleteInsurancePopup.show();"
+											 process="@form" update=":addpateintId:insuranceDataTable">
+											 <h:graphicImage value="./../../Images/delIcon.jpg" 
+									                   width="25px" height="20px" id="deleteInsuranceId"/>
+									                   <p:tooltip for="deleteInsuranceId">
+									                   	<h:outputText value="#{msg.delete}" />
+									                   </p:tooltip>
+										<f:param name="rowForInsurance" value="#{rowEditDeleteInsurance}"></f:param>
+										<f:param name="insuranceId" value="#{insurancelist.insuranceId}"></f:param>
+								</p:commandLink>
+								</div>  
+								  </p:column>
+								<!--  <p:column headerText="#{msg.primryinsurance}">
+								  <h:outputText value="#{insurancelist.primaryInsurance}" />
+								 </p:column>
+								 <p:column headerText="#{msg.secondryInsurance}">
+								 <h:outputText value="#{insurancelist.secondaryInsurance}" />
+								 </p:column>
+								 <p:column headerText="#{msg.tertarinsurance}">
+								  <h:outputText value="#{insurancelist.tertiaryInsurance}" />
+								 </p:column> -->					 					 
+								</p:dataTable>					 
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table> 
+			</td>
+			</tr>
+			<tr>
+			   <td colspan="2">
+			    <br />
+			   <!-- <h:form id="allergydetailsforpatient"> -->
+			          <table width="100%" class="secContentBorder" cellpadding="0" cellspacing="0"> 
+			          <tr>
+			          <td class="secHeadPart">
+			              #{msg.allergydet} 
+			          </td>
+			          </tr>
+			          <tr>
+			            <td align="right" >
+			               <p:commandButton value="#{msg.addpatientallergy}" onclick="addAllergyDialog.show();" type="button"></p:commandButton>
+			            </td>
+			          </tr>
+			           <tr>
+			             <td class="secContentBorder">
+			             <p:dataTable id="pateintallergyDataId"  value="#{dashBoardManageBean.newPatientAllergyList}" var="patAllergy" 
+			                  binding="#{patientMedicineManageBean.allergyDataTableForNewPatient}" rowIndexVar="rowNumNewPateint" emptyMessage="#{msg.noMedFound}">
+			                <p:column headerText="#{msg.alrgyNm}">
+						  		<div align="left">
+						  		<h:outputText value="#{patAllergy.allergyName}" /></div>
+						  </p:column>
+						  
+						  <p:column headerText="#{msg.alrgyServty}">
+						  		<div align="left">
+						  		<h:outputText value="#{patAllergy.allergySeverity}"/></div>
+						  </p:column>
+						  
+						  <p:column headerText="#{msg.allrgyNotes}">
+						  		<div align="left">
+						  		<h:outputText value="#{patAllergy.allergyNotes}"/></div>
+						  </p:column>
+						  
+						  
+						  <p:column headerText="#{msg.onsetDate}">
+						  		<div align="center">
+						  		<h:outputText value="#{patAllergy.onSetDate}" >
+						  		 <f:convertDateTime pattern="MM/dd/yyyy" />
+						  		 </h:outputText></div>
+
+						  </p:column>
+						  
+						  
+						 <p:column style="width:15%;">
+			                    <f:facet name="header">
+				                   <h:outputText value="#{msg.action}" />
+			                    </f:facet>
+								
+								<div align="center">
+								 <p:commandLink  
+								        action="#{patientMedicineManageBean.editDeleteRowForNewPatient}" immediate="true"
+										oncomplete="editAllergyPopup.show();" update=":editAllergyDialog">
+										<h:graphicImage value="./../../Images/editIcon.jpg" 
+									                   width="25px" height="20px" id="editAllergyId"/>
+									                   <p:tooltip for="editAllergyId">
+									                   	<h:outputText value="#{msg.edit}" />
+									                   </p:tooltip>
+											 
+										<f:param name="rowIdForAllergyNewPatient" value="#{rowNumNewPateint}"></f:param>
+										<f:param name="allergyId" value="#{patAllergy.compositeAllergyId}"></f:param>
+										<f:param name="allergy" value="#{patAllergy.allergyName}"></f:param>
+								</p:commandLink>
+								
+								<p:spacer width="10px;"></p:spacer>
+								
+								  <p:commandLink   
+								action="#{patientMedicineManageBean.editDeleteRowForNewPatient}" immediate="true"
+											 oncomplete="deleteAllergyPopup.show();"
+											 process="@form" update=":addpateintId:pateintallergyDataId">
+											 <h:graphicImage value="./../../Images/delIcon.jpg" 
+									                   width="25px" height="20px" id="deleteAllergyId"/>
+									                   <p:tooltip for="deleteAllergyId">
+									                   	<h:outputText value="#{msg.delete}" />
+									                   </p:tooltip>
+										<f:param name="rowIdForAllergyNewPatient" value="#{rowNumNewPateint}"></f:param>
+										<f:param name="allergyId" value="#{patAllergy.compositeAllergyId}"></f:param>
+								</p:commandLink>  
+								</div>
+						  </p:column>
+			             </p:dataTable>
+			             </td>
+			             </tr>
+			             </table>
+			             </td>
+			             </tr>
+			 <tr>
+			    <td colspan="2">
+			     <br />
+			      <table width="100%" class="secContentBorder" cellpadding="0" cellspacing="0">
+			       <tr>
+			        <td class="secHeadPart">
+			         #{msg.diagnosisdetail}
+			        </td>
+			       </tr>
+			       <tr>
+			         <td align="right" >
+			           <p:commandButton  value="#{msg.adddia}" onclick="diagnosisPopUpForNewPateint.show();" type="button"></p:commandButton>
+			         </td>
+			       </tr>
+			        <tr>
+			        <td class="secContentBorder">
+			        <p:dataTable id="diangosisDetailTable" var="patientDiagnoses" value="#{dashBoardManageBean.newPateintDiagosesList}" emptyMessage="#{msg.noMedFound}">
+			            <p:column headerText="#{msg.icd_10_code}">
+			              <div>
+			                <h:outputText value="#{patientDiagnoses.icdId}" />
+			              </div>
+			            </p:column>
+			            <p:column headerText="#{msg.name1}">
+			              <div>
+			                <h:outputText  value="#{patientDiagnoses.code}"/>
+			              </div>
+			            </p:column>
+			            <p:column headerText="#{msg.source}">
+			              <div>
+			                <h:outputText value="#{patientDiagnoses.icdCodeType}" />
+			              </div>
+			            </p:column>
+			            <p:column headerText="#{msg.date}">
+			              <div align="center">
+			                <h:outputText  value="#{patientDiagnoses.date}">
+			                <f:convertDateTime pattern="MM/dd/yyyy"/></h:outputText>
+			              </div>
+			            </p:column>
+			            <p:column headerText="#{msg.doctor}">
+			              <div>
+			                <h:outputText  value="Dr. #{patientDiagnoses.docFirstName} #{patientDiagnoses.docmiddleName} #{patientDiagnoses.docLastName}" />
+			              </div>
+			            </p:column>
+			            <p:column headerText="#{msg.action}">
+			              <div align="center">
+			                <p:commandLink 
+								oncomplete="deletediagnosisPopup.show();" 	
+									actionListener="#{patientManageBean.deletePatientDiagnosisNewPatient}"  update=":addDiagnosesForm" ajax="true">
+									<h:graphicImage value="./../../Images/delIcon.jpg" 
+									                   width="25px" height="20px" id="deleteDiagnosesID"/>
+									                   <p:tooltip for="deleteDiagnosesID">
+									                   	<h:outputText value="#{msg.delete}" />
+									                   </p:tooltip>
+									     <f:param name="dbId"  value="#{patientDiagnoses.id}"></f:param>
+										<f:param name="rowIdFordiagnosisList" value="#{patientDiagnoses.icdId}"></f:param>
+										<f:param name="idValue" value="#{patientDiagnoses.icdId}"></f:param>
+						                       <f:param name="codeValue" value="#{patientDiagnoses.code}"></f:param>
+								</p:commandLink>
+			              </div>
+			            </p:column>
+			        </p:dataTable>
+			        </td>
+			       </tr>
+			      </table>
+			    </td>
+			 </tr>
+			  </table>
+			  
+			  <table width="100%" class="secContentBorder" cellpadding="0" cellspacing="0">
+			      	<tr>
+			      		<td class="secHeadPart">#{msg.guarantordetail}</td>
+			      	</tr>
+			      	<tr>
+			      		<td class="secContentBorder">
+			      			<table width="100%">
+			      				<tr>
+			      					<td><h:outputText value="#{msg.firstName}"></h:outputText></td>
+			      					<td><p:inputText value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorFirstName}" styleClass="inputfield"/></td>
+			      					<td><h:outputText value="#{msg.middleName}"></h:outputText></td>
+			      					<td><p:inputText value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorMiddleName}" styleClass="inputfield"/></td>
+			      					<td><h:outputText value="#{msg.lastName}"></h:outputText></td>
+			      					<td><p:inputText value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorLastName}" styleClass="inputfield"/></td>			      					
+			      				</tr>
+			      				<tr>
+			           				<td><h:outputText value="#{msg.DOB}" /></td>
+			           				<td><p:calendar  value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorDOB}"  style="width:160px" 
+			           						showOn="button" navigator="true" pattern="MM/dd/yyyy" yearRange="c-100:c+1" readonlyInput="true" 
+			           						onfocus="$('#queryForm\\:msgs > div').hide();$('#queryForm\\:msgs > div').eq(1).show();$(this).mask('99/99/9999');return false;"
+			           						maxdate="#{patientMedicineManageBean.commonTodayDateForVallidation}"></p:calendar>
+			           				</td>
+			           				<!-- <td><h:outputText value="#{msg.relationship}"></h:outputText></td>
+			      					<td><p:inputText value="#{patientMedicineManageBean.patientGuarantor.guarantorRelationship}" styleClass="inputfield"/></td>	 -->
+			      					<td><h:outputText value="#{msg.relationship}"></h:outputText></td>
+			      					<td>
+			      					<p:selectOneMenu widgetVar="guarantorRelationship" value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorRelationship}"  style="width:160px" >
+			      						<f:selectItem itemValue="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorRelationship}" itemLabel="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorRelationship}"/>
+			      						<f:selectItem itemValue="Unknown" itemLabel="Unknown"/>
+			      						<f:selectItem itemValue="Self" itemLabel="Self"/>
+			      						<f:selectItem itemValue="Spouse" itemLabel="Spouse"/>
+			      						<f:selectItem itemValue="Child" itemLabel="Child"/>
+			      						<f:selectItem itemValue="Employer" itemLabel="Employer"/>
+			      					</p:selectOneMenu>
+			      					</td>
+			           				<!-- <td><h:outputText value="#{msg.socSecNo}" /></td>
+			           				<td><p:inputMask id="soscNumber" mask="999-99-9999" value="#{patientMedicineManageBean.commonTodayDateForVallidation}" styleClass="inputfield"  required="true"
+			           						requiredMessage="Please Enter SocialSecurityNumber"/></td> -->
+			           				<td><h:outputText value="#{msg.gender}" /></td>
+			           				<td>
+			              				<p:selectOneMenu widgetVar="guarantorGender" value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorGender}"  style="width:160px"  >
+			               				<f:selectItem itemValue="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorGender}" itemLabel="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorGender}"/>
+			              				<f:selectItem itemValue="Male" itemLabel="Male" />
+			              				<f:selectItem itemValue="Female" itemLabel="Female"/>
+			              				<f:selectItem itemValue="Others" itemLabel="Others"/>
+			              				</p:selectOneMenu>
+			           				</td>
+			        			</tr>
+			        			<tr>
+			           				<td><h:outputText value="#{msg.addressline1}" /></td>
+			           				<td><p:inputText  value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorAddress1}" styleClass="inputfield"  /></td>
+			           				<td><h:outputText value="#{msg.addressline2}" /></td>
+			           				<td><p:inputText value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorAddress2}" styleClass="inputfield" /></td>
+			           				<td><h:outputText value="#{msg.city}" /></td>
+			           				<td><p:inputText  value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorCity}" styleClass="inputfield"  /></td>
+			        			</tr>
+			        			<tr>
+			            			<td><h:outputText value="#{msg.state}" /></td>
+			           				<td><!-- <p:inputMask mask="a*" value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorState}" styleClass="inputfield"  /> -->
+			           				<p:selectOneMenu value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorState}" style="width:160px;">
+			           				<f:selectItems value="#{dashBoardManageBean.usStateList}"/>
+			           				</p:selectOneMenu>
+			           				</td>
+			           				<td><h:outputText value="#{msg.country}" /></td>
+			           				<td><!-- <p:inputText value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorCountry}" styleClass="inputfield"/> -->
+			           				<p:selectOneMenu value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorCountry}" style="width:160px;">
+			           				<f:selectItem itemValue="US" itemLabel="United States"/>
+			           				</p:selectOneMenu>
+			           				
+			           				</td>			           				
+			           				<td><h:outputText value="#{msg.zipCode}" /></td>
+			           				<td> <p:inputText value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorZip}" styleClass="inputfield"/> 
+			           				
+			           				
+			           				</td>
+			        			</tr>
+			        			<tr>			        				
+			           				<td><h:outputText value="Insured Zip4" /></td>
+			           				<td><p:inputText value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorZip4}" styleClass="inputfield"/></td>
+			           				<td><h:outputText value="#{msg.mobNo}" /></td>
+			           				<td><p:inputMask mask="(999) 999-9999" value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorHomeTelephone}" styleClass="inputfield"
+			           								/></td>
+			           				<td><h:outputText value="#{msg.phno}" /></td>
+			           				<td><p:inputMask mask="(999) 999-9999" value="#{dashBoardManageBean.patientGuarantorNewPatient.guarantorWorkTelephone}" styleClass="inputfield"
+			           								/></td>
+			        			</tr>
+			      			</table>
+			      			
+			      		</td>
+			      	</tr>
+			      
+			      </table>
+			      
+			  <br />
+			  <table width="100%"  style="margin-top:5px;margin-bottom:5px">
+			    <tr> <!-- oncomplete="validEmailAddress();" -->
+			      <td align="center"> 
+			        <p:commandButton id="donePatientId"  value="#{msg.done}" action="#{dashBoardManageBean.addPateint}" update=":addpateintId" 
+			      onclick="validationFields();" oncomplete="processFailed(xhr, status, args);"></p:commandButton>
+			      </td>
+			    </tr>
+			  </table> 
+			 </h:form> 
+			<!--  select clinic dialogBox starts -->
+			 <p:dialog  widgetVar="selectClinic" id="clinicdetails" header="#{msg.clinic}" closable="true" modal="true" 
+			      appendTo="@(body)" hideEffect="fold" width="300"  dynamic="true" >
+			      <p:ajax event="close" update=":clinicdetails" listener="#{dashBoardManageBean.resetPatientMasterDataOnCancel}"/>
+			    <h:form id="addClinicFrom">
+			     <table>
+			        <tr>
+			          <td>
+			            <h:outputText value="#{msg.clinicname}" />
+			          </td>
+			          <td>
+			             <p:inputText value="#{dashBoardManageBean.userInputForAddClinic}" id="clinicSearchBox">
+			             <p:ajax update="clinicSearchBox"></p:ajax></p:inputText>
+			          </td>
+			          <td>
+			             <p:commandButton id="clinicSearch" value="#{msg.search}" action="#{dashBoardManageBean.searchMasterClinic}" immediate="true" update=":addClinicFrom" ajax="true"/>
+			          </td>
+			        </tr>
+			     </table>
+			        <p:dataTable id="masterClinicData" value="#{dashBoardManageBean.clinicMasterDetailList}" var="clinics"
+			        binding="#{dashBoardManageBean.addClinicMasterDataNewPatient}" scrollable="true" scrollHeight="200" emptyMessage="#{msg.noMedFound}">
+			        <p:column headerText="#{msg.clinicname}">
+			          <p:commandLink value="#{clinics.clinicName}" action="#{dashBoardManageBean.addClinicsForNewPatient}" update=":addpateintId:clinicNameID,:clinicdetails"
+			          ajax="true" oncomplete="selectClinic.hide();"></p:commandLink>
+			        </p:column>
+			        </p:dataTable>
+			    </h:form>
+			 </p:dialog>
+			<!--  select clinic dialogBox Ends -->
+			
+			<!-- delete clinic dialog starts  -->
+			<p:dialog widgetVar="deleteClinicsPopup" id="deleteClinicTable" header="#{msg.deletemsg}" message="#{msg.deletemsg}"
+                    			 width="260" closable="false" modal="true" appendTo="@(body)" hideEffect="fold">
+			   <h:form>
+			        <h:panelGroup layout="block" style="text-align: center">
+					       <p:commandButton value="Yes"  actionListener="#{dashBoardManageBean.deleteClinicData}"   oncomplete="deleteClinicsPopup.hide();" update=":addpateintId:clinicNameID"  
+					                     style="text-decoration:underline;"  ajax="true"  />
+					        <p:commandButton value="No"  oncomplete="deleteClinicsPopup.hide();" />
+					   </h:panelGroup>
+			   </h:form>
+			</p:dialog>
+			<!--delete clinic dialog ends  -->
+			
+			<!--  Redirect dialogBox starts -->
+			<p:dialog widgetVar="pateintAddedDialog" id="redirectDialog"  closable="true" modal="true" 
+			      appendTo="@(body)" hideEffect="fold" width="280" >
+			      <h:form id="showRedirectDialog">
+			             <table width="100%"> 
+			             <tr>
+			               <td colspan="2" align="center">
+			                  <h:outputText value="#{msg.successmessage}" style="color:#53b5e6; font-weight:bold; font-size:11px; font-family: verdana;"/>
+			               </td>
+			             </tr>
+			             <tr>
+			              <td align="center">
+			                <p:commandButton value="#{msg.addanthor}" action="#{dashBoardManageBean.resetAddPatientDataOnAddAnotherButton}" oncomplete="pateintAddedDialog.hide();"/>
+			              </td>
+			              <td align="center">
+			              <p:commandButton value="#{msg.visitprofile}"  action="#{dashBoardManageBean.onRowSelectForNewlyAddedPatient}" oncomplete="pateintAddedDialog.hide();"/>
+			              </td>
+			             </tr>
+			             </table>
+			      </h:form>
+			</p:dialog>
+			<!--  Redirect dialogBox Ends -->
+			<!--  SocialSecurityNumber dialogBox starts -->
+			<p:dialog widgetVar="SocialSecurityNumberDialog" id="dialog_SocialSecurityNumber"  closable="true" modal="true" 
+			      appendTo="@(body)" hideEffect="fold" width="280" >
+			      <h:form id="form_SocialSecurityNumberDialog" prependId="false">
+			             <table width="100%"> 
+			             <tr>
+			              <td align="center"> 
+			              	 <h:outputText value="Duplicate SocialSecurityNumber!"></h:outputText>
+			              </td>
+			             </tr>
+			             </table>
+			      </h:form>
+			</p:dialog>
+			<!--  SocialSecurityNumber dialogBox Ends -->
+			<!--  add allergyDialog Starts -->
+			<p:dialog header="#{msg.allergy}" widgetVar="addAllergyDialog" id="allergyDetailPopup" closable="true" modal="true" appendTo="@(body)" hideEffect="fold" resizable="true"
+					dynamic="true" width="600">
+					<p:ajax event="close" listener="#{patientMedicineManageBean.resetAllergyList}" update=":allergyDetailPopup"/>
+					<h:form id="allergyDetialId" prependId="false">
+					<p:growl id="allergyDetialMessage" showDetail="false"  closable="true" redisplay="false" />
+					   <table>
+					     <tr>
+					     <td>
+					        <h:outputText value="#{msg.allergy}" style="font-size:10px;" />
+					     </td>
+					     <td>
+							<p:inputText value="#{patientMedicineManageBean.allergyNameForAddingNew}" id="allergyDeatils"  >
+	 							<p:ajax update="allergyDeatils"></p:ajax> 
+	 						</p:inputText>
+	 						<p:watermark value="#{msg.searchAllergy}" for="allergyDeatils"></p:watermark> 
+						</td>
+						<td align="left">
+							 <p:commandButton action="#{patientMedicineManageBean.searchMasterAllergyData}" value="#{msg.search}"  id="searchallergyDetialId"
+								immediate="true" update=":allergyDetialId"  ajax="true"/> 
+						 </td> 
+						 <td>
+						 		<h:outputText value="Date" />
+						 </td>
+						 <td>
+					    <!-- <p:growl id="growl" showDetail="true" redisplay="false"/> -->  
+								    <p:calendar  value="#{patientMedicineManageBean.patientAllergy.onSetDate}" showOn="button" navigator="true" pattern="MM/dd/yyyy"
+								                  readonlyInput="true"  maxdate="#{patientMedicineManageBean.commonTodayDateForVallidation}"  >  
+								        <p:ajax event="dateSelect"  update="allergyDetialMessage" />  
+								    </p:calendar>  
+						 </td>
+					</tr>
+					<tr>
+						 <td>
+							<h:outputText value="#{msg.severity}"  style="font-size:10px" />
+						</td>
+						 <td>
+							 <p:selectOneMenu value="#{patientMedicineManageBean.patientAllergy.allergySeverity}" style="width:140px;'">
+							 <f:selectItem itemLabel="#{patientMedicineManageBean.patientAllergy.allergySeverity}" itemValue="#{patientMedicineManageBean.patientAllergy.allergySeverity}"/>
+								 <f:selectItem itemLabel="#{msg.mid}" itemValue="#{msg.mid}"/>
+								 <f:selectItem itemLabel="#{msg.modarate}" itemValue="#{msg.modarate}"/>
+								 <f:selectItem itemLabel="#{msg.severe}" itemValue="#{msg.severe}"/>
+							 	<p:ajax update="searchallergyDetialId" ajax="true"></p:ajax> 
+							 </p:selectOneMenu>
+						 </td>
+						 <td></td>
+						<td><h:outputText value="#{msg.allrgyNotes}" /></td>
+							<td>
+								<p:inputTextarea  id="notes"  value="#{patientMedicineManageBean.patientAllergy.allergyNotes}" maxlength="200"  cols="20" rows="3">
+											<p:ajax update="notes"></p:ajax> 
+								</p:inputTextarea>
+							</td>
+						</tr>
+					</table>
+					<table align="center">
+							<tr>
+							<td>
+								<p:commandButton value="#{msg.submit}"   action="#{dashBoardManageBean.addNewPatientAllergy}"  
+									  update=":allergyDetialId:allergydetailtable,:addpateintId:pateintallergyDataId,:allergyDetialId:allergyDetialMessage,:allergyDetailPopup"  oncomplete="allergyValidation(xhr, status, args)" >
+								</p:commandButton> 
+							</td >
+						</tr>
+					   </table>
+					    <p:dataTable value="#{patientMedicineManageBean.allergyMasterList}" var="mstrAllergy"   id="allergydetailtable"
+				 			binding="#{patientMedicineManageBean.masterDataBindingTable}" 
+							resizableColumns="true" scrollable="true"  scrollHeight="400" lazy="true" 
+							draggableColumns="true" emptyMessage="#{msg.noMedFound}">
+				  	<p:column headerText="#{msg.allergyname}" >
+				  			<p:commandLink  value="#{mstrAllergy.allergyName}" actionListener="#{patientMedicineManageBean.findAllergyNameForNewPatient}" 
+				  					update=":allergyDetailPopup"  style="text-decoration:underline;">
+				  			</p:commandLink>
+				    </p:column>
+				 </p:dataTable>
+					</h:form>
+			</p:dialog>
+			<!--  add allergyDialog Ends -->
+			 <!-- add Diagnoses PopUp starts -->
+			<p:dialog id="diagnosisPopUpIdNewPateint" header="#{msg.diagnosis}" widgetVar="diagnosisPopUpForNewPateint" modal="true" appendTo="@(body)" hideEffect="fold" resizable="true"
+					dynamic="true" width="600" position="430,100" closable="true">
+					<p:ajax event="close" update=":diagnosisPopUpIdNewPateint" listener="#{patientManageBean.cleanDiagnosisForm}"/>
+					<h:form id="addDiagnosesForm">
+					<p:growl id="diagnosisDetialMessage" showDetail="false"  closable="true" redisplay="false" />
+					 <table>
+					   <tr>
+						<td> <p:selectOneRadio id="options"
+							value="#{patientManageBean.selectIntervention}">
+							<f:selectItem itemLabel="Search According Diagnosis Name" itemValue="1" />
+							<f:selectItem itemLabel="Search According ICD Code" itemValue="2" noSelectionOption="false"/>
+						</p:selectOneRadio> 
+						</td>
+					</tr>
+					 </table>
+					 <table>
+					   <tr>
+					   <td>
+							<h:outputText value="#{msg.diagnosisname} :" style="font-size:10px;" />
+						</td>
+						<td align="left">
+							<p:inputText size="55"  value="#{patientManageBean.userInputForIcdDiagnosisSearchTable}" id="codeForSearch"  >
+	 						 <p:ajax update="codeForSearch"></p:ajax>  
+	 						</p:inputText>
+	 						<p:watermark value="#{msg.diagnosiname} According Name and ICD Code" for="codeForSearch"></p:watermark> 
+						</td>
+					   </tr>
+					   <tr>
+						<td>
+							<h:outputText value="#{msg.select_icd_Format} :" style="font-size:10px;" />
+						</td>
+						<td>
+						  <p:selectOneMenu id="icd_drpDown" value="#{patientManageBean.selectedIcdFormat}" immediate="true"
+		                        required="true" style="width:137px;">
+								 <f:selectItem itemLabel="#{msg.icd9}" itemValue="#{msg.icd9}" />
+								 <f:selectItem itemLabel="#{msg.icd10}" itemValue="#{msg.icd10}" />
+							 <p:ajax update="icd_drpDown"/>
+							</p:selectOneMenu>
+						</td>
+						</tr>
+						<tr>
+						 <td colspan="2" align="left">
+							 <p:commandButton value="#{msg.search}" actionListener="#{patientManageBean.searchMasterDiagnosisDataNewPatient}" 
+								 update=":addDiagnosesForm:panel_adddignosis"/> 
+						 	<!-- <p:commandButton value="#{msg.cancel}" actionListener="#{patientManageBean.cleanDiagnosisForm}"/>  -->
+						</td>
+						</tr>
+					 </table>
+					 <p:outputPanel id="panel_adddignosis">
+		          <p:outputPanel id="panel_icd10dignosisNew" rendered="#{patientManageBean.selectedIcdFormat eq 'ICD10'}"> 
+		           <p:dataTable value="#{patientManageBean.dignosisdetailsList}" var="searchDiagnosis"  id="searchdatatable"
+	 			       binding="#{patientManageBean.masterDiagnosesDataBindingNewPatient}" 
+							  scrollable="true" resizableColumns="false" scrollHeight="400" lazy="true" emptyMessage="#{msg.noMedFound}" >
+							
+							<f:facet name="header">
+           									 ICD 10 Details
+       						 </f:facet>
+							
+				  		<p:column headerText="Short Description " width="2%">
+				  			<p:commandLink value="#{searchDiagnosis.shortDesc}" action="#{dashBoardManageBean.addNewPatientDiagnosesIcd10}"
+				  			 style="text-decoration:underline;" update=":addpateintId:diangosisDetailTable,:addDiagnosesForm:diagnosisDetialMessage,:diagnosisPopUpIdNewPateint" ajax="true" oncomplete="diagnosisPopUpForNewPateint.hide();"/>
+				    	</p:column>
+				    	
+				    	<p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="Long Description" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.longDesc}" />
+					</p:column>
+					
+				    	<p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="ICD Code" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.formattedDxCode}" />
+					</p:column>
+				  </p:dataTable>
+				 </p:outputPanel>
+				 <p:outputPanel id="panel_icd9dignosisNew" rendered="#{patientManageBean.selectedIcdFormat eq 'ICD9'}">
+				   <p:dataTable value="#{patientManageBean.icd9DiagnosisList}" var="searchDiagnosis"  id="searchicd9datatable"
+	 			         binding="#{patientManageBean.masterIcd9Binding}" 
+							  scrollable="true" resizableColumns="false" scrollHeight="200" lazy="true" emptyMessage="#{msg.noMedFound}">
+							<f:facet name="header">
+           									 ICD 9 Details
+       						 </f:facet>
+				  	<p:column headerText="Short Description" width="2%">
+				  			<p:commandLink value="#{searchDiagnosis.shortDescription}" action="#{dashBoardManageBean.addNewPatientDiagnosesIcd9}"
+				  			 style="text-decoration:underline;" update=":addpateintId:diangosisDetailTable,:addDiagnosesForm:diagnosisDetialMessage,:diagnosisPopUpIdNewPateint" ajax="true" oncomplete="diagnosisPopUpForNewPateint.hide();" />
+				    </p:column>
+				    <p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="Long Description" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.longDiscription}" />
+					</p:column>
+				    <p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="ICD Code" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.formatedCode}" />
+					</p:column>
+				  </p:dataTable>
+			    </p:outputPanel>
+			   </p:outputPanel>
+					</h:form>
+			</p:dialog>
+			<!--  add diagnoses ends -->
+			<!--  edit allergy popup start -->
+			<p:dialog id="editAllergyDialog" widgetVar="editAllergyPopup" width="320" closable="false" 
+			  			modal="true" appendTo="@(body)" hideEffect="fold" header="Allergy Edit">
+			    <h:form> 
+			        <table>
+			        <tr>
+			           <td> 
+					    	<h:outputText value="#{msg.allergy}" />
+					    </td>
+			           <td> 
+					    	<h:outputText value="#{patientMedicineManageBean.patientAllergy.allergyName}" style="font-weight:bold;"/>
+					    </td>
+			        </tr>
+                     <tr>
+					 	<td>  
+						   <h:outputText value="#{msg.severity}"  style="font-size:10px" />
+						</td> 
+						<td>
+						  <p:selectOneMenu value="#{patientMedicineManageBean.patientAllergy.allergySeverity}" 
+						    	style="width:140px;">
+						     <f:selectItem itemLabel="#{patientMedicineManageBean.patientAllergy.allergySeverity}" 
+						     	itemValue="#{patientMedicineManageBean.patientAllergy.allergySeverity}"/>
+							 <f:selectItem itemLabel="#{msg.mid}" itemValue="#{msg.mid}"/>
+							 <f:selectItem itemLabel="#{msg.modarate}" itemValue="#{msg.modarate}"/>
+							 <f:selectItem itemLabel="#{msg.severe}" itemValue="#{msg.severe}"/>
+						  </p:selectOneMenu>
+						</td>
+					 </tr>
+					 <tr>
+					 	<td>
+					 		<h:outputText value="Allergy Notes" />
+					 	</td>
+					 	
+					 	<td>
+					 		<!-- <p:inputText id="editNotes" value="#{patientMedicineManageBean.patientAllergy.allergyNotes}" >
+					 			<p:ajax update="editNotes"></p:ajax>
+					 		</p:inputText> -->
+					 		<p:inputTextarea  id="editNotes"  value="#{patientMedicineManageBean.patientAllergy.allergyNotes}" maxlength="200" cols="20" rows="3">
+											<p:ajax update="editNotes"></p:ajax> 
+								</p:inputTextarea>
+					 	</td>
+					 	
+					 	
+					 	
+					 </tr>
+					 
+					 <tr>
+					 	<td> 
+					    	<h:outputText value="date" />
+					    </td>
+		           		
+		           		<td> 
+					    	<!-- <h:outputText value="#{patientMedicineManageBean.patientAllergy.onSetDate}" style="font-weight:bold;"/> -->
+					    	 <p:growl id="growl" showDetail="true"/>  
+					    	<p:calendar  value="#{patientMedicineManageBean.patientAllergy.onSetDate}" showOn="button" navigator="true" maxdate="#{patientMedicineManageBean.commonTodayDateForVallidation}">  
+								        <p:ajax event="dateSelect"  update="growl" />  
+								    </p:calendar> 
+					    </td>
+					 </tr>
+					 <tr>
+					   <td>     
+		 			      <p:commandButton value="#{msg.save}" actionListener="#{patientMedicineManageBean.editAllergyRowNewPateint}" 
+		 			            oncomplete="editAllergyPopup.hide();" update=":addpateintId:pateintallergyDataId" ajax="true"/>
+		 			   </td>
+				       <td>
+				          <p:commandButton value="#{msg.cancel}"  oncomplete="editAllergyPopup.hide();"/>
+				       </td>      
+					 </tr>
+				  </table>
+			    </h:form>
+			  </p:dialog>
+			  <!--  edit allergy popup end -->
+			  
+			  <!-->>>>>>>>>>>>>>>>>>>>>>>popup dor delete alergy>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			  
+			  <p:dialog widgetVar="deleteAllergyPopup" id="deleteAllergyForNewPatient" header="Are you Sure you want to delete?" message="Are you Sure you want to delete?"
+                    			 width="260" closable="false" modal="true" appendTo="@(body)" hideEffect="fold">
+                    	<h:form>		 
+					        <h:panelGroup layout="block" style="text-align: center">
+					            <p:commandButton value="Yes" process="@this" actionListener="#{patientMedicineManageBean.deleteAllergyNewPatient}" update=":addpateintId:pateintallergyDataId"  oncomplete="deleteAllergyPopup.hide();"  />
+					            <p:commandButton value="No"  oncomplete="deleteAllergyPopup.hide();" />
+					        </h:panelGroup>
+					    </h:form>
+   					 </p:dialog>
+   					 <!-->>>>>>>>>>>>>>>>>>>>>>>popup for delete alergy end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+   					 
+   					 <!--  delete diagnoses popup start -->
+   					 <p:dialog widgetVar="deletediagnosisPopup" id="deletediagnosisDetailspopup" header="#{msg.deletemsg}" message="#{msg.deletemsg}"
+                    			 width="260" closable="false" modal="true" appendTo="@(body)" hideEffect="fold">
+                    	<h:form >	
+                    	 <p:growl id="growl" showDetail="true"/>  	 
+					        <h:panelGroup layout="block" style="text-align: center">
+					            <p:commandButton value="Yes"  actionListener="#{patientManageBean.deleteDiagnosisRowNewPatient}"   oncomplete="deletediagnosisPopup.hide();" update=":addpateintId:diangosisDetailTable"  style="text-decoration:underline;"  ajax="true"  />
+					            <p:commandButton value="No"  oncomplete="deletediagnosisPopup.hide();" />
+					        </h:panelGroup>
+					    </h:form>
+   					 </p:dialog>
+   					 <!--  delete diagnoses popup end -->
+   					 
+   					 <!--  select Insurance popup start -->
+   					 <p:dialog id="patientInsurance" widgetVar="selectInsurancePopup" header="#{msg.addinsurance}" width="350" closable="true" 
+   					           appendTo="@(body)" hideEffect="fold" modal="true" dynamic="true">
+   					           <p:ajax event="close" update=":patientInsurance" listener="#{dashBoardManageBean.resetPatientMasterDataOnCancel}"/>
+   					           <h:form id="patientInsuranceForm">
+   					              <table>
+   					                 <tr>
+   					                   <td>
+   					                      <h:outputText value="#{msg.insuranceName}" />
+   					                   </td>
+   					                   <td>
+   					                     <p:inputText value="#{dashBoardManageBean.userInputForAddInsurance}" id="searchInsuranceId">
+   					                       <p:ajax update="searchInsuranceId"/>
+   					                     </p:inputText>
+   					                   </td>
+   					                 </tr>
+   					                 <tr>
+   					                  <td>
+   					                    <p:commandButton value="#{msg.search}" action="#{dashBoardManageBean.searchForpatientInsurance}"
+   					                                       update=":patientInsuranceForm:masterInsuranceTable"/>
+   					                  </td>
+   					                 </tr>
+   					              </table>
+   					              <p:dataTable id="masterInsuranceTable" value="#{dashBoardManageBean.masterInsuranceDetailList}"  var="insurancedtl" 
+   					                            binding="#{dashBoardManageBean.masterInsuranceTableBinding}" scrollable="true" scrollHeight="200" emptyMessage="#{msg.noMedFound}">
+   					               <!-- <p:column headerText="#{msg.insuranceid}">
+   					                  <p:commandLink value="#{insurancedtl.id}" action="#{dashBoardManageBean.addInsuranceForNewpatient}" 
+   					                  oncomplete="selectInsurancePopup.hide();" update=":addpateintId:insuranceDataTable,:patientInsurance" ajax="true"/>
+   					               </p:column>
+   					               <p:column headerText="#{msg.insuranceName}">
+   					                     <p:commandLink value="#{insurancedtl.companyName}" action="#{dashBoardManageBean.addInsuranceForNewpatient}" 
+   					                        oncomplete="selectInsuranceAddedValuesPopup.show();"  update=":addpateintId:insuranceDataTable,:patientInsurance" ajax="true"/> 
+   					                  </p:column> -->
+   					                  <p:column headerText="#{msg.insuranceid}">
+   					                  <p:commandLink value="#{insurancedtl.id}" action="#{dashBoardManageBean.addInsuranceForNewpatient}" 
+   					                  				oncomplete="selectInsuranceAddedValuesPopup.show();" update=":patientInsuranceAddedValuesFormID,:patientInsuranceForm,:patientInsurance"/>
+   					               </p:column>
+   					               <p:column headerText="#{msg.insuranceName}">
+   					                  <p:commandLink value="#{insurancedtl.companyName}" action="#{dashBoardManageBean.addInsuranceForNewpatient}" 
+   					                     			oncomplete="selectInsuranceAddedValuesPopup.show();" update=":patientInsuranceAddedValuesFormID,:patientInsuranceForm,:patientInsurance" /> 
+   					                  </p:column>
+   					              </p:dataTable>
+   					           </h:form>
+   					 </p:dialog>
+   					 <!--  select Insurance popup end -->
+   					 
+   					 <p:dialog id="patientInsuranceAddValues" widgetVar="selectInsuranceAddedValuesPopup" header="#{msg.addinsurance}" width="1000" closable="true" 
+   					           appendTo="@(body)" hideEffect="fold" modal="true" dynamic="true" height="300">
+   					    <p:ajax event="close" update=":patientInsuranceAddValues" />
+   					
+   					 	<h:form id="patientInsuranceAddedValuesFormID">
+   					 	 <p:messages id="insuranceErrMessagesId" showDetail="false" autoUpdate="false" closable="true" />
+   					 		<table style="width:100%">
+   					 			<tr>
+   					 				<td><h:outputText value="Payor Name"/></td>
+   					 				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.payorName}" styleClass="inputfield"></p:inputText></td>
+   					 			
+   					 				<td><h:outputText value="Address1"/></td>
+   					 				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.payorAddress1}" styleClass="inputfield"></p:inputText></td>
+   					 			
+   					 				<td><h:outputText value="Address2"/></td>
+   					 				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.payorAddress2}" styleClass="inputfield"></p:inputText></td>
+   					 			</tr>
+   					 			<tr>
+   					 				<td><h:outputText value="City"/></td>
+   					 				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.payorCity}" styleClass="inputfield"></p:inputText></td>
+   					 			
+   					 				<td><h:outputText value="State"/></td>
+   					 				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.payorState}" styleClass="inputfield"></p:inputText></td>
+   					 			
+   					 				<td><h:outputText value="Zip"/></td>
+   					 				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.payorZip}" styleClass="inputfield"></p:inputText></td>
+   					 			</tr>
+   					 			<tr>
+   					 				<td><h:outputText value="Zip4"/></td>
+   					 				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.payorZip4}" styleClass="inputfield"></p:inputText></td>
+   					 			
+   					 				<td><h:outputText value="Country"/></td>
+   					 				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.payorCountry}" styleClass="inputfield"></p:inputText></td>
+   					 			
+   					 				<td><h:outputText value="Insurance service provider"/></td>
+   					 				<td>
+   					 				<p:selectOneMenu  value="#{dashBoardManageBean.userInsuranceDetailAdd.insuranceServiceProvider}"  style="width:160px" >
+			      						<f:selectItem itemValue="#{dashBoardManageBean.userInsuranceDetailAdd.insuranceServiceProvider}" itemLabel="#{dashBoardManageBean.userInsuranceDetailAdd.insuranceServiceProvider}"/>
+			      						<f:selectItem itemValue="Medicare" itemLabel="Medicare"/>
+			      						<f:selectItem itemValue="BCBS" itemLabel="BCBS"/>
+			      						<f:selectItem itemValue="Other" itemLabel="Other"/>			      						
+			      					</p:selectOneMenu>
+			      					</td>
+   					 			</tr>
+   					 			<tr>
+   					 				<td><h:outputText value="Relationship"/></td>
+   					 				<td>
+   					 				<p:selectOneMenu  value="#{dashBoardManageBean.userInsuranceDetailAdd.patientRelationship}"  style="width:160px" >
+			      						<f:selectItem itemValue="#{dashBoardManageBean.userInsuranceDetailAdd.patientRelationship}" itemLabel="#{dashBoardManageBean.userInsuranceDetailAdd.patientRelationship}"/>
+			      						<f:selectItem itemValue="Unknown" itemLabel="Unknown"/>
+			      						<f:selectItem itemValue="Self" itemLabel="Self"/>
+			      						<f:selectItem itemValue="Spouse" itemLabel="Spouse"/>
+			      						<f:selectItem itemValue="Child" itemLabel="Child"/>
+			      						<f:selectItem itemValue="Employer" itemLabel="Employer"/>
+			      					</p:selectOneMenu>
+			      					</td>
+   					 			
+   					 				<td><h:outputText value="Priority code"/></td>
+   					 				<td>
+   					 				<p:selectOneMenu  value="#{dashBoardManageBean.userInsuranceDetailAdd.priorityCode}"  style="width:160px" >
+			      						<f:selectItem itemValue="#{dashBoardManageBean.userInsuranceDetailAdd.priorityCode}" itemLabel="#{dashBoardManageBean.userInsuranceDetailAdd.priorityCode}"/>
+			      						<f:selectItem itemValue="Primary" itemLabel="Primary"/>
+			      						<f:selectItem itemValue="Secondary" itemLabel="Secondary"/>
+			      						<f:selectItem itemValue="Tertiary" itemLabel="Tertiary"/>			      						
+			      					</p:selectOneMenu>
+			      					</td>
+   					 			
+   					 				<td><h:outputText value="Policy number"/></td>
+   					 				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.policyNumber}" styleClass="inputfield"></p:inputText></td>
+   					 			</tr>
+   					 			
+   					 			<tr>
+			      					<td><h:outputText value="Insured #{msg.firstName}"></h:outputText></td>
+			      					<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredFirstName}" styleClass="inputfield"/></td>
+			      					<td><h:outputText value="Insured #{msg.middleName}"></h:outputText></td>
+			      					<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredMiddleName}" styleClass="inputfield"/></td>
+			      					<td><h:outputText value="Insured #{msg.lastName}"></h:outputText></td>
+			      					<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredLastName}" styleClass="inputfield"/></td>			      					
+			      				</tr>
+			      				
+			        			<tr>
+			           				<td><h:outputText value="Insured #{msg.addressline1}" /></td>
+			           				<td><p:inputText  value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredAddress1}" styleClass="inputfield"  /></td>
+			           				<td><h:outputText value="Insured #{msg.addressline2}" /></td>
+			           				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredAddress2}" styleClass="inputfield" /></td>
+			           				<td><h:outputText value="Insured #{msg.city}" /></td>
+			           				<td><p:inputText  value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredCity}" styleClass="inputfield"  /></td>
+			        			</tr>
+			        			<tr>
+			            			<td><h:outputText value="Insured #{msg.state}" /></td>
+			           				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredState}" styleClass="inputfield"  /></td>
+			           				<td><h:outputText value="Insured #{msg.zipCode}" /></td>
+			           				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredZip}" styleClass="inputfield"/></td>
+			           				<td><h:outputText value="Insured Zip4" /></td>
+			           				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredZip4}" styleClass="inputfield"
+			           								/></td>
+			        			</tr>
+			        			<tr>
+			            			<td><h:outputText value="Insured #{msg.country}" /></td>
+			           				<td><p:inputText value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredCountry}" styleClass="inputfield"  /></td>
+			           				<td><h:outputText value="Insured #{msg.DOB}" /><h:outputText value="*" styleClass="mandatoryField"/></td>
+			           				<td><p:calendar value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredDOB}"  style="width:160px" 
+			           showOn="button" navigator="true" pattern="MM/dd/yyyy" yearRange="c-100:c+1" readonlyInput="true" required="true" requiredMessage="Please Enter Mandatory Fields"
+			          onfocus="$('#queryForm\\:msgs > div').hide();$('#queryForm\\:msgs > div').eq(1).show();$(this).mask('99/99/9999');return false;"
+			            maxdate="#{patientMedicineManageBean.commonTodayDateForVallidation}"></p:calendar></td>
+			           				<td><h:outputText value="Insured #{msg.gender}" /></td>
+			           				<td>
+			           					<p:selectOneMenu  value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredGender}"  style="width:160px"  >
+			               					<f:selectItem itemValue="#{dashBoardManageBean.userInsuranceDetailAdd.insuredGender}" itemLabel="#{dashBoardManageBean.userInsuranceDetailAdd.insuredGender}"/>
+			              					<f:selectItem itemValue="Male" itemLabel="Male" />
+			              					<f:selectItem itemValue="Female" itemLabel="Female"/>
+			              					<f:selectItem itemValue="Others" itemLabel="Others"/>
+			              				</p:selectOneMenu>
+			           				</td>
+			        			</tr>
+			        			<tr>
+			        				<td><h:outputText value="Insured #{msg.mobNo}" /></td>
+			        				<td><p:inputMask mask="(999) 999-9999" value="#{dashBoardManageBean.userInsuranceDetailAdd.insuredHomeTelephone}" styleClass="inputfield"
+			           								/></td>
+			        			</tr>
+			        			<tr align="center" style="width:100%">
+			        				<td align="center">
+			        					<p:commandButton actionListener="#{dashBoardManageBean.addInsurance}" value="Save" style="text-align:center"
+   					                        oncomplete="validateInsuranceData(xhr, status, args)"  update=":addpateintId:insuranceDataTable,:patientInsurance,:patientInsuranceAddedValuesFormID:insuranceErrMessagesId" ></p:commandButton>
+			        				</td>
+			        			</tr>
+   					 		</table>
+   					 	</h:form>
+   					 		
+   					 		          
+   					 </p:dialog>
+   					 
+   					 
+   					 <!-- delete insurance popup starts -->
+   					 <p:dialog id="deletePatientInsurance" widgetVar="deleteInsurancePopup" header="#{msg.deletemsg}" message="#{msg.deletemsg}"
+                    			 width="260" closable="false" modal="true" appendTo="@(body)" hideEffect="fold">
+                    			 <h:form>
+                    			   <h:panelGroup layout="block" style="text-align: center">
+					            <p:commandButton value="Yes"  actionListener="#{dashBoardManageBean.deleteInsurance}"   oncomplete="deleteInsurancePopup.hide();" update=":addpateintId:insuranceDataTable"  
+					                     style="text-decoration:underline;"  ajax="true"  />
+					            <p:commandButton value="No"  oncomplete="deleteInsurancePopup.hide();" />
+					        </h:panelGroup>
+                    			 </h:form>
+   					</p:dialog>
+   					 <!--delete insurance popup ends-->
+			</p:layoutUnit>
+				</p:layout>
+    </f:view>	     
+</h:body>
+</html>

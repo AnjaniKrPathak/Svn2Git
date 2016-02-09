@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 14 Jan, 2015 11:19:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.ReconcileInfo" table="reconcile_info">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="patientId" type="int">
+            <column name="patient_id" />
+        </property>
+        <property name="drugId" type="double">
+            <column name="drug_id" />
+        </property>
+        <property name="drugNameId" type="double">
+            <column name="drug_name_id" />
+        </property>
+        <property name="providerId" type="int">
+            <column name="provider_id" />
+        </property>
+        <property name="clinicProviderId" type="int">
+            <column name="clinic_provider_id" />
+        </property>
+        <property name="lastReconciledBy" type="int">
+            <column name="last_reconciled_by" />
+        </property>
+        <property name="lastReconciledDate" type="java.util.Date">
+            <column name="last_reconciled_date" />
+        </property>
+         <property name="status" type="boolean">
+            <column name="status" />
+        </property>
+    </class>
+</hibernate-mapping>

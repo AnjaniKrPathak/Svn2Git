@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.PatientGuarantor"
+		table="patient_guarantor" >
+		<id name="id" type="int">
+			<column name="id" />
+			<generator class="increment" />
+		</id>
+		<property name="userID" type="int">
+			<column name="user_id" />
+		</property>
+		<property name="guarantorID" type="int">
+			<column name="guarantor_ID" />
+		</property>
+		<property name="guarantorFirstName" type="java.lang.String">
+			<column name="guarantor_first_name" />
+		</property>
+		<property name="guarantorMiddleName" type="java.lang.String">
+			<column name="guarantor_middle_name" />
+		</property>
+		<property name="guarantorLastName" type="java.lang.String">
+			<column name="guarantor_last_name" />
+		</property>
+		<property name="guarantorDOB" type="java.util.Date">
+			<column name="guarantor_dob" />
+		</property>
+		<!-- <property name="guarantorGender" type="java.lang.String">
+			<column name="guarantor_gender" />
+		</property> -->
+		<property name="guarantorGender" type="java.lang.String">
+			<column name="guarantor_gender" />
+		</property>
+		<property name="guarantorAddress1" type="java.lang.String">
+		    <column name="guarantor_address1"></column>
+		</property>
+		<property name="guarantorAddress2" type="java.lang.String">
+			<column name="guarantor_address2" />
+		</property>
+		
+		<property name="guarantorCity" type="java.lang.String">
+			<column name="guarantor_city" />
+		</property>
+		<property name="guarantorState" type="java.lang.String">
+			<column name="guarantor_state" />
+		</property>
+		<property name="guarantorZip" type="java.lang.String">
+			<column name="guarantor_zip" />
+		</property>
+		<property name="guarantorZip4" type="java.lang.String">
+			<column name="guarantor_zip4" />
+		</property>
+		<property name="guarantorCountry" type="java.lang.String">
+			<column name="guarantor_country" />
+		</property>
+		<property name="guarantorHomeTelephone" type="java.lang.String">
+			<column name="guarantor_home_telephone" />
+		</property>
+		<property name="guarantorWorkTelephone" type="java.lang.String">
+			<column name="guarantor_work_telephone" />
+		</property>
+		<property name="guarantorRelationship" type="java.lang.String">
+			<column name="guarantor_relationship" />
+		</property>
+		
+		<!-- <many-to-one name="userLoginDetail" class="com.clinakos.data.model.patient.UserLoginDetail" column="user_id" not-null="true"/> -->
+		
+	</class>
+</hibernate-mapping>

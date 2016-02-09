@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.core.ProviderDetail" table="provider_detail">
+		<id name="id" type="int" column="id">
+			<generator class="increment" />
+		</id>
+
+		<property name="name" type="java.lang.String">
+			<column name="Name" />
+		</property>
+		<property name="organizationType" type="java.lang.String">
+			<column name="org_type" />
+		</property>
+		<property name="locationName" type="java.lang.String">
+			<column name="location_name" />
+		</property>
+		
+		<property name="address1" type="java.lang.String">
+			<column name="address1" />
+		</property>
+		<property name="address2" type="java.lang.String">
+			<column name="address2" />
+		</property>
+		<property name="city" type="java.lang.String">
+			<column name="city" />
+		</property>
+		<property name="state" type="java.lang.String">
+			<column name="state" />
+		</property>
+		<property name="zip" type="java.lang.String">
+			<column name="zip" />
+		</property>
+		<property name="country" type="java.lang.String">
+			<column name="country" />
+		</property>
+		<property name="primaryPhoneNumber" type="java.lang.String">
+			<column name="primary_phone_number" />
+		</property>
+		<property name="primaryFaxNumber" type="java.lang.String">
+			<column name="primary_fax_number" />
+		</property>
+		
+		<property name="accountId" type="java.lang.String">
+			<column name="account_id" />
+		</property>
+		<property name="siteId" type="java.lang.String">
+			<column name="site_id" />
+		</property>
+		
+		
+		<set name="providerLocation" table="provider_location" 
+				inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="provider_id" not-null="true" />
+            </key>
+            <one-to-many class="com.clinakos.data.model.core.ProviderLocation" />
+        </set>
+
+	</class>
+</hibernate-mapping>

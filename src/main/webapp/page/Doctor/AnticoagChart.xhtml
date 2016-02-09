@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+<h:body onload="#{dashBoardManageBean.setnewchartIndex()}">
+	
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<meta Http-Equiv="Cache-Control" content="no-cache, no-store, must-revalidate,max-age=0" />
+        		<meta Http-Equiv="Pragma" Content="no-cache" />
+        		<meta Http-Equiv="Expires" Content="-1"/>
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+             
+
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+
+<style>
+.chart {
+    height: 200px;
+}
+
+.spacer {
+    height: 20px;
+}
+
+.mypiechart {
+  width: 500px;
+  border: 2px;
+}
+</style>
+<!-- highcharts charts implementation -->
+<!-- top 10 Diagnoses -->
+	
+<!-- hight charts implementation End -->
+ 			
+</h:head>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>...for Top display>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+ 
+ 	              
+<table width="100%" border="0">
+	<tr>						
+		 <td align="center" >
+		
+<script type="text/javascript" src="../../JavaScript/highcharts_analytic.js"></script>
+
+<script type="text/javascript">
+
+$(function () {
+	$('#container').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['Initiation', 'Maintenance']
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ' '
+            }
+        },
+        legend: {
+            backgroundColor: '#FFFFFF',
+            reversed: true
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal'
+            }
+        },
+            series: [
+            	{
+                    name: 'higher',
+                    data: [#{userManageBean.numberofpatientformedactionplanforgraterrangeforintiationphase.size()}, #{userManageBean.numberofpatientformedactionplanforgraterrange.size()}+10]
+                },
+                {
+                    name: 'high',
+                    data: [#{userManageBean.numberofpatientformedactionplanforinitiationphase.size()}, #{userManageBean.numberofpatientformedactionplan.size()}+8]
+                },
+                {
+                    name: 'Medium',
+                    data: [#{userManageBean.numberofpatientformedactionplanforhigherendofpatientforintiationphase.size()}, #{userManageBean.numberofpatientformedactionplanforhigherendofpatient.size()}+5]
+                },
+                {
+            		name: 'Low',
+            		data: [#{userManageBean.numberOfPatientforanticoagclinicforintiationphase.size()}, #{userManageBean.numberOfPatientforanticoagclinic.size()}+2]
+        		}]
+    });
+});
+
+	
+	    
+		</script>
+		   <div id="container" style="min-width: 310px; max-width: 600px; height: 160px; margin: 0 auto"></div>
+		
+		</td>
+
+	</tr>
+						
+</table>
+
+		
+		
+	</f:view>
+</h:body>
+
+</html>
+
+
+
+

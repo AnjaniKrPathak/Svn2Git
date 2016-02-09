@@ -1,0 +1,928 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+<h:body onload="#{dashBoardManageBean.setnewchartIndex()}">
+	
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<meta Http-Equiv="Cache-Control" content="no-cache, no-store, must-revalidate,max-age=0" />
+        		<meta Http-Equiv="Pragma" Content="no-cache" />
+        		<meta Http-Equiv="Expires" Content="-1"/>
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+             
+
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+
+<style>
+.chart {
+    height: 200px;
+}
+
+.spacer {
+    height: 20px;
+}
+
+.mypiechart {
+  width: 500px;
+  border: 2px;
+}
+</style>
+<!-- highcharts charts implementation -->
+<!-- top 10 Diagnoses -->
+	
+<script type="text/javascript" src="../../JavaScript/highcharts.js"></script>
+<script type="text/javascript" src="../../JavaScript/exporting.js"></script>
+<script type="text/javascript" src="../../JavaScript/highcharts-more.js"></script>
+<script type="text/javascript" src="../../JavaScript/solid-gauge.src.js"></script>
+<script type="text/javascript" src="../../JavaScript/heatmap.js"></script>
+
+
+<!-- <script src="http://code.highcharts.com/highcharts-more.js"></script>
+
+<script src="http://code.highcharts.com/modules/solid-gauge.src.js"></script>
+ -->
+<script type="text/javascript">
+
+
+<!-- New DT Pie -->
+
+		$(function() {
+    // Create the first chart
+      diagnosisValue = '#{dashBoardManageBean.diagnosesChartBarList}';
+
+      var diagData = $.parseJSON(diagnosisValue);
+
+      $.each(diagData, function(index,value){
+          });
+
+        var fetchingJsonData = new Array();
+
+        for(var j in diagData)
+            {
+        console.log("diagosisNames  "+diagData[j].diagnosesName);
+        console.log("noofpatients  "+diagData[j].noofpatients);
+            
+        var diagnosisNames= diagData[j].diagnosesName;
+		
+		 var totalPatients = diagData[j].noofpatients;
+
+         fetchingJsonData.push([(diagnosisNames),(totalPatients)]);
+            }
+         console.log("chartdatalist  "+fetchingJsonData);
+         $('#container').highcharts({
+             chart: {
+                 type: 'column'
+             },
+             title: {
+                 text: ' '
+             },
+             subtitle: {
+                 text: ''
+             },
+             xAxis: {
+                 type: 'category',
+                 labels: {
+                     rotation: -45,
+                     style: {
+                         fontSize: '10px',
+                         fontFamily: 'Verdana, sans-serif'
+                     }
+                 }
+             },
+             yAxis: {
+                 min: 0,
+                 title: {
+                     text: ''
+                        
+                 }
+             },
+             legend: {
+                 enabled: false
+             },
+             tooltip: {
+                 pointFormat: 'TotalPatient: <b>{point.y:.1f} </b>',
+             },
+             series: [{
+                 name: '',
+                 data:fetchingJsonData, 
+                 
+                 dataLabels: {
+                     enabled: true,
+                     rotation: -90,
+                     color: '#FFFFFF',
+                     align: 'right',
+                     x: 4,
+                     y: 10,
+                     style: {
+                         fontSize: '9px',
+                         fontFamily: 'Verdana, sans-serif',
+                         textShadow: '0 0 3px black'
+                     }
+                 }
+             }]
+         });
+	
+   // Drug TYpe Pie 
+     var chart;
+     
+     $(document).ready(function () {
+     	
+     	// Build the chart
+         $('#containerDTP').highcharts({
+             chart: {
+                 plotBackgroundColor: null,
+                 plotBorderWidth: null,
+                 plotShadow: false
+             },
+             title: {
+                 text: ' '
+             },
+             tooltip: {
+         	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+             },
+             plotOptions: {
+                 pie: {
+                     allowPointSelect: true,
+                     cursor: 'pointer',
+                     dataLabels: {
+                         enabled: false
+                     },
+                     showInLegend: true
+                 }
+             },
+             series: [{
+                 type: 'pie',
+                 name: 'Browser share',
+                 data: [
+                     ['Speciality',   35.0],
+                     ['Generic',       26.8],
+                     {
+                         name: 'Brand',
+                         y: 22.8,
+                         sliced: true,
+                         selected: true
+                     }
+                 ]
+             }]
+         });
+     });
+     
+     // Formulary Tier Pie
+ var chart;
+     
+     $(document).ready(function () {
+     	
+     	// Build the chart
+         $('#containerFTP').highcharts({
+             chart: {
+                 plotBackgroundColor: null,
+                 plotBorderWidth: null,
+                 plotShadow: false
+             },
+             title: {
+                 text: ' '
+             },
+             tooltip: {
+         	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+             },
+             plotOptions: {
+                 pie: {
+                     allowPointSelect: true,
+                     cursor: 'pointer',
+                     dataLabels: {
+                         enabled: false
+                     },
+                     showInLegend: true
+                 }
+             },
+             series: [{
+                 type: 'pie',
+                 name: 'Formulary Tier',
+                 data: [
+                     ['Tier 1',   35.0],
+                     {
+                         name: 'Tier 2',
+                         y: 22.8,
+                         sliced: true,
+                         selected: true
+                     },
+                     ['Tier 3',       26.8],
+                     
+                     ['Tier 4', 22.0]
+                 ]
+             }]
+         });
+     });
+     
+   //Comlaince  
+      var gaugeOptions = {
+	
+	    chart: {
+	        type: 'solidgauge'
+	    },
+	    
+	    title: null,
+	    
+	    pane: {
+	    	center: ['50%', '85%'],
+	    	size: '120%',
+	        startAngle: -90,
+	        endAngle: 90,
+            background: {
+                backgroundColor: '#D2EDFB',
+                innerRadius: '60%',
+                outerRadius: '100%',
+                shape: 'arc'
+            }
+	    },
+
+	    tooltip: {
+	    	enabled: false
+	    },
+	       
+	    // the value axis
+	    yAxis: {
+			stops: [
+				[0.1, '#55BF3B'], // green
+	        	[0.4, '#DDDF0D'], // yellow
+	        	[0.7, '#DF5353'] // red
+			],
+			lineWidth: 0,
+            minorTickInterval: null,
+            tickPixelInterval: 400,
+            tickWidth: 0,
+	        title: {
+                y: -70
+	        },
+            labels: {
+                y: 16
+            }        
+	    },
+        
+        plotOptions: {
+            solidgauge: {
+                dataLabels: {
+                    y: -30,
+                    borderWidth: 0,
+                    useHTML: true
+                }
+            }
+        }
+    };
+    
+    // The speed gauge
+    $('#containerComplaince').highcharts(Highcharts.merge(gaugeOptions, {
+        yAxis: {
+	        min: 0,
+	        max: 100,
+	        title: {
+	            text: 'Speed'
+	        }       
+	    },
+
+	    credits: {
+	    	enabled: false
+	    },
+	
+	    series: [{
+	        name: 'Speed',
+	        data: [0],
+	        dataLabels: {
+	        	format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                    ('black') + '">{y}</span><br/></div>'
+	        },
+	        tooltip: {
+	            valueSuffix: ''
+	        }
+	    }]
+	
+	}));
+                       
+    // Bring life to the dials
+    setInterval(function () {
+    	// Speed
+        var chart = $('#containerComplaince').highcharts();
+        if (chart) {
+            var point = chart.series[0].points[0],               
+                inc = 12;            
+            point.update(#{userManageBean.meterGaugeModel.value}+10);
+        }
+
+       
+    }, 1000);    
+
+    	     
+    	//Chart for Med Taken
+    	/* $(document).ready(function(){*/
+        	datavalue = '#{reportManageBean.rptDrugCategoryBarList}';
+
+        	 var barData =$.parseJSON(datavalue);
+        //	 alert(datavalue);
+      	   $.each(barData, function(index, value) {
+      	 //   	console.log("drugCategory "+this['DrugCategory']+"totalDrug"+this['totalDrug']);
+      	    	});
+
+      	 var processed_json = new Array();
+      	 for(var i in barData)
+		 {
+			console.log("json array drug categories  "+barData[i].DrugCategory);
+			console.log("json array drug totalDrug  "+barData[i].totalDrug);
+		 var drugCategories= barData[i].DrugCategory;
+		
+		 var totalDrugCount = barData[i].totalDrug;
+		 
+		  processed_json.push([(drugCategories),(totalDrugCount)]);
+		
+		 }
+              
+        	console.log("printing json array data "+processed_json);
+    	    $('#containerMedT').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: ' '
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    type: 'category',
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '10px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: ''
+                           
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: 'Drug Count: <b>{point.y:.1f} </b>',
+                },
+                series: [{
+                    name: '',
+                    data:processed_json, 
+                    
+                    dataLabels: {
+                        enabled: true,
+                        rotation: -90,
+                        color: '#FFFFFF',
+                        align: 'right',
+                        x: 4,
+                        y: 10,
+                        style: {
+                            fontSize: '9px',
+                            fontFamily: 'Verdana, sans-serif',
+                            textShadow: '0 0 3px black'
+                        }
+                    }
+                }]
+            });
+            
+// Heatmap for Gene and med
+   drugGenevalue = '#{dashBoardManageBean.patientDrugGeneChartList}';
+   uniqueMedNames='#{dashBoardManageBean.uniqueMedNamesForGene}';
+   uniqueGeneNames='#{dashBoardManageBean.uniqueGeneNamesForGene}';
+//Parsing JSon data
+var uniqueDrugData=$.parseJSON(uniqueMedNames);
+var uniqueGeneData=$.parseJSON(uniqueGeneNames);
+console.log("unique drug data "+uniqueDrugData);
+
+
+   
+     var dgData = $.parseJSON(drugGenevalue);
+     var testArray=[];
+	console.log("jsone adata "+dgData);
+	  $.each(dgData, function(index, value) {
+ 	
+	      	    	});
+	//console.log("test array data "+testArray);
+     var genetype_Json= new Array();
+     var medName_Json = new Array();
+     var patCount_Json = new Array();
+     var totalPatient_Json = new Array();
+     var x_axisList=new Array();
+     var y_axisList=new Array();
+     var xy_axislist=new Array();
+
+	var x_medName_Json=new Array();
+	var y_genetype_Json=new Array();
+
+     for(var uniqueDrugName in uniqueDrugData){
+    	 x_medName_Json.push(uniqueDrugData[uniqueDrugName].medicineName);
+     }
+     for(var uniqueGeneName in uniqueGeneData){
+    	 y_genetype_Json.push(uniqueGeneData[uniqueGeneName].geneSymbol);
+     }
+
+     for(var drug_gene_intaraction in dgData)
+         {
+        var x_axis,y_axis,value;
+        var count=0,count1=0;
+        for(var drugName in uniqueDrugData)
+            {
+              //alert("first loop"+dgData[drug_gene_intaraction].medicineName+"uniqueDrugData[drugName].medicineName "+uniqueDrugData[drugName].medicineName);
+              if(dgData[drug_gene_intaraction].medicineName == uniqueDrugData[drugName].medicineName){
+            	  
+            	  y_axis=count;
+            	// alert("y "+y_axis)
+                  }
+              
+              count++;
+              //console.log("drug name "+uniqueDrugData[drugName].medicineName);
+            }
+        for(var geneName in uniqueGeneData)
+            {
+        	//var count=0;
+            if(dgData[drug_gene_intaraction].geneSymbol == uniqueGeneData[geneName].geneSymbol){
+                
+            	x_axis=count1;
+            	//alert("x "+x_axis)
+                }
+           
+            count1++;
+           // console.log("geneSymbol "+uniqueGeneData[geneName].geneSymbol);
+          }
+        /*  x_axisList.push([x_axis]);
+         y_axisList.push([y_axis]); */
+        totalPatient_Json.push([x_axis,y_axis,dgData[drug_gene_intaraction].patientCount]);
+        // var res = x_axis.concat(y_axis);
+         var res = x_axis +""+y_axis;
+        xy_axislist.push([res]);
+         }
+    //alert( xy_axislist.length +":::::"+xy_axislist[0]);
+
+
+
+    for(var x_axis=0 ; x_axis &lt; y_genetype_Json.length; x_axis ++)
+        {
+		 for(var y_axis=0; y_axis &lt; x_medName_Json.length; y_axis++)
+			{
+			//var checkForMatch=x_axis.concat(y_axis);
+			 var checkForMatch = x_axis +""+y_axis;
+			//alert(checkForMatch);
+			var count=0;
+			for(var check in xy_axislist )
+				{
+			
+				if(xy_axislist[check]==checkForMatch)
+					{
+						count++;
+						break;
+					}
+				}
+			if(count == 0)
+				{
+				  totalPatient_Json.push([x_axis,y_axis,0]);
+				}
+			
+			}
+        }
+  
+
+    	    $('#containerheatMap').highcharts({
+    	        
+    	        chart: {
+    	            type: 'heatmap',
+    	            marginTop: 40,
+    	            marginBottom: 40
+    	        },
+
+
+    	        title: {
+    	            text: ''
+    	        },
+
+    	        xAxis: {
+    	             categories: y_genetype_Json
+    	             /* categories: ['Alexander', 'Marie', 'Maximilian', 'Sophia', 'Lukas', 'Maria', 'Leon', 'Anna', 'Tim', 'Laura']  */
+    	        },
+
+    	        yAxis: {
+    	            categories: x_medName_Json, 
+    	             /* categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],  */
+    	            title: null
+    	        },
+
+    	        colorAxis: {
+    	            min: 0,
+    	            minColor: '#FFFFFF',
+    	            maxColor: Highcharts.getOptions().colors[0]
+    	        },
+
+    	        legend: {
+    	            align: 'right',
+    	            layout: 'vertical',
+    	            margin: 0,
+    	            verticalAlign: 'top',
+    	            y: 25,
+    	            symbolHeight: 320
+    	        },
+
+    	        tooltip: {
+    	            formatter: function () {
+    	                return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> and <br/><b>' + this.series.yAxis.categories[this.point.y] +
+    	                      '</b><br/> medicine has <br/><b>'+this.point.value+'</b> patients <br/>'; 
+    	            	}
+    	        },
+
+    	        series: [{
+    	            name: '',
+    	            borderWidth: 1,
+    	            data: totalPatient_Json, 
+    	          /*  data: [[0,0,10],[0,1,19],[0,2,8],[0,3,24],[0,4,67],[1,0,92],[1,1,58],[1,2,78],[1,3,117],[1,4,48]],  */
+    	            dataLabels: {
+    	                enabled: true,
+    	                color: 'black',
+    	                style: {
+    	                    textShadow: 'none'
+    	                }
+    	            }    	       
+    	        }]
+
+    	    });
+});
+	
+	    
+		</script>
+<!-- hight charts implementation End -->
+ 			
+</h:head>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>...for Top display>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+         <p:layout fullPage="true">
+         <p:layoutUnit    position="north" size="112" minSize="60">
+			
+			 <ui:include src="../Doctor/doctorHeader.xhtml">
+				</ui:include>
+		</p:layoutUnit>
+		 
+		<p:layoutUnit id="bottom" position="south" size="24">
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</p:layoutUnit>
+			
+			<p:layoutUnit id="left" position="west" size="0" closable="false" collapsible="true" minSize="0" style="border:none">
+				<ui:include src="doctor_profile_leftmenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..top>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<p:layoutUnit position="center">
+ 	<p:accordionPanel dynamic="true" activeIndex="1">
+						<p:tab
+							title="#{dashBoardManageBean.userLoginDetail.firstName} #{dashBoardManageBean.userLoginDetail.lastName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}">
+
+							<ui:include src="../Doctor/patientDetailsHeader.xhtml"></ui:include>
+						</p:tab>
+	</p:accordionPanel>
+              
+						<!-- <tr>
+							<td height="200px">
+							<p:meterGaugeChart id="sample11" rendered="#{!(userManageBean.complianceMeterDetailList.size() == 0)}"
+									value="#{userManageBean.meterGaugeModel}"
+									style="width:390px;height:180px;font-size:9px;font-family: verdana;font-weight:bold;" title="#{msg.compliancemeter}"
+									intervalOuterRadius="70" seriesColors="B6423C,DF7401, 93b75f" />
+							</td>
+
+							<td><p:pieChart id="sample1"
+									rendered="#{!(userManageBean.numberOfPatientParticularProvider.size() == 0)}"
+									value="#{userManageBean.clinicPieChart}" legendPosition="w"
+									dataFormat="percent" showDataLabels="true"
+									title="#{msg.virtualClinic}" style="height:180px; width:350px;font-size:9px;font-family: verdana;font-weight:bold;" />
+
+							</td>
+
+							<td>
+									<p:barChart id="basic1" 
+									rendered="#{!(userManageBean.numberOfPatientParticularProvider.size() == 0)}"
+									value="#{userManageBean.insurancegraph}"  
+									title="#{msg.insuranceForGraph}" orientation="horizontal" extender="customExtender"
+
+									barMargin="20" min="0" max="100" style="height:180px; width:395px;font-size:9px;font-family: verdana;font-weight:bold;"/>
+</td>
+						</tr> -->
+						
+	
+	<!-- 	<script type="text/javascript">
+$(function () {
+    $('#container').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'Clincs'
+        },
+        tooltip: {
+    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.clinicName}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+    
+        series: [{
+            type: 'pie',
+            name: 'Percentage',
+           data : (function() {
+                // generate an array of random data
+                dataset1='#{userManageBean.clinicMasterList}';
+		 //alert(dataset1);
+		 //var dataset11 = [],
+		   var dataset =$.parseJSON(dataset1);
+		   $.each(dataset, function(index, value) {
+			   
+			 /* dataset.push({ 
+                  x: this['clinicName'],
+                  y: this['percentage']
+              });   */ 
+		    	  //alert("clinic name "+this['clinicName']+"percentage "+this['percentage']);
+		    });
+		   
+	        
+                return dataset;
+            })() 
+           /*  data: [
+                ['Firefox',   45.0],
+                ['IE',       26.8],
+                 {
+                    name: 'Chrome',
+                    y: 12.8,
+                    sliced: true,
+                    selected: true
+                }
+            ]  */
+        }]
+    });
+});
+    
+
+ -->		
+ 
+<!--  <script type="text/javascript">
+$(function () {
+
+    Highcharts.data({
+        csv: document.getElementById('tsv').innerHTML,
+        itemDelimiter: '\t',
+        parsed: function (columns) {
+
+            var brands = {},
+                brandsData = [],
+                versions = {},
+                drilldownSeries = [];
+            
+            // Parse percentage strings
+            columns[1] = $.map(columns[1], function (value) {
+                if (value.indexOf('%') === value.length - 1) {
+                    value = parseFloat(value);
+                }
+                return value;
+            });
+
+            $.each(columns[0], function (i, name) {
+                var brand,
+                    version;
+
+                if (i > 0) {
+
+                    // Remove special edition notes
+                    name = name.split(' -')[0];
+
+                    // Split into brand and version
+                    version = name.match(/([0-9]+[\.0-9x]*)/);
+                    if (version) {
+                        version = version[0];
+                    }
+                    brand = name.replace(version, '');
+
+                    // Create the main data
+                    if (!brands[brand]) {
+                        brands[brand] = columns[1][i];
+                    } else {
+                        brands[brand] += columns[1][i];
+                    }
+
+                    // Create the version data
+                    if (version !== null) {
+                        if (!versions[brand]) {
+                            versions[brand] = [];
+                        }
+                        versions[brand].push(['v' + version, columns[1][i]]);
+                    }
+                }
+                
+            });
+           /*  dataset1='#{userManageBean.clinicMasterList}';
+			  // alert(dataset1);
+			   var dataset =$.parseJSON(dataset1);
+			   $.each(dataset, function(index, value) {
+			    	  // alert("clinic name "+this['clinicName']+"percentage "+this['percentage']);
+			    	}); */
+			    	dataset1='#{userManageBean.clinicMasterList}';
+					  // alert(dataset1);
+					  
+					    	  // alert("clinic name "+this['clinicName']+"percentage "+this['percentage']);
+            $.each(brands, function(index, value) {
+                brandsData.push({ 
+                    name: clinicName, 
+                    y: clinicName,
+                    drilldown: versions[name] ? name : null
+                });
+            });
+            $.each(versions, function (key, value) {
+                drilldownSeries.push({
+                    name: key,
+                    id: key,
+                    data: value
+                });
+            });
+
+            // Create the chart
+            $('#container').highcharts({
+                chart: {
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Browser market shares. November, 2013.'
+                },
+                subtitle: {
+                    text: 'Click the slices to view versions. Source: netmarketshare.com.'
+                },
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}: {point.y:.1f}%'
+                        }
+                    }
+                },
+
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total'
+                }, 
+
+                series: [{
+                    name: 'Brands',
+                    colorByPoint: true,
+                    data: brandsData
+                }],
+                drilldown: {
+                    series: drilldownSeries
+                }
+            })
+
+        }
+    });
+});
+    
+
+		</script> -->
+ 
+<!-- 
+<script src="../../js/highcharts.js"></script>
+<script src="../../js/modules/data.js"></script>
+<script src="../../js/modules/drilldown.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+
+		 -->
+						
+						
+						
+						<!-- <div id="chartContainer">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v1.1.5.min.js"></script>
+  <script type="text/javascript">
+    var svg = dimple.newSvg("#chartContainer", 590, 400);
+   
+    dataSetline=' #{labManageBean.labtestChart}';
+	alert(dataSetline);
+	var linechartDataSet=$.parseJSON(dataSetline);
+     //alert("barchart "+barchartDataSet);
+     $.each(linechartDataSet, function(index, value) {
+  	  // alert("insurance Name "+this['companyName']+"value "+this['companyValue']);
+  	}); 
+     alert(linechartDataSet);
+    /* 
+    d3.tsv("/data/example_data.tsv", function (data) { */
+
+      // Filter for a single SKU and Channel
+    /*   data = dimple.filterData(data, "SKU", "Theta 18 Pack Standard");
+      data = dimple.filterData(data, "Channel", "Hypermarkets"); */
+     
+      // Create and Position a Chart
+      var myChart = new dimple.chart(svg, linechartDataSet);
+      myChart.setBounds(60, 30, 500, 300);
+      
+      var x = myChart.addCategoryAxis("x", "name")
+      myChart.addMeasureAxis("y", "data");
+
+      // Order the x axis by date
+      x.addOrderRule("Date");
+
+      // Min price will be green, middle price yellow and max red
+      myChart.addColorAxis("Price", ["green", "yellow", "red"]);
+
+      // Add a thick line with markers
+      var lines = myChart.addSeries(null, dimple.plot.line); 
+      lines.lineWeight = 5;
+      lines.lineMarkers = true;
+
+      // Draw the chart
+      myChart.draw();
+
+    });
+  </script>
+</div> -->
+
+<table width="100%" border="0">
+	<tr>						
+		 <td valign="top">
+		 <fieldset style="height:330px;" class="fieldContent">
+					  <legend class="titleBar">Diagnoses</legend>
+		   <div id="container" style="width: 330px; height: 300px;  float: left"></div> 
+		   </fieldset>
+		</td>
+
+		<td valign="top">
+		 <fieldset style="height:330px;" class="fieldContent">
+					  <legend class="titleBar">Drug Type</legend>
+			<div id="containerDTP"  style="width: 200px; height: 200px; margin: 0 auto" ></div> 
+			</fieldset>
+		</td>
+
+		<td valign="top">
+		<fieldset style="height:330px;" class="fieldContent">
+					  <legend class="titleBar">Formulary</legend>
+			<div id="containerFTP"  style="width: 200px; height: 200px; margin: 0 auto;" ></div> 
+			</fieldset>
+		</td>
+		<td valign="top">
+		   <fieldset style="height:330px;" class="fieldContent">
+					  <legend class="titleBar">Complaince</legend>
+			<div id="containerComplaince" style="width: 230px; height: 200px; float: left"></div>
+			</fieldset>
+
+		</td>
+			<td valign="top">
+		   <fieldset style="height:330px;" class="fieldContent">
+					  <legend class="titleBar">#{msg.drugs}</legend>
+			<div id="containerMedT" style="width: 230px; height: 200px; float: left" ></div>
+			</fieldset>
+
+		</td>
+	</tr>
+	<tr>
+	   <td valign="top">
+	   <fieldset style="height:400px;" class="fieldContent">
+					  <legend class="titleBar">Drug Gene Intaraction</legend>
+			<div id="containerheatMap" style="width: 450px; height: 380px; float: left" >
+			
+			</div>
+			</fieldset>
+	      
+	   </td>
+	</tr>
+						
+</table>
+			</p:layoutUnit>
+		</p:layout>
+		
+	</f:view>
+</h:body>
+
+</html>
+
+
+
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 28, 2013 2:07:02 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.DrugInteractionForWarfarin" table="drug_interaction_for_warfarin"
+		lazy="false">
+		<id name="id">
+			<column name="id" />
+			<generator class="increment" />
+		</id>
+
+		<property name="drugName" type="java.lang.String">
+			<column name="drug_name" />
+		</property>
+
+		<property name="drugClass" type="java.lang.String">
+			<column name="drug_class" />
+		</property>
+
+		<property name="interaction" type="java.lang.String">
+			<column name="interaction" />
+		</property>
+	<property name="checkHighORLowInrFOrMessage" type="java.lang.String">
+			<column name="inr_status" />
+		</property>
+	
+
+	</class>
+</hibernate-mapping>

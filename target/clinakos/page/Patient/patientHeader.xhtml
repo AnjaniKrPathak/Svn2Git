@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<link rel="SHORTCUT ICON" type="image/x-icon"
+		href="./../../images/favicon.ico"></link>
+
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+	</f:facet>
+
+	<title><h:outputText value="#{msg.clinakos}" /></title>
+	<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+	<script type="text/javascript" src="../js/basicMethod.js"></script>
+	<script type="text/javascript" language="javascript">
+var t;
+window.onload=resetTimer;
+document.onkeypress=resetTimer;
+
+function logout()
+{
+	alert("You have been logged out of the system due to inactivity. Please log back by providing your username and password.")
+	location.href='/clinakos/page/core/login.jsf'
+		
+}
+function resetTimer()
+{
+	clearTimeout(t);
+
+	t=setTimeout(logout,3480000) //logs out in 58 minutes= 3480000 ms
+
+}
+
+
+</script>
+ <link href="tabmenu/menu_style.css" rel="stylesheet" type="text/css" />
+    <script src="tabmenu/Menu_Script.js" type="text/javascript"></script>
+	<!-- gebo template links start-->
+	 <script src="../header.js" type="text/javascript"></script>
+    
+        <!-- Bootstrap framework -->
+            <link rel="stylesheet" href="../../geboTemplate/bootstrap/css/bootstrap.min.css" />
+        <!-- jQuery UI theme -->
+            <!-- <link rel="stylesheet" href="../../geboTemplate/lib/jquery-ui/css/Aristo/Aristo.css" /> -->
+
+
+        <!-- main styles -->
+           <!--  <link rel="stylesheet" href="../../geboTemplate/css/style.css" /> -->
+		<!-- theme color-->
+        <!--     <link rel="stylesheet" href="../../geboTemplate/css/blue.css" id="link_theme" />	
+            
+            <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css' /> -->
+		<!-- gebo template links end -->
+</h:head>
+
+<body onmousemove = "resetTimer()">
+	<h:form>
+		<header>				
+				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">	
+		
+			<table width="100%" style="background-color:#FFFFFF;">
+			<tr height="10px"></tr>
+			
+			<tr>
+			<td colspan="3">
+			<ui:include src="patient_profile_tab.xhtml"></ui:include>
+			</td>
+							    <p:growl id="messages" showDetail="false" sticky="true" />
+
+<p:idleMonitor timeout="#{msg.timeout}">
+    <p:ajax event="idle" listener="#{patientManageBean.idleListener}" update="messages" />
+    <!-- <p:ajax event="active" listener="#{patientManageBean.activeListener}" update="messages" /> -->
+</p:idleMonitor>
+			</tr>
+			
+			</table>
+	</nav>
+	</header>
+	</h:form>
+</body>
+</html>
+
+
+
+

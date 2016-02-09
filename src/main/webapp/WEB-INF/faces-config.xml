@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+    version="2.1">
+    
+   
+	<application>
+     <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+       <resource-bundle>
+			<base-name>com.clinakos.properties.ClinakosMessages </base-name>
+			<var>msg</var>
+		</resource-bundle>
+		
+		 <resource-bundle>
+			<base-name>com.clinakos.properties.webservices </base-name>
+			<var>webservices</var>
+		</resource-bundle>
+    </application>
+	
+
+	<!-- <managed-bean> 
+		<managed-bean-name>userManageBean</managed-bean-name> 
+		<managed-bean-class>com.clinikos.core.bean.UserManageBean</managed-bean-class> 
+		<managed-bean-scope>session</managed-bean-scope> 
+		<managed-property> 
+			<property-name>userService</property-name> 
+			<property-class>com.li.workflow.dao.IWorkflowDao</property-class> 
+			<value>#{userService}</value> 
+		</managed-property>
+    </managed-bean> -->
+    
+ <managed-bean>
+	<managed-bean-name>userManageBean</managed-bean-name>
+	<managed-bean-class>com.clinakos.viewController.bean.UserManageBean</managed-bean-class>
+	<managed-bean-scope>session</managed-bean-scope>
+ </managed-bean> 
+ 
+ 	<!-- <managed-bean>
+	<managed-bean-name>dashBoardManageBean</managed-bean-name>
+	<managed-bean-class>com.clinakos.viewController.bean.DashBoardManageBean</managed-bean-class>
+	<managed-bean-scope>session</managed-bean-scope>
+ </managed-bean> 
+ 
+ <managed-bean>
+	<managed-bean-name>labManageBean</managed-bean-name>
+	<managed-bean-class>com.clinakos.viewController.bean.LabManageBean</managed-bean-class>
+	<managed-bean-scope>session</managed-bean-scope>
+ </managed-bean> 
+ 
+ <managed-bean>
+	<managed-bean-name>patientManageBean</managed-bean-name>
+	<managed-bean-class>com.clinakos.viewController.bean.PatientManageBean</managed-bean-class>
+	<managed-bean-scope>session</managed-bean-scope>
+ </managed-bean> 
+ 
+ <managed-bean>
+	<managed-bean-name>patientMedicineManageBean</managed-bean-name>
+	<managed-bean-class>com.clinakos.viewController.bean.PatientMedicineManageBean</managed-bean-class>
+	<managed-bean-scope>session</managed-bean-scope>
+ </managed-bean> 
+  -->
+ 
+ 
+     <!-- Redirection for RecoverPassword -->
+    <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>recoverPassword</from-outcome>
+		<to-view-id>/page/core/recoverPassword.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+ <!--  Redirection for Login Page -->
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_Login</from-outcome>
+		<to-view-id>/page/core/login.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+   
+ <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_overview</from-outcome>
+		<to-view-id>/page/Doctor/overview.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <!-- Redirection for Medication -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_Medication</from-outcome>
+		<to-view-id>/page/Doctor/medication.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+
+ <!-- Redirection for Pharmacotherapy Clinic -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_PharmacotherapyClinic</from-outcome>
+		<to-view-id>/page/Doctor/pharmacotherepyClinic.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+
+<!-- Redirection for Pharmacogenomic Profile -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_PharmacogenomicProfile</from-outcome>
+		<to-view-id>/page/Doctor/pharmacogenomicProfile.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_Virtual_Clinic</from-outcome>
+		<to-view-id>/page/Doctor/virtualClinicHome.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_Population_Health</from-outcome>
+		<to-view-id>/page/Doctor/populationHealthOverview.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <!-- Redirection for population health home -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_Pharmacotherapy_Issues</from-outcome>
+  <to-view-id>/page/Doctor/pharmacotherpicissue.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_cost_optimization</from-outcome>
+  <to-view-id>/page/Doctor/costoptimization.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_gapincare</from-outcome>
+  <to-view-id>/page/Doctor/gapincare.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_drugutilization_review</from-outcome>
+  <to-view-id>/page/Doctor/drugutilizationreview.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+    <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_labmonitoring</from-outcome>
+  <to-view-id>/page/Doctor/druglabmonitoring.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_speciality_med_management</from-outcome>
+  <to-view-id>/page/Doctor/specialitymedmanagement.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_acoo33</from-outcome>
+  <to-view-id>/page/Doctor/aco33.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_hdsi2013</from-outcome>
+  <to-view-id>/page/Doctor/hedis2013.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+  <!-- for navigating to admin ui page -->
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_admin_ui</from-outcome>
+  <to-view-id>/page/Doctor/AdminUI.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+ <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_masterdata_management</from-outcome>
+  <to-view-id>/page/Doctor/masterdatamanagement.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule> 
+  
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_batchdata_pull_process</from-outcome>
+  <to-view-id>/page/Doctor/batchDataPullProcess.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule> 
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_maintance</from-outcome>
+  <to-view-id>/page/Doctor/maintenance.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+  
+  <!-- Redirect to Add Pateint Page -->
+	<navigation-rule>
+	   <from-view-id>*</from-view-id>
+	   <navigation-case>
+	      <from-outcome>go_to_addPatient</from-outcome>
+	      <to-view-id>/page/Doctor/addPatient.xhtml</to-view-id>
+	      <redirect/>
+	   </navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+	   <from-view-id>*</from-view-id>
+	   <navigation-case>
+	      <from-outcome>go_to_addGroup</from-outcome>
+	      <to-view-id>/page/Doctor/addGroup.xhtml</to-view-id>
+	      <redirect/>
+	   </navigation-case>
+	</navigation-rule>
+  
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_doctorprofile</from-outcome>
+  <to-view-id>/page/Doctor/doctorProfile.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+  
+  
+  <!-- Redirection for Anticoag clinic Profile -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_anticoag</from-outcome>
+		<to-view-id>/page/Doctor/anticoag.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_generalmedactionplan</from-outcome>
+		<to-view-id>/page/Doctor/genralmedactionplan.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_psychopharm</from-outcome>
+		<to-view-id>/page/Doctor/psychopharm.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_hepatitis</from-outcome>
+		<to-view-id>/page/Doctor/hepatitis.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_specialtydrug</from-outcome>
+		<to-view-id>/page/Doctor/specialtydrug.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_device</from-outcome>
+		<to-view-id>/page/Doctor/device.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_anticoaginr</from-outcome>
+		<to-view-id>/page/Doctor/fitnessActivities.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_bloodpressure</from-outcome>
+		<to-view-id>/page/Doctor/nutrition.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_diabetes</from-outcome>
+		<to-view-id>/page/Doctor/diabetesMeasurement.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_inr</from-outcome>
+		<to-view-id>/page/Doctor/inr.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_pulse</from-outcome>
+		<to-view-id>/page/Doctor/routineActivities.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+  <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_temperature</from-outcome>
+		<to-view-id>/page/Doctor/biometricMeasurement.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+  <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_weight</from-outcome>
+		<to-view-id>/page/Doctor/weight.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+  <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_sleep</from-outcome>
+		<to-view-id>/page/Doctor/sleep.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+  <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_tobacco</from-outcome>
+		<to-view-id>/page/Doctor/tobaccoCessation.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+  <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_newchart</from-outcome>
+		<to-view-id>/page/Doctor/newCharts.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+  <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_visithistory</from-outcome>
+		<to-view-id>/page/Doctor/visit.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+   <navigation-rule>
+  <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_warfarin_maintance</from-outcome>
+		<to-view-id>/page/Doctor/warfarinmaintance.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_virtual_clinic_home</from-outcome>
+  <to-view-id>/page/Doctor/virtualClinicHome.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+ 
+  <!-- Redirection for Anticoag clinic Profile -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_persionalizeMedReview</from-outcome>
+		<to-view-id>/page/Doctor/personalizedMedReview.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+ 
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome> go_to_visitSummary_page</from-outcome>
+		<to-view-id>/page/Doctor/visitSummary.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>  
+  </navigation-rule>
+  
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome> go_to_doctor_Profile</from-outcome>
+		<to-view-id>/page/Doctor/doctorProfile.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+   <!-- Redirection for visit summary page  -->
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome> go_to_ePrescribe_page</from-outcome>
+		<to-view-id>/page/Doctor/ePrescribe.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+
+<!-- Redirection for Lab Results -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_LabResult</from-outcome>
+		<to-view-id>/page/Doctor/labResults.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+
+<!-- Redirection for Diagnoses -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_Diagnoses</from-outcome>
+		<to-view-id>/page/Doctor/diagonoses.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <!-- Redirection for Diagnoses -->
+     <navigation-rule>
+    <from-view-id>*</from-view-id>
+	 <navigation-case>
+	  <from-outcome>go_to_editPatient</from-outcome>
+		 <to-view-id>/page/Doctor/editPatientProfile.xhtml</to-view-id>
+		<redirect/>
+	  </navigation-case>
+    </navigation-rule>
+  
+  <!-- Redirection for Allergy -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_Allergy</from-outcome>
+		<to-view-id>/page/Doctor/alergy.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+
+
+<!-- Redirection for Drug Price Optimizer -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_DPOptimizer</from-outcome>
+		<to-view-id>/page/Doctor/dPOptimizer.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+
+<!-- Redirection for Care Team -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_careteam</from-outcome>
+		<to-view-id>/page/Doctor/careTeam.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <!-- Add CustomExeception class -->
+  <factory>
+        <exception-handler-factory>
+           com.clinakos.common.exception.CustomExceptionHandlerFactory
+        </exception-handler-factory>
+   </factory> 
+   
+    <application>
+     <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+       <resource-bundle>
+			<base-name>com.clinakos.properties.ClinakosExeception </base-name>
+			<var>exc</var>
+		</resource-bundle>
+    </application> 
+	 
+	 <!-- Redirection for Patient My Overview -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_My_overview</from-outcome>
+		<to-view-id>/page/Patient/patientProfile.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+   <!-- Redirection for Patient My Medication -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_My_Medication</from-outcome>
+		<to-view-id>/page/Patient/myMedication.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+   
+   <!-- Redirection for Patient My Care Team -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_My_Care_Team</from-outcome>
+		<to-view-id>/page/Patient/myCareTeam.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+ 
+   <!-- Redirection for Patient My Formulary -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_My_Formulary</from-outcome>
+		<to-view-id>/page/Patient/myFormulary.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+
+<!-- Redirect to Pharmacogenomics_clinic from pharmacogenomic_Profile -->
+   <navigation-rule>
+    <from-view-id>/page/Doctor/pharmacogenomicProfile.xhtml</from-view-id>
+	<navigation-case>
+	  <from-outcome>redirect_to_Pharmacogenomics_clinic</from-outcome>
+		<to-view-id>/page/Doctor/pharmacotherepyClinic.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>  
+
+<!-- ********************** -->
+<navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_VisitSummary</from-outcome>
+		<to-view-id>/page/Doctor/visitSummary.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+
+ <!-- Redirection for Patient My Medication -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_My_Medication_Goal</from-outcome>
+		<to-view-id>/page/Patient/myMedicationGoal.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_virtualpillbox</from-outcome>
+		<to-view-id>/page/Patient/myVirtualPillBox.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  <!--  Add for forgetPassword -->
+
+
+ 
+ <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_forgetPassword</from-outcome>
+		<to-view-id>/page/core/recoverPassword.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  
+  <!-- Redirection for  on patientpage  Diagnoses -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_patientDiagonoses</from-outcome>
+		<to-view-id>/page/Patient/patientDiagonoses.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <!-- Redirection for  on Alergy Page -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_alergy_page</from-outcome>
+		<to-view-id>/page/Doctor/alergy.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+   <!-- Redirection for Care Analysis -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_Care_Analysis</from-outcome>
+		<to-view-id>/page/Doctor/gapinCareAnalysis.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+
+<!--Redirect to temporary overview Filters  -->
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>go_to_ovw_filters</from-outcome>
+			<to-view-id>/page/Doctor/overViewFilter.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	
+<!--Redirect to temporary go_to_new_home  -->
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>go_to_new_home</from-outcome>
+			<to-view-id>/page/Doctor/doctorProfileBeta.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	
+<!--Redirect to Virtual Pill Box Page for Doctor Login  -->
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>go_to_doctor_virtual_pill_box</from-outcome>
+			<to-view-id>/page/Doctor/virtualPillBox.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+<!-- Added By Nagaraj for calling xhtml page in Dialog Box -->
+	  <application>
+        <action-listener>org.primefaces.application.DialogActionListener</action-listener>
+        <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+        <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+    </application>
+    <!-- Redirects to Psychopharm dosing guideline -->
+   	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>go_to_lithium_dosing_guideline</from-outcome>
+			<to-view-id>/page/Doctor/lithiumDosingGuideline.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Redirection for Patient My Allergy by venu -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_My_Allergy</from-outcome>
+		<to-view-id>/page/Patient/myAllergy.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_psychopharm</from-outcome>
+		<to-view-id>/page/Doctor/psychopharm.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_addOrganization</from-outcome>
+		<to-view-id>/page/Doctor/AddOrganization.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_addUsers</from-outcome>
+		<to-view-id>/page/Doctor/addUser.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <!-- Redirection for Report Menu By Anjani -->
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_patient_letter_report</from-outcome>
+		<to-view-id>/page/Doctor/patientLetter.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+   </navigation-rule>
+   
+    <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_med_action_plan_report</from-outcome>
+		<to-view-id>/page/Doctor/medActionPlan.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+   </navigation-rule>
+   
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_current_medication_list_report</from-outcome>
+		<to-view-id>/page/Doctor/currentMedicationList.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+   </navigation-rule>
+   
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_provider_letter_report</from-outcome>
+		<to-view-id>/page/Doctor/providerLetter.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+   </navigation-rule>
+   
+   
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_provider_referral_letter_report</from-outcome>
+		<to-view-id>/page/Doctor/providerReferralLetter.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+   </navigation-rule>
+  
+  <navigation-rule>
+   <from-view-id>/page/core/reset-forgot-password.xhtml</from-view-id>
+	<navigation-case>
+	  <from-outcome>back_to_login_screen_from_reset_forgot_password</from-outcome>
+		<to-view-id>/page/core/login.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+   </navigation-rule> 
+   
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+ <navigation-case>
+   <from-outcome>go_to_pharmaDashboard</from-outcome>
+  <to-view-id>/page/Pharma/pharmaDashboard.xhtml</to-view-id>
+  <redirect/>
+ </navigation-case>
+  </navigation-rule>
+<!--    ..<<<<<<<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.   -->  
+ <navigation-rule>
+   <from-view-id>*</from-view-id>
+   <navigation-case>
+      <from-outcome>go_to_batchPatient_Medication_Lists_Report</from-outcome>
+      <to-view-id>/page/Doctor/batchPatientMedicationLists.xhtml</to-view-id>
+      <redirect/>
+   </navigation-case>
+  </navigation-rule> 
+  
+  <!--    ..<<<<<<<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.   -->  
+ <navigation-rule>
+   <from-view-id>*</from-view-id>
+   <navigation-case>
+      <from-outcome>reload_batchDataPull_screen</from-outcome>
+      <to-view-id>/page/Doctor/batchDataPullProcess.xhtml</to-view-id>
+      <redirect/>
+   </navigation-case>
+  </navigation-rule> 
+  
+    <!--    ..<<<<<<<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.   -->  
+    
+ <navigation-rule>
+   <from-view-id>*</from-view-id>
+   <navigation-case>
+      <from-outcome>go_to_uploadDiagnosis</from-outcome>
+      <to-view-id>/page/Doctor/uploadDiagnosis.xhtml</to-view-id>
+      <redirect/>
+   </navigation-case>
+  </navigation-rule> 
+  
+  
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_interaction_history</from-outcome>
+		<to-view-id>/page/Doctor/interactionHistory.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+    <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_adherence_history</from-outcome>
+		<to-view-id>/page/Doctor/adherenceHistory.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_device_details</from-outcome>
+		<to-view-id>/page/Doctor/deviceDetails.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_search_practice</from-outcome>
+		<to-view-id>/page/Super-Admin/searchPractices.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+  
+   <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_manage_patient</from-outcome>
+		<to-view-id>/page/Doctor/managePatient.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+     <navigation-rule>
+   <from-view-id>*</from-view-id>
+	<navigation-case>
+	  <from-outcome>go_to_batch_devices</from-outcome>
+		<to-view-id>/page/Doctor/batchDevicesSync.xhtml</to-view-id>
+		<redirect/>
+	</navigation-case>
+  </navigation-rule>
+  
+</faces-config>

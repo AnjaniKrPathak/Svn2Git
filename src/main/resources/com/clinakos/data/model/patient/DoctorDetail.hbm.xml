@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 28, 2013 2:07:02 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.DoctorDetail" table="doctor_detail"
+		lazy="false">
+		<id name="id">
+			<column name="id" />
+			<generator class="increment" />
+		</id>
+
+		<property name="speciality" type="java.lang.String">
+			<column name="specialty" />
+		</property>
+
+		<property name="userId" type="java.lang.Integer">
+			<column name="user_id" />
+		</property>
+
+		<property name="degree" type="java.lang.String">
+			<column name="degree" />
+		</property>
+		<property name="isActive">
+			<column name="active" />
+		</property>
+		<property name="dea" type="java.lang.String">
+			<column name="dea" />
+		</property>
+		<property name="upin" type="java.lang.String">
+			<column name="upin" />
+		</property>
+		<property name="npi" type="java.lang.String">
+			<column name="npi" />
+		</property>
+		<property name="docLicenseNumber" type="java.lang.String">
+			<column name="license_number" />
+		</property>
+		<property name="docLicenseState" type="java.lang.String">
+			<column name="license_state" />
+		</property>
+		
+
+
+	</class>
+</hibernate-mapping>

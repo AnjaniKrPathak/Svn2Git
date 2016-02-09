@@ -1,0 +1,1146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body>
+<style>
+#footer {
+width:100%;
+position:absolute;
+bottom:0;
+left:0;
+
+}
+</style>
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="Sovaldi (sofosbuvir) Dosing Guideline Wizard" /></title>
+				
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<link href="../../JavaScript/nv.d31.css" rel="stylesheet" type="text/css"/>
+	
+			
+  <script type="text/javascript">
+ 	function messageToUser(xhr, status, args){
+		if(args.showDialogToUser==true){
+			systemDialogAlertsWidgetVar.show();
+			}else{
+				systemDialogAlertsWidgetVar.hide();
+				}
+
+		} 
+
+ 	function hidePopForClinic(xhr,status,args){
+		
+		if(args.pageName == "overViewFilter"){
+			window.parent.parent.location.assign("overViewFilter.jsf");
+			window.close();
+		}else if(args.pageName=="hepatitis"){
+			window.parent.parent.location.assign("hepatitis.jsf");
+			window.close();
+			
+		} 
+		/* console.log("URL to redirect "+args.pageName)
+		window.parent.parent.location.assign(args.pageName);
+		window.close(); */
+	}
+
+	</script>
+	
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24" >
+			<h:outputText value=" Reference: AASLD and IDSA Guidelines: Recommendations for Testing, Managing, and Treating Hepatitis C; report date March 21, 2014" style="font-weight:bold;text-align: center;" />
+
+
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<ui:include src="doctor_profile_leftmenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+	
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+<p:dialog widgetVar="showIFNDetails" showEffect="clip" hideEffect="clip" width="600" 
+								              			closable="false" appendTo="@(body)">
+								              			
+								              			<table width="886" height="266" border="0">
+                <tr>
+                  <td colspan="2"><strong>IFN ineligible is defined as one or more of the below</strong></td>
+                </tr>
+                <tr>
+                  <td width="51" height="27">&nbsp;</td>
+                  <td width="825">Intolerance to IFN</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>Autoimmune hepatitis and other autoimmune disorders</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>Hypersensitivity to PEG or any of it's components</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>Decompensated hepatic disease</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>Major uncontrolled depressive illness</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>A baseline neutrophil count &lt; 1500/L</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>A baseline platelet count  &lt;90,000/L</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>A baseline hemoglobin &lt;10 g/dL</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>A history of pre-existing cardiac disease</td>
+                </tr>
+              </table>
+
+
+								             
+								             </p:dialog>
+								             
+				 <p:dialog id="searchdiagnosisPopUpId" header="#{msg.diagnosis}" widgetVar="searchDiagnosisPopUp" modal="true" appendTo="@(body)" hideEffect="fold" resizable="true"
+					dynamic="false" width="600" height="475" position="300,100"  draggable="false">
+				 <h:form id="searchdiagosisPopUpFormId">	
+					<table>
+					
+					<tr>
+						<td> <p:selectOneRadio id="options"
+							value="#{patientManageBean.selectIntervention}">
+							<f:selectItem itemLabel="Search According Diagnosis Name" itemValue="1" />
+							<f:selectItem itemLabel="Search According ICD Code" itemValue="2" noSelectionOption="false"/>
+							
+						</p:selectOneRadio> 
+						
+						</td>
+					</tr>
+					</table>
+					
+				
+					<table>
+					  <tr>
+					    <td>
+							<h:outputText value="#{msg.diagnosisname} :" style="font-size:10px;" />
+						</td>
+						<td align="left">
+							<p:inputText size="55"  value="#{patientManageBean.userInputForIcdDiagnosisSearchTable}" id="codeForSearch"  >
+	 						
+	 						 <p:ajax update="codeForSearch"></p:ajax>  
+	 						</p:inputText>
+	 						<p:watermark value="#{msg.diagnosiname} According Name and ICD Code" for="codeForSearch"></p:watermark> 
+						</td>
+						
+						</tr>
+						
+						<tr>
+						<td>
+							<h:outputText value="#{msg.select_icd_Format} :" style="font-size:10px;" />
+						</td>
+						<td>
+						  <p:selectOneMenu id="icd_drpDown" value="#{patientManageBean.selectedIcdFormat}" immediate="true"
+		                        required="true" style="width:137px;">
+								 <f:selectItem itemLabel="#{msg.icd9}" itemValue="#{msg.icd9}" />
+								 <f:selectItem itemLabel="#{msg.icd10}" itemValue="#{msg.icd10}" />
+							 <p:ajax update="icd_drpDown"/>
+							</p:selectOneMenu>
+						</td>
+						</tr>
+						
+						<tr>
+						 <td colspan="2" align="left">
+							 <p:commandButton value="#{msg.search}" actionListener="#{patientManageBean.searchMasterDiagnosisData}" process="@form" 
+								 update="searchdiagosisPopUpFormId:panel_dignosis"/> 
+						 	<p:commandButton value="#{msg.cancel}" actionListener="#{patientManageBean.cleanDiagnosisForm}" ajax="false"/> 
+						</td>
+						</tr>
+					</table>
+				<p:outputPanel id="panel_dignosis">
+		          <p:outputPanel id="panel_icd10dignosis" rendered="#{patientManageBean.selectedIcdFormat eq 'ICD10'}"> 
+		           <p:dataTable value="#{patientManageBean.dignosisdetailsList}" var="searchDiagnosis"  id="searchdatatable"
+	 			       binding="#{patientManageBean.searchDiagnosisDataTable}" 
+							  scrollable="true" resizableColumns="false" scrollHeight="280" lazy="true" emptyMessage="#{msg.noMedFound}">
+							
+							<f:facet name="header">
+           									 ICD 10 Details
+       						 </f:facet>
+							
+				  		<p:column headerText="Short Description " width="2%">
+				  			<p:commandLink value="#{searchDiagnosis.shortDesc}" actionListener="#{patientManageBean.findDiagnosisName}" 
+				  			action ="#{patientMedicineManageBean.findDiagnosisName}" style="text-decoration:underline;"  
+				  			update=":steps:step1Form:drugName"   ajax="true" oncomplete="searchDiagnosisPopUp.hide();"/>
+				    	</p:column>
+				    	
+				    	<p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="Long Description" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.longDesc}" />
+					</p:column>
+					
+				    	<p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="ICD Code" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.formattedDxCode}" />
+					</p:column>
+					
+				  </p:dataTable>
+				 </p:outputPanel>
+				 <p:outputPanel id="panel_icd9dignosis" rendered="#{patientManageBean.selectedIcdFormat eq 'ICD9'}">
+				   <p:dataTable value="#{patientManageBean.icd9DiagnosisList}" var="searchDiagnosis"  id="searchicd9datatable"
+	 			         binding="#{patientManageBean.icd9DiagnosisTable}" 
+							  scrollable="true" resizableColumns="false" scrollHeight="280" lazy="true" emptyMessage="#{msg.noMedFound}">
+							<f:facet name="header">
+           									 ICD 9 Details
+       						 </f:facet>
+							
+							
+				  	<p:column headerText="Short Description" width="2%">
+				  			<p:commandLink value="#{searchDiagnosis.shortDescription}" actionListener ="#{patientManageBean.setIcd9DiagnosisName}"
+				  action ="#{patientMedicineManageBean.findDiagnosisName}" style="text-decoration:underline;"  update=":steps:step1Form:drugName"   ajax="true" oncomplete="searchDiagnosisPopUp.hide();" />
+				    </p:column>
+				    
+				    <p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="Long Description" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.longDiscription}" />
+					</p:column>
+				    
+				    <p:column width="5%">
+								<f:facet name="header">
+									<h:outputText value="ICD Code" style="text-align:left"/>
+							</f:facet>
+									<h:outputText value="#{searchDiagnosis.formatedCode}" />
+					</p:column>
+				  </p:dataTable>
+			    </p:outputPanel>
+			   </p:outputPanel>
+			</h:form>	
+		
+		</p:dialog> 
+		  
+			<p:layoutUnit position="center" id="hepatitisC">
+			   
+			<p:accordionPanel  widgetVar="pnl" id="steps" activeIndex="#{patientMedicineManageBean.hepatitisCObj.activeIndexDefault}">
+			
+        <p:tab title="Step 1:  Baseline Eligibility Information" id="step1" disabled="#{patientMedicineManageBean.hepatitisCObj.dosing_step_1_disabled}" > 
+        <script type="text/javascript"> 
+
+function stopRKey(evt) { 
+  var evt = (evt) ? evt : ((event) ? event : null); 
+  var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+  if ((evt.keyCode == 13))  {if((node.type=="text")) return false;} 
+} 
+
+document.onkeypress = stopRKey; 
+
+</script>
+        <h:form id="step1Form">
+         
+              <table width="850" border="0">
+                <tr>
+                  <td width="373"><h:outputText value="Age (years)" /></td>
+                  <td width="423"><label>
+                    <h:outputText value="#{patientMedicineManageBean.hepatitisC.age}" />
+                  </label></td>
+                </tr>
+                <tr>
+                  <td> <p:outputPanel>
+				 	   <h:panelGrid columns="1">
+							
+						<div align="right" style="margin-top:5px;">
+						<table width="100%" class="contentTextPan" >
+							<tr>
+								<td align="right"><p:commandButton value="#{msg.adddia}"
+										update=":searchdiagosisPopUpFormId"
+										onclick="searchDiagnosisPopUp.show()" >
+										 <p:ajax update="drugName"></p:ajax></p:commandButton>
+										</td>
+							</tr>
+						</table>
+					</div>	
+				 	</h:panelGrid>
+				 </p:outputPanel> 
+           </td>
+                  <td><h:outputText value="#{patientManageBean.patientDiagnosesDetails.code}" id="drugName" >
+                 </h:outputText>	</td>
+                </tr>
+                <tr>
+                  <td colspan="2"><h:outputText value="Child Pugh-Turcotte Score:  Please answer the following questions to calculate 
+                    the score to determine level for liver disease" style="font-weight: bold;" /></td>
+                </tr>
+                <tr>
+                <td><h:outputText value="&nbsp;" /></td>
+                </tr>
+                <tr>
+                  <td><h:outputText value="- Encephalopathy" /> </td>
+                  <td><label>
+         <p:selectOneMenu id="Encephalopathy" value="#{patientMedicineManageBean.hepatitisC.encephalopathy}">
+          <p:ajax listener="#{patientMedicineManageBean.score_calculation}"  update="Encephalopathy,score,interpretation,inr,serumBillirubin,serumAlbumin"></p:ajax>	
+            <f:selectItem itemLabel="Select" itemValue="selection" />
+            <f:selectItem itemLabel="None" itemValue="none" />
+            <f:selectItem itemLabel="Minimal" itemValue="min" />
+            <f:selectItem itemLabel="Advanced Coma" itemValue="Ad_coma" />
+            <p:ajax update="Encephalopathy,score,interpretation,inr,serumBillirubin,serumAlbumin"></p:ajax>
+        </p:selectOneMenu>
+                  </label></td>
+                </tr>
+                <tr>
+                  <td> <h:outputText value="-Ascites" /></td>
+                  <td><p:selectOneMenu id="Ascites" value="#{patientMedicineManageBean.hepatitisC.ascites}">
+                   <p:ajax listener="#{patientMedicineManageBean.score_calculation}"  update="Encephalopathy,score,interpretation,inr,serumBillirubin,serumAlbumin"></p:ajax>	
+             <f:selectItem itemLabel="Select" itemValue="selection" />      
+            <f:selectItem itemLabel="None" itemValue="none" />
+            <f:selectItem itemLabel="Easily Controlled" itemValue="easy_cont" />
+            <f:selectItem itemLabel="Poorly Controlled" itemValue="poorly_cont" />
+            <p:ajax update="Encephalopathy,score,interpretation,inr,serumBillirubin,serumAlbumin"></p:ajax>
+        </p:selectOneMenu></td>
+                </tr>
+                <tr>
+                  <td><h:outputText value="-Serum Billirubin" /></td>
+                  <td><p:inputText value="#{patientMedicineManageBean.hepatitisC.serumBillirubin}"  id="serumBillirubin">
+                   <p:ajax listener="#{patientMedicineManageBean.score_calculation}"  update="Encephalopathy,score,interpretation,inr,serumBillirubin,serumAlbumin"></p:ajax>	
+                  <p:ajax  update="Encephalopathy,score,interpretation,inr,serumBillirubin,serumAlbumin"></p:ajax>
+                  </p:inputText></td>
+                </tr>
+                <tr>
+                  <td><h:outputText value="-Serum Albumin" /> </td>
+                  <td><p:inputText value="#{patientMedicineManageBean.hepatitisC.serumAlbumin}" id="serumAlbumin" >
+                   <p:ajax listener="#{patientMedicineManageBean.score_calculation}"  update="Encephalopathy,score,interpretation,inr,serumBillirubin,serumAlbumin"></p:ajax>	
+                  <p:ajax update="Encephalopathy,score,interpretation,inr,serumBillirubin,serumAlbumin"></p:ajax>
+                  </p:inputText></td>
+                </tr>
+                <tr>
+                  <td> <h:outputText value="-INR" /></td>
+                  <td><p:inputText value="#{patientMedicineManageBean.hepatitisC.inr}"  id="inr">
+                  <p:ajax listener="#{patientMedicineManageBean.score_calculation}"  update="Encephalopathy,score,interpretation,inr,serumBillirubin,serumAlbumin"></p:ajax>
+                   <p:ajax update="Encephalopathy,score,interpretation,inr,serumBillirubin,serumAlbumin"></p:ajax> 	
+											</p:inputText></td>
+                </tr>
+                <tr>
+                  <td> <h:outputText value="Score:" style="font-weight: bold;" /></td>
+                  <td><p:inputText id="score" value="#{patientMedicineManageBean.hepatitisC.score}" readonly="true" >
+                  <p:ajax update="Encephalopathy,score,interpretation"></p:ajax>
+											</p:inputText>
+											<h:outputText id="interpretation" value="#{patientMedicineManageBean.hepatitisC.interpretation}" />
+                  </td>
+                  
+                </tr>
+                <tr>
+                  <td><h:outputText value="Does the patient have Hepatocellular Carcinoma?" style="font-weight: bold;" /></td>
+                  <td align="left">
+                  <p:selectOneRadio id="HepCar" >
+            <f:selectItem itemLabel="Yes" itemValue="Y" />
+            <f:selectItem itemLabel="No" itemValue="N" />
+            <f:selectItem itemLabel="Not available" itemValue="NA" />
+        </p:selectOneRadio></td>
+                </tr>
+                <tr>
+                  <td colspan="2"><h:outputText value="Liver Transplant:" style="font-weight: bold;"/></td>
+                </tr>
+                <tr>
+                  <td> <h:outputText value="-Is the patient awaiting liver transplant?" /></td>
+                  <td align="left">
+                  <p:selectOneRadio id="livertransp" >
+            <f:selectItem itemLabel="Yes" itemValue="Y" />
+            <f:selectItem itemLabel="No" itemValue="N" />
+        </p:selectOneRadio></td>
+                </tr>
+                <tr>
+                  <td><h:outputText value="-Has the patient had liver transplant?" /> </td>
+                  <td align="left">
+                  <p:selectOneRadio id="LivTrans" >
+            <f:selectItem itemLabel="Yes" itemValue="Y" />
+            <f:selectItem itemLabel="No" itemValue="N" />
+        </p:selectOneRadio></td>
+                </tr>
+                <tr>
+                  <td colspan="2"><h:outputText value="-Renal Function:" style="font-weight: bold;"/></td>
+                </tr>
+                <tr>
+                  <td><h:outputText value="- Does the patient have End Stage Renal Disease (ESRD)?" /> </td>
+                  <td align="left">
+                  <p:selectOneRadio id="ESRD" >
+            <f:selectItem itemLabel="Yes" itemValue="Y" />
+            <f:selectItem itemLabel="No" itemValue="N" />
+        </p:selectOneRadio></td>
+                </tr>
+                <tr>
+                  <td><h:outputText value="-eGFR" /></td>
+                  <td align="left"><h:inputText /></td>
+                </tr>
+                <tr>
+                  <td colspan="2"><h:outputText value="Pregnancy:" style="font-weight: bold;"/></td>
+                </tr>
+                <tr>
+                  <td><h:outputText value="- Is the patient or the patient’s partner pregnant" /> </td>
+                  <td align="left">
+                   <p:selectOneRadio id="Pregnancy">
+            <f:selectItem itemLabel="Yes" itemValue="Y" />
+            <f:selectItem itemLabel="No" itemValue="N" />
+        </p:selectOneRadio></td>
+                </tr>
+                <tr>
+                  <td colspan="2"><h:outputText value="Treatment History:" style="font-weight: bold;" /></td>
+                </tr>
+                <tr>
+                  <td> <h:outputText value="-Has the patient been treated for HCV before?" /></td>
+                  <td align="left">
+                  <p:message for="hcvTreatement"  display="tooltip" />
+                  <p:selectOneRadio id="hcvTreatement" value="#{patientMedicineManageBean.hepatitisC.hcvTreatment}" required="true" requiredMessage="Please select a option" >
+                 
+                  <p:ajax listener="#{patientMedicineManageBean.hcvTreatementEnable}"  update="peg,rib,proteaseInhibitor"></p:ajax>
+                  <p:ajax process="@this" update=":steps:step2Form"></p:ajax>
+            <f:selectItem itemLabel="Yes" itemValue="Y" />
+            <f:selectItem itemLabel="No" itemValue="N" />
+        </p:selectOneRadio></td>
+                </tr>
+                </table>
+                <table width="850" border="0">
+                <tr>
+                  <td width="485"><h:outputText value=" - What was the treatment used?" /></td>
+                  <td>
+                  <h:outputText value="PEG Interferon" />
+                   </td>
+                  <td width="150" align="left">
+                    <p:selectOneMenu id="peg" disabled="#{patientMedicineManageBean.hepatitisC.hcvTreatementEnable}"> 
+                  
+            <f:selectItem itemLabel="Select" itemValue="selection" />
+            <f:selectItem itemLabel="Yes" itemValue="Y" />
+            <f:selectItem itemLabel="No" itemValue="N" />
+            <f:selectItem itemLabel="Not Available" itemValue="NA" />
+            
+        </p:selectOneMenu>
+        </td><td width="200" align="left"><h:outputText value="Ribavarin" /></td>
+                  <td width="150" align="left"><!-- <p:selectBooleanCheckbox id="rib" disabled="#{patientMedicineManageBean.hepatitisC.hcvTreatementEnable}" /> -->
+                   <p:selectOneMenu id="rib" disabled="#{patientMedicineManageBean.hepatitisC.hcvTreatementEnable}"> 
+                 
+            <f:selectItem itemLabel="Select" itemValue="selection" />
+            <f:selectItem itemLabel="Yes" itemValue="Y" />
+            <f:selectItem itemLabel="No" itemValue="N" />
+            <f:selectItem itemLabel="Not Available" itemValue="NA" />
+            
+        </p:selectOneMenu>
+                  
+     		</td>
+                  
+                </tr>
+                <tr>
+                  <td width="485"></td>
+                  <td width="150" align="left">
+                    <h:outputText value="HCV Protease Inhibitor" />
+                   </td>
+                  <td width="150" align="left">
+                  <p:selectOneMenu id="proteaseInhibitor" value="#{patientMedicineManageBean.hepatitisC.proteaseInhibitor}" disabled="#{patientMedicineManageBean.hepatitisC.hcvTreatementEnable}"> 
+                  <p:ajax update=":steps"></p:ajax>
+            <f:selectItem itemLabel="Select" itemValue="selection" />
+            <f:selectItem itemLabel="Yes" itemValue="Y" />
+            <f:selectItem itemLabel="No" itemValue="N" />
+            <f:selectItem itemLabel="Not Available" itemValue="NA" />
+            
+        </p:selectOneMenu></td>
+                  <td width="200" align="left"></td>
+                </tr>
+                
+              </table>
+              <p>&nbsp;</p>
+                <p:commandButton value="Next" id="goStep2"
+							 actionListener="#{patientMedicineManageBean.hepatitis_validateStep1}" 
+							   style="float:right;" process="@form" update=":steps"></p:commandButton>   
+							</h:form> 
+        </p:tab>
+        <p:tab title="Step 2:  Viral Genotyping and IFN Eligibility" id="step2" disabled="#{patientMedicineManageBean.hepatitisCObj.dosing_step_2_disabled}"  >
+        <h:form id="step2Form">
+         
+            <table width="695" border="0">
+                <tr>
+                  <td width="379"><h:outputText value="Genotype" style="font-weight: bold;" /></td>
+                  <td width="300">
+               
+			     <p:selectOneMenu id="genotype" value="#{patientMedicineManageBean.hepatitisC.genoType}"  required="true" requiredMessage="Please select a GenoType" >
+			      
+			     <p:ajax listener="#{patientMedicineManageBean.subGenotypeEnable}"  update=":steps"></p:ajax>
+			     <p:ajax update=":steps"></p:ajax>
+			<f:selectItem itemLabel="Select" itemValue="" />
+            <f:selectItem itemLabel="Genotype 1" itemValue="g1" />
+            <f:selectItem itemLabel="Genotype 2" itemValue="g2"/>
+            <f:selectItem itemLabel="Genotype 3" itemValue="g3" />
+            <f:selectItem itemLabel="Genotype 4" itemValue="g4" />
+            <f:selectItem itemLabel="Genotype 5,6" itemValue="g56" />
+        </p:selectOneMenu>
+                  </td>
+                </tr>
+                <tr>
+                  <td><h:outputText value="-Sub Genotype"  /> </td>
+                  <td><p:selectOneMenu id="subGenotype" value="#{patientMedicineManageBean.hepatitisC.subGenotype}" 
+                  disabled="#{patientMedicineManageBean.hepatitisC.genoTypeEnable}"  >
+                   <p:ajax listener="#{patientMedicineManageBean.polymorphismEnable}"  update="Q80K"></p:ajax>
+                   <p:ajax update=":steps"></p:ajax>
+            <f:selectItem itemLabel="Select" itemValue="selection" />
+            <f:selectItem itemLabel="1a" itemValue="1a" />
+            <f:selectItem itemLabel="1b" itemValue="1b" />
+            <f:selectItem itemLabel="Not Available" itemValue="NA" />
+            
+        </p:selectOneMenu>
+         </td>
+                </tr>
+                <tr>
+                  <td><h:outputText value="-Q80K Polymorphism Detected:" /> </td>
+                  <td><p:selectOneMenu id="Q80K" value="#{patientMedicineManageBean.hepatitisC.polymorphism}" disabled="#{patientMedicineManageBean.hepatitisC.polymorphismEnable}" >
+                  <p:ajax update=":steps"></p:ajax>
+             <f:selectItem itemLabel="Select" itemValue="selection" />
+            <f:selectItem itemLabel="Not Tested" itemValue="NT" />
+            <f:selectItem itemLabel="Yes" itemValue="Y" />
+            <f:selectItem itemLabel="No" itemValue="N" />
+            
+        </p:selectOneMenu></td>
+                </tr>
+                <tr>
+                
+                
+                  <td colspan="2">
+                  <p:commandLink id="growit"   style="text-decoration:underline;" onmouseover="showIFNDetails.show();" onmouseout="showIFNDetails.hide();">
+											
+											<h:outputText  value="IFN" escape="false" style="color:green;font-family:calibari,verdana,helvetica;font-size:12px;font-weight: bold;" />	
+								            </p:commandLink>
+								            <h:outputText value=" Eligibility :" style="font-weight: bold;" />
+				</td>
+                </tr>
+                <tr>
+                  <td><h:outputText value="-Is the patient IFN Eligible," /></td>
+                  <td><p:selectOneRadio id="ifn" value="#{patientMedicineManageBean.hepatitisC.ifnEligibility}" required="#{patientMedicineManageBean.hepatitisC.ifnRequired}"  >
+                  <p:ajax update=":steps"></p:ajax>
+            <f:selectItem itemLabel="Yes" itemValue="Y" />
+            <f:selectItem itemLabel="No" itemValue="N" />
+        </p:selectOneRadio></td>
+                </tr>
+                
+                <tr>
+                  <td>
+                   &nbsp;
+                   </td>
+                  <td> <!-- <p:commandButton value="Next" onclick="pnl.unselect(1);pnl.select(2);" id="nextbtn" >
+                     <p:ajax listener="#{patientMedicineManageBean.gotoStep3}"  update="steps:recommendation,duration,altRec,altRecDuration,recLevel,source"></p:ajax>
+                   </p:commandButton> --></td>
+                </tr>
+              </table>
+              <p>&nbsp;</p>
+              <p:commandButton value="Previous"
+							actionListener="#{patientMedicineManageBean.hepatitisC_previous_button_wizard}"
+							process="@form"  update=":steps" style="float:left;" immediate="true">
+							<f:setPropertyActionListener target="#{patientMedicineManageBean.hepatitisCObj}" value="#{patientMedicineManageBean.hepatitisCObj}"></f:setPropertyActionListener>
+							</p:commandButton>
+							
+							   <p:commandButton value="#{msg.psychopharm_next_label}" actionListener="#{patientMedicineManageBean.hepatitis_validateStep2}" process="@form"
+				   style="float:right;" update=":steps"></p:commandButton>  
+            </h:form>  
+        </p:tab>
+        <p:tab title="Step 3:  Dosing" id="step3" disabled="#{patientMedicineManageBean.hepatitisCObj.dosing_step_3_disabled}">
+        <h:form>
+           
+	 	 	 	 <p:outputPanel id="doseCalId" >
+	 	 	 	 
+	 	 	 	 <table>
+	 	 	 	 	 <tr> <td>
+	 	 	 	 			<h:outputText value="Recommendation :" style="font-weight:bold;"/>&nbsp;&nbsp;
+	 	 	 	 			<h:outputText id="recommendation" value="#{patientMedicineManageBean.hepatitisC.recommendation}" />
+	 	 	 	 		</td>
+	 	 	 	 		</tr>
+	 	 	 	 	<tr><td></td></tr>
+	 	 	 	 		
+	 	 	 	 	
+	 	 	 	 	 <tr>
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="Duration of treatment : " style="font-weight:bold;"/>
+	 	 	 	 			<h:outputText id="duration" value="#{patientMedicineManageBean.hepatitisC.durationTreatment}" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 	</tr>
+	 	 	 	 	
+	 	 	 	 	<tr><td></td></tr>
+	 	 	 	 	
+	 	 	 	 	<tr>
+	 	 	 	 		
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="Alternative recommendation : " style="font-weight:bold;"/>
+	 	 	 	 			<h:outputText id="altRec" value="#{patientMedicineManageBean.hepatitisC.altRecommendation}" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 	</tr>
+	 	 	 	 	<tr>
+	 	 	 	 		
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="Duration of treatment for alternative recommendation : " style="font-weight:bold;"/>
+	 	 	 	 			<h:outputText id="altRecDuration" value="#{patientMedicineManageBean.hepatitisC.altRecDuration}" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 	</tr>
+	 	 	 	 	<tr>
+	 	 	 	 		
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="Recommendation Level : " style="font-weight:bold;"/>
+	 	 	 	 			<h:outputText id="recLevel" value="#{patientMedicineManageBean.hepatitisC.recommendationLevel}" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 	</tr>
+	 	 	 	 	<tr>
+	 	 	 	 		
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="Source : " style="font-weight:bold;"/>
+	 	 	 	 			<h:outputText id="source" value="#{patientMedicineManageBean.hepatitisC.source}" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 	</tr>
+	 	 	 	 	
+	 	 	 	 	<tr><td></td></tr>
+	 	 	 	 	
+	 	 	 	
+	 	 	 	 </table>
+	 	 	 	<table width="100%">
+	 	 	 	 	<tr>
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="Strength" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<p:selectOneMenu  requiredMessage="Please Select Strength"
+										value="#{patientMedicineManageBean.patientMedicationData.strengths}"
+										style="width:122px;">
+									
+										<f:selectItems value="#{patientMedicineManageBean.doseDetailList}"
+											var="doseList" itemLabel="#{doseList.dose}" itemValue="#{doseList.dose}" />
+									</p:selectOneMenu>
+	 	 	 	 	</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	<td>
+	 	 	 	 				<h:outputText value="unit" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<p:selectOneMenu 
+										value="#{patientMedicineManageBean.patientMedicationData.unit}"
+										style="width:145px;">
+										
+										<f:selectItems value="#{patientMedicineManageBean.unitSummaryList}"
+											var="unitList" itemLabel="#{unitList.unit}" itemValue="#{unitList.unit}" />
+										<p:ajax listener="#{patientMedicineManageBean.calculateTotalDispence}" update="dispenceNumber,input"></p:ajax>		
+									
+									</p:selectOneMenu>
+	 	 	 	 	</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="Dosage form" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 		
+	 	 	 	 		
+	 	 	 	 	
+								<!-- <p:inputText  value="#{patientMedicineManageBean.patientMedicationData.dosageForm}" readonly="true"></p:inputText> -->	
+								<p:selectOneMenu required="true" requiredMessage="Please insert Dosage form"
+															value="#{patientMedicineManageBean.patientMedicationData.dosageForm}"
+															style="width:122px;">
+															<f:selectItem itemLabel="#{patientMedicineManageBean.patientMedicationData.dosageForm}" itemValue="#{patientMedicineManageBean.patientMedicationData.dosageForm}" />
+											
+													<f:selectItems value="#{patientMedicineManageBean.unitDetailsList}"
+															var="unitList" itemLabel="#{unitList.unitName}" itemValue="#{unitList.unitName}" />
+													</p:selectOneMenu>
+	 	 	 	 	 </td>
+	 	 	 	 	</tr>
+	 	 	 	 	
+	 	 	 	 	<tr>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	<td>
+	 	 	 	 				<h:outputText value="Route" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 		<p:selectOneMenu  required="true" requiredMessage="Please insert Route"
+															value="#{patientMedicineManageBean.patientMedicationData.byRoute}"
+															style="width:122px;">
+															<f:selectItem itemLabel="#{patientMedicineManageBean.patientMedicationData.byRoute}" itemValue="#{patientMedicineManageBean.patientMedicationData.byRoute}" />
+															<f:selectItems value="#{patientMedicineManageBean.routeDetailsList}"
+																var="routeDetailList" itemLabel="#{routeDetailList.routeName}" itemValue="#{routeDetailList.routeName}" />
+												</p:selectOneMenu>
+	 	 	 	 		
+									
+									<!-- <p:inputText  value="#{patientMedicineManageBean.patientMedicationData.byRoute}" readonly="true"></p:inputText> -->
+	 	 	 	 		</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	<td>
+	 	 	 	 				<h:outputText value="Regimen" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<p:selectOneMenu  requiredMessage="Please Select Regimen" required="true"
+										value="#{patientMedicineManageBean.patientMedicationData.directions}"
+										style="width:145px;">
+										<f:selectItem
+											itemLabel=""
+											itemValue="" />
+										<f:selectItems value="#{patientMedicineManageBean.regimenList}"
+											var="regimen" itemLabel="#{regimen}" itemValue="#{regimen}" />
+										
+										<p:ajax listener="#{patientMedicineManageBean.calculateTotalDispence}" update="dispenceNumber,input"></p:ajax>	
+										
+									</p:selectOneMenu>
+	 	 	 	 	</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="PRN" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 		 <td>
+	 	 	 	 			<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.prn}" />  
+	 	 	 	 		</td> 
+	 	 	 	 		
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="Allow substitution" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 		 <td>
+	 	 	 	 			<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.allowSubstitution}" />  
+	 	 	 	 		</td> 
+	 	 	 	 		
+	 	 	 	 		
+	 	 	 	 </tr>
+	 	 	 	 <tr valign="top">
+	 	 	 	 <table width="100%">
+				<tr align="center">
+					
+					<td>
+						<h:outputText value="DAW / DNS"/>
+					</td>
+					&nbsp;
+					<td>
+						<h:outputText value="One Time"/>
+					</td>
+				<!-- 	&nbsp;
+					<td>
+						<h:outputText value="2nd rx 90 Day"/>
+					</td>
+					&nbsp;
+					<td>
+						<h:outputText value="Save this sig and add to Doctor's List"/>
+					</td> -->
+				</tr>
+				
+				
+				<tr>
+					<td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.daw_dns}" />  
+					</td>
+					<td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.one_Time}" />  
+					</td>
+					<!-- <td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.secondrx_90days}" />  
+					</td>
+					<td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.savetodoctorlist}" />  
+					</td> -->
+				</tr>
+			</table>
+	 	 	 	 
+	 	 	 	 
+	 	 	 	 </tr>
+	 	 	 
+	 	 	  	<tr>
+	 	 	  		<td>
+	 	 	  			<h:outputText value="Dispense" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	  		</td>
+						<td>
+							<p:inputText id="dispenceNumber" style="width:50px;"   converter="#{Integer}" maxlength="3"
+										value="#{patientMedicineManageBean.patientMedicationData.quantity}" >
+								<f:convertNumber  pattern="#0" integerOnly="true"  minFractionDigits="3" maxIntegerDigits="3" type="number"/>
+							</p:inputText>
+						</td>
+						
+					<td>
+	 	 	  			<h:outputText value="Days Supply" />
+	 	 	  		</td>
+						<td>
+						
+							<p:selectOneMenu 
+										value="#{patientMedicineManageBean.patientMedicationData.daySupply}"
+										style="width:80px;">
+										
+										<f:selectItems value="#{patientMedicineManageBean.daySupplyList}"
+											var="daySupplyDetailList" itemLabel="#{daySupplyDetailList}" itemValue="#{daySupplyDetailList}" />
+										
+										<p:ajax listener="#{patientMedicineManageBean.calculateTotalDispence}" update="dispenceNumber"></p:ajax>	
+										
+									</p:selectOneMenu>
+						</td>
+	 	 	  		
+	 	 	  		<td>
+	 	 	  			<h:outputText value="Refill"/>
+	 	 	  		</td>
+						<td>
+							
+						
+						<p:selectOneMenu 
+										value="#{patientMedicineManageBean.patientMedicationData.reffils}"
+										style="width:60px;">
+										
+										<f:selectItems value="#{patientMedicineManageBean.refillDetailsList}"
+											var="refillList" itemLabel="#{refillList}" itemValue="#{refillList}" />
+										
+									</p:selectOneMenu>
+						
+						</td>
+	 	 	  		 <td>
+	 	 					<h:outputText value="Instructions" />
+	 	 				</td>
+	 	 				<td>
+	 	 					<p:inputTextarea readonly="true" id="input" 
+	 	 							value="Take #{patientMedicineManageBean.patientMedicationData.unit} &nbsp;&nbsp;
+	 	 									 #{patientMedicineManageBean.patientMedicationData.dosageForm} &nbsp;&nbsp;
+	 	 									#{patientMedicineManageBean.patientMedicationData.byRoute} &nbsp;&nbsp;
+	 										 #{patientMedicineManageBean.patientMedicationData.directions}" cols="15" rows="4">
+											
+								</p:inputTextarea>
+	 	 				</td> 
+	 	 	  	</tr>
+	 	 	  </table> 
+	 	 	 	  
+			</p:outputPanel>
+			<table width="100%"><tr>
+			<td>
+	 	 	  <p:commandButton value="Previous"
+							actionListener="#{patientMedicineManageBean.hepatitisC_previous_button_wizard}"
+							process="@this"  update=":steps" style="float:left;" immediate="true">
+							<f:setPropertyActionListener target="#{patientMedicineManageBean.hepatitisCObj}" value="#{patientMedicineManageBean.hepatitisCObj}"></f:setPropertyActionListener>
+							</p:commandButton></td>
+				 <td><p:commandButton value="#{msg.psychopharm_next_label}" actionListener="#{patientMedicineManageBean.hepatitis_validateStep3}" process="@form"
+				  style="float:right;" update=":steps"></p:commandButton></td> </tr></table>
+	 	 	</h:form>
+        </p:tab> 
+        
+        <p:tab title="Step 4:  Monitoring" id="step4" disabled="#{patientMedicineManageBean.hepatitisCObj.dosing_step_4_disabled}">
+        <h:form>
+        <p:messages id="messagesMonitoring"  closable="true"></p:messages>
+        <p:dataTable value="#{patientMedicineManageBean.hepatitisCSvrParameters}" var="genericMedActionPlanVar" widgetVar="genericMedPlanWidgetVar"
+                   id="genericMedActionTableIdforfilterSVRId"  selection="#{patientMedicineManageBean.selectedLabParamters}" rowKey="#{genericMedActionPlanVar.monitoringParameter}" emptyMessage="#{msg.noMedFound}">
+                 <f:facet name="header">
+           SVR Labs
+        </f:facet> 
+          <p:ajax event="rowSelect" oncomplete="disableRowSelect();"></p:ajax>
+				 <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                   <p:column headerText="#{msg.monitoring_parameter_label}">
+                   <h:outputText value="#{genericMedActionPlanVar.monitoringParameter}"/>
+                   </p:column>
+                   <p:column headerText="#{msg.goal}">
+                  <table cellpadding="1" cellspacing="1">
+                  <tr>
+                  <td style="border:none;">
+                   <p:selectOneMenu value="#{genericMedActionPlanVar.goalRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="goalRange" itemLabel="#{goalRange.key}"
+									itemValue="#{goalRange.value}"/>
+									</p:selectOneMenu>
+					</td>
+					<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.goalRangeValue}" size="2"></p:inputText>
+					</td>
+					<td style="border: none;">
+					<h:outputText	value="#{msg.or_label}" />
+					</td>
+					 <td style="border:none;">
+                   <p:selectOneMenu value="#{genericMedActionPlanVar.goalRangeEndSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="goalRangeEnd" itemLabel="#{goalRangeEnd.key}"
+									itemValue="#{goalRangeEnd.value}"/>
+									</p:selectOneMenu>
+					</td>
+					<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.goalRangeEndValue}" size="2"></p:inputText>
+					</td>
+									</tr>
+                  </table>
+                   </p:column>
+                   <p:column headerText="#{msg.frequency_label}" >
+                   
+                   <table ><tr><td style="border:none;">
+                    <p:selectOneMenu id="freqNo" value="#{genericMedActionPlanVar.frequencyNo}" style="width:50px;" >
+									<f:selectItems value="#{patientMedicineManageBean.frequencyNoList}" var="frequencyNo" itemLabel="#{frequencyNo.key}"
+									itemValue="#{frequencyNo.value}"/>
+								 <p:ajax  event="change" process="genericMedActionTableIdforfilterSVRId" listener="#{patientMedicineManageBean.findNextlabDateHepatitisCSVR}"
+															update="nextLabDateId"></p:ajax> 
+									</p:selectOneMenu>
+                   </td>
+                   <td style="border:none;"></td>
+                   <td style="border:none;">
+                   <p:selectOneMenu id="freqValue" value="#{genericMedActionPlanVar.frequencyUnit}" style="width:90px;" >
+                   	<f:selectItems value="#{patientMedicineManageBean.frequencyList}" var="frequencyRange" itemLabel="#{frequencyRange.key}"
+									itemValue="#{frequencyRange.value}" />
+					<p:ajax  event="change" process="genericMedActionTableIdforfilterSVRId" listener="#{patientMedicineManageBean.findNextlabDateHepatitisCSVR}"
+															update="nextLabDateId"></p:ajax>				  
+									</p:selectOneMenu>
+									
+						</td></tr></table>
+                   </p:column>
+                   <p:column headerText="Date of Next Lab" >
+                  <h:outputText value="#{genericMedActionPlanVar.nextLabDate}"  id="nextLabDateId" >
+                  			  <f:convertDateTime pattern="#{msg.dateFormat}" timeZone="#{userManageBean.loggedUsertimeZone}" dateStyle="full" type="date"/>
+                  			  </h:outputText>
+                   </p:column>
+                   <p:column headerText="#{msg.alert_level_label}">
+								<table>
+								<tr>
+								<td style="border:none;">
+									<h:graphicImage value="./../../Images/red1.jpg" height="15px"
+										width="20px" />
+								</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertSevereLowRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symSevereLowRange" itemLabel="#{symSevereLowRange.key}"
+									itemValue="#{symSevereLowRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertSevereLowRangeValue}" size="2"></p:inputText>
+									</td>
+									<td style="border:none;">
+									<h:outputText value="#{msg.or_label}" />
+									</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertSevereHighRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symSevereHighRange" itemLabel="#{symSevereHighRange.key}"
+									itemValue="#{symSevereHighRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertSevereHighRangeValue}" size="2"></p:inputText>
+									</td>
+									</tr>
+									<tr>
+									<td style="border:none;">
+									<h:graphicImage value="./../../Images/orange1.jpg"
+										height="15px" width="20px" />
+									</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertMediumLowRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symMediumLowRange" itemLabel="#{symMediumLowRange.key}"
+									itemValue="#{symMediumLowRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertMediumLowRangeValue}" size="2"></p:inputText>
+									</td>
+									<td style="border:none;">
+									<h:outputText value="#{msg.or_label}" />
+									</td>
+									<td style="border:none;">	
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertMediumHighRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symMediumHighRange" itemLabel="#{symMediumHighRange.key}"
+									itemValue="#{symMediumHighRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertMediumHighRangeValue}" size="2"></p:inputText>
+									</td>
+									</tr>
+							 </table>
+
+							</p:column>
+                 
+                 </p:dataTable>  
+                  <br/>
+                  
+          <p:dataTable value="#{patientMedicineManageBean.hepatitisCHgbParameters}" var="genericMedActionPlanVar"
+                   id="genericMedActionTableIdforfilterId"  selection="#{patientMedicineManageBean.selectedLabParamtersHgb}" rowKey="#{genericMedActionPlanVar.monitoringParameter}" emptyMessage="#{msg.noMedFound}"> 
+                 <f:facet name="header">
+           Hgb Labs
+        </f:facet> 
+				  <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                   <p:column headerText="#{msg.monitoring_parameter_label}">
+                   <h:outputText value="#{genericMedActionPlanVar.monitoringParameter}"/>
+                   </p:column>
+                   <p:column headerText="#{msg.goal}">
+                  <table cellpadding="1" cellspacing="1">
+                  <tr>
+                  <td style="border:none;">
+                   <p:selectOneMenu value="#{genericMedActionPlanVar.goalRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="goalRange" itemLabel="#{goalRange.key}"
+									itemValue="#{goalRange.value}"/>
+									</p:selectOneMenu>
+					</td>
+					<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.goalRangeValue}" size="2"></p:inputText>
+					</td>
+					<td style="border: none;">
+					<h:outputText	value="#{msg.or_label}" />
+					</td>
+					 <td style="border:none;">
+                   <p:selectOneMenu value="#{genericMedActionPlanVar.goalRangeEndSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="goalRangeEnd" itemLabel="#{goalRangeEnd.key}"
+									itemValue="#{goalRangeEnd.value}"/>
+									</p:selectOneMenu>
+					</td>
+					<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.goalRangeEndValue}" size="2"></p:inputText>
+					</td>
+									</tr>
+                  </table>
+                   </p:column>
+                   <p:column headerText="#{msg.frequency_label}" >
+                   
+                   <table ><tr><td style="border:none;">
+                    <p:selectOneMenu id="freqNo" value="#{genericMedActionPlanVar.frequencyNo}" style="width:50px;" >
+                    	<f:selectItems value="#{patientMedicineManageBean.frequencyNoList}" var="frequencyNo" itemLabel="#{frequencyNo.key}"
+									itemValue="#{frequencyNo.value}"/>
+								<p:ajax  event="change" process="genericMedActionTableIdforfilterId" listener="#{patientMedicineManageBean.findNextlabDateHepatitisCHgb}"
+															update="nextLabDateId"></p:ajax>
+									</p:selectOneMenu>
+                   </td>
+                   <td style="border:none;"></td>
+                   <td style="border:none;">
+                   <p:selectOneMenu id="freqValue" value="#{genericMedActionPlanVar.frequencyUnit}" style="width:90px;" >
+									<f:selectItems value="#{patientMedicineManageBean.frequencyList}" var="frequencyRange" itemLabel="#{frequencyRange.key}"
+									itemValue="#{frequencyRange.value}" />
+									<p:ajax  event="change" process="genericMedActionTableIdforfilterId" listener="#{patientMedicineManageBean.findNextlabDateHepatitisCHgb}"
+															update="nextLabDateId"></p:ajax>
+									</p:selectOneMenu>
+									
+						</td></tr></table>
+                   </p:column>
+                   <p:column headerText="Date of Next Lab" >
+                  <h:outputText value="#{genericMedActionPlanVar.nextLabDate}"  id="nextLabDateId" >
+                  			  <f:convertDateTime pattern="#{msg.dateFormat}" timeZone="#{userManageBean.loggedUsertimeZone}" dateStyle="full" type="date"/>
+                  			  </h:outputText>
+                   </p:column>
+                   <p:column headerText="#{msg.alert_level_label}">
+								<table>
+								<tr>
+								<td style="border:none;">
+									<h:graphicImage value="./../../Images/red1.jpg" height="15px"
+										width="20px" />
+								</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertSevereLowRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symSevereLowRange" itemLabel="#{symSevereLowRange.key}"
+									itemValue="#{symSevereLowRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertSevereLowRangeValue}" size="2"></p:inputText>
+									</td>
+									<td style="border:none;">
+									<h:outputText value="#{msg.or_label}" />
+									</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertSevereHighRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symSevereHighRange" itemLabel="#{symSevereHighRange.key}"
+									itemValue="#{symSevereHighRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertSevereHighRangeValue}" size="2"></p:inputText>
+									</td>
+									</tr>
+									<tr>
+									<td style="border:none;">
+									<h:graphicImage value="./../../Images/orange1.jpg"
+										height="15px" width="20px" />
+									</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertMediumLowRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symMediumLowRange" itemLabel="#{symMediumLowRange.key}"
+									itemValue="#{symMediumLowRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertMediumLowRangeValue}" size="2"></p:inputText>
+									</td>
+									<td style="border:none;">
+									<h:outputText value="#{msg.or_label}" />
+									</td>
+									<td style="border:none;">	
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertMediumHighRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symMediumHighRange" itemLabel="#{symMediumHighRange.key}"
+									itemValue="#{symMediumHighRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertMediumHighRangeValue}" size="2"></p:inputText>
+									</td>
+									</tr>
+							 </table>
+
+							</p:column>
+                 
+                  </p:dataTable>
+                     <p:commandButton value="Previous"
+							actionListener="#{patientMedicineManageBean.hepatitisC_previous_button_wizard}"
+							process="@form"  update=":steps" style="float:left;" immediate="true">
+							<f:setPropertyActionListener target="#{patientMedicineManageBean.hepatitisC}" value="#{patientMedicineManageBean.hepatitisC}"></f:setPropertyActionListener>
+							</p:commandButton> 
+			 <p:commandButton value="#{msg.done}" actionListener="#{patientMedicineManageBean.hepatitisCStep4}" 
+			 style="float:right;" process="@form" update=":steps" oncomplete="hidePopForClinic(xhr,status,args)" ></p:commandButton>   
+			 </h:form>
+        </p:tab>
+       
+    </p:accordionPanel>	
+    
+     </p:layoutUnit>
+		</p:layout>
+
+			
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+		 <!-- <h:outputText value="Reference: AASLD & IDSA Guidelines: Recommendations for Testing, Managing, and Treating Hepatitis C; report date March 21, 2014" 
+         style="font-weight: bold;"/>  -->
+        <!-- <div  id="footer">
+ Reference: AASLD & IDSA Guidelines: 
+ Recommendations for Testing, Managing, and Treating Hepatitis C; report date March 21, 2014
+</div> -->
+         
+	</f:view>
+	
+	<script type="text/javascript">
+
+	function disableRowSelect(){
+	
+	//genericMedPlanWidgetVar.unselectAllRows();
+	genericMedPlanWidgetVar.onRowClick= function(event, rowElement) {
+		event.preventDefault();
+	}
+	}
+		
+	</script>
+</h:body>
+
+</html>
+

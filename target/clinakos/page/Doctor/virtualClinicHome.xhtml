@@ -1,0 +1,892 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body>
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+			<script type="text/javascript" language="javascript">
+			$(document).ready(function() {
+		        noBack();
+		   });
+
+		   function noBack() {
+			   window.location.hash="no-back-button";
+				window.location.hash="Again-No-back-button";//again because google chrome don't insert first hash into history
+				window.onhashchange=function(){window.location.hash="";} 
+		       }
+</script>
+
+
+	
+
+
+		</h:head>
+
+		<p:layout fullPage="true" id="fulllayout">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" collapsible="true" size="85"
+				minSize="60">
+
+				<ui:include src="../Doctor/doctorheader2.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+
+				<ui:include src="../core/footer.xhtml"></ui:include>
+
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<ui:include src="doctor_profile_leftmenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center">
+			
+		<!-- 	<table width="100%" >
+				<tr>
+					<td width="50%" valign="top">
+						<fieldset  class="fieldContent">
+									<legend class="titleBar">#{msg.formularySearch}</legend>
+						<table width="100%">
+					  <tr>
+					    <td class="secHeadPart">
+					      #{msg.formularySearch}
+					    </td>
+					  </tr>
+					  <tr class="secContentBorder" height="140px">
+					     <td>		
+										<h:form id="fieldsetIdForFormularySearch1">
+											<table width="100%">
+												<tr>
+												<td></td>
+													<td >
+														 
+												<p:inputText id="insuranceCompany"
+															value="#{dashBoardManageBean.insuranceCompanyForFormulary}"
+															style="width:70%;" styleClass="inputBox"/> <p:watermark
+															value="Select Insurance Company" for="insuranceCompany" />
+
+													
+													<p:commandLink id="insuranceSearch"
+															value="#{msg.searchInsurance}"
+															action="#{dashBoardManageBean.getInsuranceCompanyDetail}"
+															update=":insuranceComDetailFrm" styleClass="contentPan"
+															style="text-decoration: underline;" /></td>
+
+
+
+												</tr>
+                                       <tr height="12px">
+										 <td colspan="2"></td>
+										</tr>
+
+												<tr >
+													<td ><h:outputText value="#{msg.medicineName }" /></td>
+													<td >
+													<p:inputText id="medname" type="text"
+															value="#{dashBoardManageBean.medNameForFormularySearch}"
+															rendered="true"  style="width:70%;" styleClass="inputBox"/> <p:watermark
+															for="medname" value="#{msg.medicineName} "></p:watermark>
+
+													<p:commandLink id="search" value="Search Medicine"
+															actionListener="#{dashBoardManageBean.getDrugDoseCombinationForFormulary}"
+															update=":drugDoseFrm,fieldsetIdForFormularySearch1" disabled="#{dashBoardManageBean.insuranceCompanyForFormulary.isEmpty()}"
+															  style="text-decoration: underline;" styleClass="contentPan"/></td>
+												</tr>
+
+												<tr height="4px"></tr>
+
+												<tr>
+
+													<td colspan="3" ><p:dataTable
+															value="#{dashBoardManageBean.formularyDetails}"
+															var="formDetl" overflow="auto" scrollHeight="70" styleClass="contentArea"
+															rendered="#{dashBoardManageBean.showFormularyDetailDataTable}">
+															<p:column headerText="#{msg.medicineName}" styleClass="contentPan">
+																<h:outputText value="#{formDetl.medicineName}" />
+															</p:column>
+															<p:column headerText="#{msg.onFormulary}" styleClass="contentPan">
+																<h:outputText value="#{formDetl.isFormulary}" />
+															</p:column>
+															<p:column headerText="#{msg.formularyTier }" styleClass="contentPan">
+																<h:outputText value="#{formDetl.formulayTier}" />
+															</p:column>
+															<p:column headerText="#{msg.patientCopay}" styleClass="contentPan">
+																<h:outputText value="" />
+															</p:column>
+														</p:dataTable></td>
+												</tr>
+												<tr>
+												 <td colspan="2">
+												  <p:outputPanel rendered="#{dashBoardManageBean.alternativeDrugInfoList.size()!=0}">  
+												          <p:dataTable
+															value="#{dashBoardManageBean.alternativeDrugInfoList}"
+															var="alterDrug" styleClass="contentArea"
+															rendered="#{dashBoardManageBean.showAlternativeDrugDataTable}"
+															scrollable="true" scrollHeight="80" >
+															<p:column headerText="Therapeutic Class" styleClass="contentPan">
+																<h:outputText value="#{alterDrug.therapyType}" />
+															</p:column>
+															<p:column headerText="Medicine Name" styleClass="contentPan">
+																<h:outputText value="#{alterDrug.medicineName}" />
+															</p:column>
+															<p:column headerText="Formulary Tier" styleClass="contentPan">
+																<h:outputText value="#{alterDrug.isFormulary}" />
+															</p:column>
+														</p:dataTable>
+														 </p:outputPanel> 
+														</td> 
+                                                   </tr>
+											</table>
+
+										<table>
+												<tr>
+													<td colspan="2"><p:dataTable
+															value="#{dashBoardManageBean.alternativeDrugInfoList}"
+															var="alterDrug"
+															rendered="#{dashBoardManageBean.showAlternativeDrugDataTable}"
+															scrollable="true" scrollHeight="80" >
+															<p:column headerText="Therapeutic Class" >
+																<h:outputText value="#{alterDrug.therapyType}" />
+															</p:column>
+															<p:column headerText="Medicine Name" >
+																<h:outputText value="#{alterDrug.medicineName}" />
+															</p:column>
+															<p:column headerText="Formulary Tier" >
+																<h:outputText value="#{alterDrug.isFormulary}" />
+															</p:column>
+														</p:dataTable></td>
+												</tr>
+
+
+											</table> 
+
+										</h:form>
+									</td>
+								</tr>
+							</table>
+
+										</fieldset>
+					</td>
+					
+					
+				
+					
+					<td  width="50%" valign="top">
+									
+								<fieldset id="tabView"   class="fieldContent">
+											<legend class="titleBar"><b>Patient Search</b></legend>
+
+					  <table width="100%">
+					  <tr>
+					    <td class="secHeadPart">
+					      Patient Search
+					    </td>
+					  </tr>
+					  <tr class="secContentBorder" height="140px">
+					     <td>
+										<h:form id="searchVirtual1" prependId="false">
+											<table width="100%" class="contentTextPan">
+												<tr>
+													<td><h:outputText value="#{msg.lastName}" style="font-weight:bold;"/></td>
+
+													<td><p:inputText type="text" id="lname" styleClass="inputBox"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.lastName}" />
+													</td>
+
+
+													<td width="20px"></td>
+													<td><h:outputText value="#{msg.firstName} " style="font-weight:bold;"/></td>
+
+													<td><p:inputText type="text" id="fname" styleClass="inputBox"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.firstName}" />
+													</td>
+												</tr>
+
+												<tr height="2px">
+
+												</tr>
+
+												<tr>
+													<td><h:outputText value="#{msg.socSecNo}" style="font-weight:bold;"/></td>
+
+													<td><p:inputMask mask="999-99-9999" styleClass="inputBox"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.socialSecurityNumber}"></p:inputMask>
+													</td>
+
+													<td width="20px"></td>
+
+													<td><h:outputText value="#{msg.birthDate} " style="font-weight:bold;"/></td>
+
+													<td><p:calendar id="DateOfBirth" navigator="true"
+															yearRange="c-100:c+1" display="inline" showOn="button"
+															pattern="MM/dd/yyyy"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.dateOfBirth}"
+															onfocus="$('#queryForm\\:msgs > div').hide();$('#queryForm\\:msgs > div').eq(1).show();$(this).mask('99/99/9999');return false;" />
+
+													</td>
+
+												</tr>
+
+
+												<tr height="2px">
+
+												</tr>
+
+												<tr>
+
+													<td><h:outputText value="#{msg.patientID} " style="font-weight:bold;"/></td>
+
+													<td><p:inputText type="text" id="patientId" styleClass="inputBox"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.searchKey}"/>		
+															
+															</td>
+
+
+													<td width="20px"></td>
+
+													<td><h:outputText value="#{msg.phoneNo} " style="font-weight:bold;"/></td>
+
+													<td><p:inputMask mask="999-999-9999" id="phno" styleClass="inputBox"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.phoneNumber}" /></td>
+												</tr>
+
+												<tr height="8px">
+
+												</tr>
+												<tr>
+
+													<td align="center" colspan="5">
+													<div class="btnBoxDiv">
+													<p:commandButton id="SubmitButton"
+															value="#{msg.search} " 
+															action="#{dashBoardManageBean.searchPatient}"
+															update=":patientSearch1,searchVirtual1"/>
+													</div>
+													</td>
+												</tr>
+											</table>
+										</h:form>
+									</td>
+								</tr>
+							</table>
+										</fieldset>
+					</td>
+				</tr>
+			</table> -->
+					
+				
+				
+				
+				<table width="100%">
+					<tr>
+						<td width="50%" valign="top">
+							<!-- <fieldset  class="fieldContent" >
+										
+										<legend class="titleBar">#{msg.virtualClinic}</legend> -->
+						  <table width="100%">
+					  <tr>
+					    <td class="secHeadPart">
+					     #{msg.virtualClinic}
+					    </td>
+					  </tr>
+					  <tr class="secContentBorder" height="300px">
+					     <td>
+										<center>
+										
+				    
+						
+				<!-- >>>>>>>>>>>>>>>>>>>>>>>D3 Pie Chart>>>>>>>>>>>>>>>		 -->
+			
+				<svg id="test1" style="height:280px;margin-top:0px; margin-left:-40px;margin-right:0px;text-font:2px;font-family:none;"></svg>
+			
+	    <script src="../../JavaScript/d3.v3.js"></script>
+		<script src="../../JavaScript/nv.d3.js"></script>
+			<script src="../../JavaScript/pie.js"></script>
+		<script type="text/javascript">
+		
+	
+		
+		nv.addGraph(function() {
+			   dataset1='#{userManageBean.clinicMasterList}';
+			  // alert(dataset1);
+			   var dataset =$.parseJSON(dataset1);
+			   $.each(dataset, function(index, value) {
+			    	  // alert("clinic name "+this['clinicName']+"percentage "+this['percentage']);
+			    	});
+			 
+			
+			   
+			   
+		    var width =350;
+		        height =280;
+		        var color = d3.scale.ordinal()
+		        .range(["#ced29d", "#33CCCC", "#389CAD", "#f7aa47", "#416c85", "#36908a", "#C5B47F"]);
+			   // .range(["#2e5467", "#7499af", "#ced29d", "#f7aa47", "#416c85", "#36908a", "#C5B47F"]);
+		   /* color= d3.scale.ordinal()
+		    .range(["#2e5467", "#7499af", "#416c85", "#f7aa47", "#C5B47F", "#36908a", "#ced29d"]);
+	.range(["#336699", "#C5B47F", "#4BB2C5", "#1FBED6", "#a05d56", "#d0743c", "#ff8c00"]); */
+		    var chart = nv.models.pieChart()
+		        .x(function(d) { return d.clinicName })
+		        .y(function(d) { return d.percentage })
+		         
+		  // .color(d3.scale.category10().range())  
+		  .color(color.range())
+           .width(width)
+		        .height(height);
+	chart.pie.pieLabelsOutside(false).labelType("percent");
+
+	
+		      d3.select("#test1")
+		          .datum(dataset)
+		         .transition().duration(350)
+		          .attr('width', width)
+		          .attr('height', height)
+		          .call(chart);
+		   
+		    
+		    chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+
+		    return chart;
+		});
+</script>
+			
+			
+										
+										
+											<!-- <p:pieChart id="sample"
+												rendered="#{!(userManageBean.numberOfPatientParticularProvider.size() == 0)}"
+												value="#{userManageBean.clinicPieChart}" legendPosition="w"
+												dataFormat="percent" showDataLabels="true"
+												style="height:180px; width:350px;font-size:9px;font-family: verdana;font-weight:bold;" /> -->
+										</center>
+								</td>
+							</tr>
+						</table>
+
+								<!-- 	</fieldset> -->
+									
+						</td>
+						
+						
+						<td width="50%" valign="top">
+					
+											<!-- <fieldset  class="fieldContent">
+										<legend class="titleBar">Compliance</legend> -->
+							  <table width="100%" >
+					  <tr>
+					    <td class="secHeadPart">
+					     Compliance
+					    </td>
+					  </tr>
+					  <tr class="secContentBorder" height="300px">
+					     <td>
+										<center>
+									
+						<br></br>
+				
+						  <span id="complianceGaugeContainer" style="height:240px;margin-top:100px;margin-left:70px;font-family:verdana;"></span>
+						  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+		<script type="text/javascript" src="../../JavaScript/gauge.js"></script>
+ 	<script>
+						
+				
+			var gauges = [];
+			
+			function createGauge(name, label, min, max)
+			{
+				var config = 
+				{
+					size: 230,
+					label: label,
+					min: undefined != min ? min : 0,
+					max: undefined != max ? max : 100,
+					minorTicks: 5
+				}
+				
+				var range = config.max - config.min;
+				config.yellowZones =[{from: 60, to:80}] ;//[{ from: config.min + range*0.75, to: config.min + range*0.9 }];
+				config.redZones = [{from: 00, to:60}] ;//[{ from: config.min + range*0.9, to: config.max }];
+				config.greenZones = [{from: 80, to:100}] ;
+				
+				gauges[name] = new Gauge(name + "GaugeContainer", config);
+				gauges[name].render();
+			}
+			
+			function createGauges()
+			{
+				createGauge("compliance", "Compliance");
+			}
+			
+			function updateGauges()
+			{
+				for (var key in gauges)
+				{
+					var value = getRandomValue(gauges[key])
+					gauges[key].redraw(value);
+				}
+			}
+			
+			function getRandomValue(gauge)
+			{
+				var overflow = #{userManageBean.meterGaugeModel.value}; //10;
+				return overflow; //gauge.config.min - overflow + (gauge.config.max - gauge.config.min + overflow*2) *  Math.random();
+			}
+			
+			function initialize()
+			{
+				createGauges();
+				setInterval(updateGauges, 1000);
+			}
+			
+		</script>
+				
+		
+			<script type="text/javascript">
+//initialize tab menu, by passing in ID of UL
+initialize();
+		
+</script>
+						
+											<!-- <p:meterGaugeChart id="sample1"
+												value="#{userManageBean.meterGaugeModel}"
+												style="width:390px;height:180px;font-size:9px;font-family: verdana;font-weight:bold;"
+												intervalOuterRadius="70"
+												seriesColors="B6423C,DF7401, 93b75f" /> -->
+										</center>
+								</td>
+							</tr>
+						</table>
+									<!-- </fieldset> -->
+						</td>
+					</tr>
+				</table>			
+</p:layoutUnit>
+		</p:layout>
+<!-- <h:form class="tab"> -->
+
+				 <!-- <p:tabView id="tabView" dynamic="true" style="border:none;">
+					<p:tab title="Overview">
+
+
+						<table width="100%">
+
+
+							<tr>
+								<td valign="top" width="45%">
+									 
+
+									
+
+
+								</td>
+
+								<td valign="top" width="42%">
+									 
+
+									<p:fieldset legend="#{msg.patientSearch}"
+										style="width:518px; min-height:160px;">
+										<fieldset style="height:160px;width:95%; border: solid 1px #DDDDDD;background-color: #FFFFFF;">
+						<legend style="color:#2779AA;font-weight:bold;font-size:1.2em"><b>Patient Search</b></legend>
+
+
+										<h:form id="searchVirtual">
+											<table width="100%">
+												<tr>
+													<td><h:outputText value="#{msg.lastName}" /></td>
+
+													<td><p:inputText type="text" id="lname"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.lastName}" />
+													</td>
+
+
+													<td width="20px"></td>
+													<td><h:outputText value="#{msg.firstName} " /></td>
+
+													<td><p:inputText type="text" id="fname"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.firstName}" />
+													</td>
+												</tr>
+
+												<tr height="2px">
+
+												</tr>
+
+												<tr>
+													<td><h:outputText value="#{msg.socSecNo}" /></td>
+
+													<td><p:inputMask mask="999-99-9999"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.socialSecurityNumber}"></p:inputMask>
+													</td>
+
+													<td width="20px"></td>
+
+													<td><h:outputText value="#{msg.birthDate} " /></td>
+
+													<td><p:calendar id="DateOfBirth" navigator="true"
+															yearRange="1900:2013" display="inline" showOn="button"
+															pattern="MM/dd/yyyy"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.dateOfBirth}"
+															onfocus="$('#queryForm\\:msgs > div').hide();$('#queryForm\\:msgs > div').eq(1).show();$(this).mask('99/99/9999');return false;" />
+
+													</td>
+
+												</tr>
+
+
+												<tr height="2px">
+
+												</tr>
+
+												<tr>
+
+													<td><h:outputText value="#{msg.patientID} " /></td>
+
+													<td><p:inputText type="text" id="patientId"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.id}" /></td>
+
+
+
+
+
+
+
+
+
+
+
+													<td width="20px"></td>
+
+													<td><h:outputText value="#{msg.phoneNo} " /></td>
+
+													<td><p:inputMask mask="999-999-9999" id="phno"
+															value="#{dashBoardManageBean.userDetailBeforeSearch.phoneNumber}" /></td>
+												</tr>
+
+												<tr height="8px">
+
+												</tr>
+												<tr>
+
+													<td align="right"><p:commandButton id="SubmitButton"
+															value="#{msg.search} "
+															action="#{dashBoardManageBean.searchPatient}"
+															update=":tabView:patientSearch,searchVirtual" /></td>
+												</tr>
+											</table>
+										</h:form>
+
+										</fieldset>
+									</p:fieldset>
+
+								</td>
+
+							</tr>
+							<tr>
+								<td valign="top">
+									 1st chart >>>>>>>>>>>>>>>>>>>>>>>>>.virtual Clinic  box >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+									<fieldset style="width: 525px; min-height: 216px"
+										class="dataField">
+										<legend class="legendField">&nbsp;&nbsp;#{msg.virtualClinic}&nbsp;&nbsp;</legend>
+										<center>
+											<p:pieChart id="sample"
+												rendered="#{!(userManageBean.numberOfPatientParticularProvider.size() == 0)}"
+												value="#{userManageBean.clinicPieChart}" legendPosition="w"
+												dataFormat="percent" showDataLabels="true"
+												style="height:200px; width:300px;ont-size:9px;font-family: verdana;font-weight:bold;" />
+										</center>
+
+
+									</fieldset>
+
+
+								</td>
+
+								<td valign="top">
+									 2nd chart >>>>>>>>>>>>>>>>>>>>>>>>>  
+
+									<fieldset style="width: 525px; min-height: 216px"
+										class="dataField">
+										<legend class="legendField">&nbsp;&nbsp;Compliance
+											Meter&nbsp;&nbsp;</legend>
+										<center>
+											<p:meterGaugeChart id="sample1"
+												value="#{userManageBean.meterGaugeModel}"
+												style="width:390px;height:180px;font-size:9px;font-family: verdana;font-weight:bold;"
+												intervalOuterRadius="70"
+												seriesColors="B6423C,DF7401, 93b75f" />
+										</center>
+									</fieldset>
+								</td>
+
+							</tr>
+
+						</table>
+
+
+
+
+						<p:dialog header="#{msg.patientDetails}" widgetVar="searchPatient"
+							modal="true" appendToBody="true" hideEffect="fold"
+							resizable="true" dynamic="true" width="800">
+							<h:form id="patientSearch">
+								<p:dataTable value="#{dashBoardManageBean.userLoginDetailList}"
+									var="searchPatientDetail" rowsPerPageTemplate="10,15"
+									emptyMessage="#{msg.nopatientfound} "
+									paginatorPosition="bottom" paginator="true"
+									paginatorAlwaysVisible="false"
+									binding="#{dashBoardManageBean.patientSearchTableObjForVirtualClinic}"
+									rows="10">
+
+
+
+
+									<p:column style="text-align:center; width:5px;">
+										<f:facet name="header">
+											<h:outputText value="#{msg.lastName }" />
+										</f:facet>
+										<h:outputText value="#{searchPatientDetail.lastName}" />
+									</p:column>
+
+									<p:column style="text-align:center; width:5px;">
+										<f:facet name="header">
+											<h:outputText value="#{msg.firstName }" />
+										</f:facet>
+										<h:outputText value="#{searchPatientDetail.firstName}" />
+									</p:column>
+
+									<p:column style="text-align:center; width:3px;">
+										<f:facet name="header">
+											<h:outputText value="#{msg.socSecNo }" />
+										</f:facet>
+										<h:outputText
+											value="***-**-#{searchPatientDetail.maskSociaSecurityNumber}">
+
+										</h:outputText>
+									</p:column>
+
+									<p:column style="text-align:center; width:5px;">
+										<f:facet name="header">
+											<h:outputText value="#{msg.birthDate }" />
+										</f:facet>
+										<h:outputText value="#{searchPatientDetail.dateOfBirth}">
+											<f:convertDateTime pattern="#{msg.dateFormat}" />
+										</h:outputText>
+									</p:column>
+
+									<p:column style="text-align:center; width:5px;">
+										<f:facet name="header">
+											<h:outputText value="#{msg.patientID }" />
+										</f:facet>
+										<h:outputText value="#{searchPatientDetail.id}" />
+
+									</p:column>
+
+									<p:column style="text-align:center; width:5px;">
+										<f:facet name="header">
+											<h:outputText value="#{msg.phoneNo }" />
+										</f:facet>
+										<h:outputText value="#{searchPatientDetail.phoneNumber}" />
+									</p:column>
+
+									<p:column style="text-align:center; width:8px;">
+										<f:facet name="header">
+											<h:outputText value="#{msg.select }" />
+										</f:facet>
+										<p:commandButton id="search" value="#{msg.view}"
+											actionListener="#{dashBoardManageBean.patientSearchDataforVirtualClinic}"
+											action="go_to_overview" ajax="false" />
+									</p:column>
+
+								</p:dataTable>
+							</h:form>
+						</p:dialog>
+					</p:tab>
+
+
+					Personalized Med Review Tab
+					<p:tab id="personalizedMedReview" title="Personalized Med Review">
+					</p:tab>
+
+					Anticoagulation Tab
+					<p:tab id="anticoagulation" title="Anticoagulation">
+					</p:tab>
+				</p:tabView>   -->
+
+				<!-- Insurance Detail Dialog   -->
+
+				 <p:dialog widgetVar="insuranceDetail" header="#{msg.insurancedetail}" styleClass="contentPan"
+					modal="true" appendTo="@(body)" hideEffect="fold" resizable="true"
+					dynamic="false" width="400" height="500" position="450,70">
+					<h:form id="insuranceComDetailFrm">
+						<p:dataTable value="#{dashBoardManageBean.insuranceCompanieList}" styleClass="contentArea"
+							var="insDtl"
+							binding="#{dashBoardManageBean.insuranceCompanyDataTable}" emptyMessage="#{msg.noMedFound}">
+							<p:column headerText="#{msg.insurance}" styleClass="contentPan">
+								<h:commandLink value="#{insDtl.companyName}" 
+									action="#{dashBoardManageBean.getSelectedInsuranceCompany}"
+									style="color: #006; text-decoration: underline;" />
+							</p:column>
+						</p:dataTable>
+					</h:form>
+
+
+				</p:dialog> 
+
+
+				<!-- Drug Dose Combination Dialog Box -->
+
+				 <p:dialog id="drugDose" widgetVar="drugDoseCombo" styleClass="contentPan"
+					header="#{msg.drugdosecombination}" modal="true" appendTo="@(body)" hideEffect="fold" width="800" height="500" position="350,70">
+					<h:form id="drugDoseFrm">
+						<p:dataTable
+							value="#{dashBoardManageBean.drugListForFormularySearch}" styleClass="contentArea"
+							var="drugDose"
+							binding="#{dashBoardManageBean.drugDoseCombinationDataTable}" emptyMessage="#{msg.noMedFound}">
+							<p:column headerText="#{msg.drugName}" styleClass="contentPan">
+								<h:outputText value="#{drugDose.drugName}" />
+							</p:column>
+							<p:column headerText="#{msg.drug}" styleClass="contentPan">
+								<h:commandLink
+									action="#{dashBoardManageBean.getMedicineFormularySearch}"
+									value="#{drugDose.drugDetail}"
+									style="color: #006; text-decoration: underline;" />
+							</p:column>
+							
+
+						</p:dataTable>
+
+
+					</h:form>
+				</p:dialog>
+ 
+		<p:dialog id="patient_search" header="#{msg.patientDetails}" widgetVar="searchPatient_on_virtual_clinic" styleClass="contentPan"
+							modal="true" closable="true" appendTo="@(body)" hideEffect="fold"
+							resizable="true" dynamic="true" width="800" position="300,100">
+							<p:ajax event="close" update="patient_search"/>
+							<h:form id="patientSearch1" prependId="false">
+								<p:dataTable   value="#{dashBoardManageBean.userLoginDetailList}" 
+							var="searchPatientDetail" emptyMessage="#{msg.nopatientfound} "							 
+							 rowKey="#{searchPatientDetail.id}" selectionMode="single"
+							style="scrollable:auto;max-height:300px;">
+					<!-- binding="#{dashBoardManageBean.bindUserDataTable}" 		 selection="#{dashBoardManageBean.userLoginDetail}" selectionMode="single" -->
+						<!-- 	<p:ajax id="search" update="bldialog" process="@this" event="rowSelect" listener="#{dashBoardManageBean.onRowSelect}"/> -->
+							
+								<p:column style="text-align:center;" >
+								<f:facet name="header">
+									<h:outputText value="#{msg.lastName }"/>
+								</f:facet>
+								<div align="center">
+								<p:commandLink  action="#{dashBoardManageBean.onRowSelect}" value="#{searchPatientDetail.lastName}" style="text-decoration:underline;background-color:transparent;" >
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								</div>
+							</p:column>
+
+							<p:column style="text-align:center;" >
+								<f:facet name="header">
+									<h:outputText value="#{msg.firstName }" />
+								</f:facet>
+								<div align="center"><p:commandLink action="#{dashBoardManageBean.onRowSelect}" value="#{searchPatientDetail.firstName}" style="text-decoration:underline;background-color:transparent;" >
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink></div>
+							</p:column>
+
+							
+
+							<p:column  style="text-align:center;" >
+								<f:facet name="header" style="text-align:center;">
+									<h:outputText value="#{msg.socSecNo }" />
+								</f:facet>
+								<div align="center">
+								<p:commandLink action="#{dashBoardManageBean.onRowSelect}"
+									value="***-**-#{searchPatientDetail.maskSociaSecurityNumber}" style="text-decoration:underline;background-color:transparent;">
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								</div>
+							</p:column>
+
+							<p:column style="text-align:center;" >
+								<f:facet name="header">
+									<h:outputText value="#{msg.birthDate }" />
+								</f:facet>
+								<div align="center">
+								<p:commandLink action="#{dashBoardManageBean.onRowSelect}" style="text-decoration:underline;background-color:transparent;">
+								<h:outputText value="#{searchPatientDetail.dateOfBirth}">
+								<f:convertDateTime pattern="#{msg.dateFormat}" />
+								</h:outputText>
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink></div>
+							</p:column>
+
+							<p:column style="text-align:center; " >
+								<f:facet name="header">
+									<h:outputText value="#{msg.patientID }" />
+								</f:facet>
+								<div align="center">
+								<p:commandLink action="#{dashBoardManageBean.onRowSelect}" value="#{searchPatientDetail.userId}" style="text-decoration:underline;background-color:transparent;">
+								<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+								</p:commandLink>
+								</div>
+							</p:column>
+
+							<p:column style="text-align:center; " >
+								<f:facet name="header">
+									<h:outputText value="#{msg.phoneNo }" />
+								</f:facet>
+								<div align="center">
+							<p:commandLink action="#{dashBoardManageBean.onRowSelect}" value="#{searchPatientDetail.phoneNumber}" style="text-decoration:underline;background-color:transparent;" >
+							<f:setPropertyActionListener target="#{dashBoardManageBean.selectedUserDetail}" value="#{searchPatientDetail}" />
+							</p:commandLink> 
+								</div>
+							</p:column>
+							<!--  <p:column style="width:6%">  
+                <p:commandButton id="selectButtonUserDetailId" actionListener="#{dashBoardManageBean.onRowSelect}"  icon="ui-icon-extlink" title="View">  
+            </p:commandButton>  
+        </p:column>  -->
+
+							<!-- <p:column style="text-align:center; width:5px;">
+								<f:facet name="header">
+									<h:outputText value="#{msg.select }" />
+								</f:facet>
+								<p:commandButton   id="search"   value="#{msg.view}"
+									actionListener="#{dashBoardManageBean.patientSearchData}"
+									action="go_to_overview" ajax="false" />
+									
+									
+							</p:column> -->
+
+						</p:dataTable>
+							</h:form>
+						</p:dialog>
+			
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+		
+	</f:view>
+</h:body>
+</html>
+

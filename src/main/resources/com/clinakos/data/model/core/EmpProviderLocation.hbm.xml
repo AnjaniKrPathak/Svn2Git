@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 31, 2014 2:44:28 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.core.EmpProviderLocation" table="emp_provider_location">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="lsId" type="int">
+            <column name="ls_id" />
+        </property>
+        <property name="providerId" type="int">
+            <column name="provider_id" />
+        </property>
+        <property name="userId" type="java.lang.String">
+            <column name="user_id" />
+        </property>
+        <property name="roleName" type="java.lang.String">
+            <column name="role_name" />
+        </property>
+        <property name="firstName" type="java.lang.String">
+            <column name="first_name" read="AES_DECRYPT(first_name, 'akos')" 
+					write="AES_ENCRYPT(?,'akos')"/>
+        </property>
+        <property name="middleName" type="java.lang.String">
+            <column name="middle_name" read="AES_DECRYPT(middle_name, 'akos')" 
+					write="AES_ENCRYPT(?,'akos')"/>
+        </property>
+        <property name="lastName" type="java.lang.String">
+            <column name="last_name" read="AES_DECRYPT(last_name, 'akos')" 
+					write="AES_ENCRYPT(?,'akos')"/>
+        </property>
+        <property name="locationName" type="java.lang.String">
+            <column name="location_name" />
+        </property>
+        <property name="addressFirstLine" type="java.lang.String">
+            <column name="address_line1" />
+        </property>
+        <property name="addressSecondLine" type="java.lang.String">
+            <column name="address_line2" />
+        </property>
+    </class>
+</hibernate-mapping>

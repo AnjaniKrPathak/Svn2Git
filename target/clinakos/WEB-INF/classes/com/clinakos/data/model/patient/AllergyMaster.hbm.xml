@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 17, 2013 12:08:47 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.AllergyMaster" table="master_allergy">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="allergyName" type="java.lang.String">
+            <column name="allergy_name" />
+        </property>
+        <property name="status" type="java.lang.String">
+            <column name="status" />
+        </property>
+        <property name="allergyType" type="java.lang.String">
+            <column name="allergy_type" />
+        </property>
+        <property name="compositeAllergyId" type="java.lang.String">
+            <column name="composite_allergy_id" />
+        </property>
+        <property name="allergySourceId" type="java.lang.String">
+            <column name="allergy_source_id" />
+        </property>
+        <property name="allergyConceptId" type="java.lang.String">
+            <column name="allergy_concept_id" />
+        </property>
+        <property name="conceptType" type="java.lang.String">
+            <column name="concept_type" />
+        </property>
+        
+       
+    </class>
+</hibernate-mapping>

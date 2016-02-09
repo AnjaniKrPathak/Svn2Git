@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body onload="#{dashBoardManageBean.setCTIndex()}">
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			 <p:layoutUnit position="north" size="85" minSize="60">
+		<ui:include src="patientHeader.xhtml" />
+	</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<ui:include src="patient_diagnoses_left_menu.xhtml">
+				</ui:include>
+		</p:layoutUnit>
+			<br />
+			<br />
+			<br /> 
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center">
+				<!--  <ui:include src="../Doctor/patientTabHeader.xhtml"></ui:include>-->
+				
+				
+				<h:form>
+
+
+					<!--         Diagnoses Data Table Start From Here     -->
+
+
+					<!-- <fieldset class="fieldContent">
+							<legend class="titleBar"><b>#{msg.patientDiag}</b></legend> -->
+					<table style="min-height:165px;width: 100%">
+						  <tr >
+						    <td class="secHeadPart">#{msg.patientDiag}</td>
+						  </tr>
+						  <tr>
+						    <td class="secContentBorder" valign="top">
+						<table width="100%">
+							<tr>
+								<td align="center" width="50%" class="secHeadPartH"><b> #{msg.icd_10} </b></td>
+								<td rowspan="2" width="1%"></td>
+								<td align="center" width="50%" class="secHeadPartH"><b> #{msg.icd_9} </b></td>
+							</tr>
+							<tr>
+								<td valign="top"><p:dataTable
+										value="#{patientManageBean.patientICD_10DiagnosisList}"
+										id="diagonosisICD_10" var="icd_1oDiago" 
+										  scrollable="true" scrollHeight="450" emptyMessage="#{msg.noMedFound}">
+										<p:column sortBy="icdId" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.icd_10_code}" />
+											</f:facet>
+											<div align="left">
+											<h:outputText value="#{icd_1oDiago.icdId}" /></div>
+										</p:column>
+										<p:column sortBy="code">
+											<f:facet name="header">
+												<h:outputText value="#{msg.name1}" />
+											</f:facet>
+											<div align="left">
+											<h:outputText value="#{icd_1oDiago.code}" /></div>
+										</p:column>
+										<p:column sortBy="date" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.date}" />
+											</f:facet>
+											<div align="center">
+											<h:outputText value="#{icd_1oDiago.date}">
+											  <f:convertDateTime pattern="#{msg.dateFormat}" dateStyle="full" type="date" /> 
+												<!-- <f:convertDateTime pattern="#{msg.dateFormat}" timeZone="#{userManageBean.loggedUsertimeZone}" dateStyle="full" type="date" /> -->
+											</h:outputText></div>
+										</p:column>
+										
+										
+										<p:column sortBy="docFirstName" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.doctor}" />
+											</f:facet>
+											<div align="left">
+											<h:outputText
+												value="#{icd_1oDiago.docFirstName} #{icd_1oDiago.docmiddleName} #{icd_1oDiago.docLastName}" /></div>
+										</p:column>
+									</p:dataTable> <p:blockUI block="diagonosisICD_10" trigger="diagonosisICD_10">  
+                               LOADING ...<br />
+										<p:graphicImage value="./../../Images/ajax_loader.gif"
+											width="40" height="40" />
+									</p:blockUI></td>
+									
+								<td valign="top"><p:dataTable
+										value="#{patientManageBean.patientICD_9DiagnosiosList}"
+										var="diagonosisICD_9" id="diagonosisICD_9"
+										 scrollable="true" scrollHeight="450" emptyMessage="#{msg.noMedFound}">
+										 
+										<p:column sortBy="icdId" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.icd_9_code}" />
+											</f:facet>
+											<div align="left">
+											<h:outputText value="#{diagonosisICD_9.icdId}" /></div>
+										</p:column>
+										<p:column sortBy="code">
+											<f:facet name="header">
+												<h:outputText value="#{msg.name1}" />
+											</f:facet>
+											<div align="left">
+											<h:outputText value="#{diagonosisICD_9.code}" /></div>
+										</p:column>
+										<p:column sortBy="date" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.date}" />
+											</f:facet>
+											<div align="center">
+											<h:outputText value="#{diagonosisICD_9.date}">
+											<f:convertDateTime pattern="#{msg.dateFormat}" dateStyle="full" type="date"/> 
+											</h:outputText></div>
+										</p:column>
+										
+										
+										<p:column sortBy="docFirstName" >
+											<f:facet name="header">
+												<h:outputText value="#{msg.doctor}" />
+											</f:facet>
+											<div align="left">
+											<h:outputText
+												value="#{diagonosisICD_9.docFirstName} #{diagonosisICD_9.docmiddleName} #{diagonosisICD_9.docLastName}" /></div>
+										</p:column>
+									</p:dataTable> <p:blockUI block="diagonosisICD_9" trigger="diagonosisICD_9">  
+                               LOADING ...<br />
+										<p:graphicImage value="./../../Images/ajax_loader.gif"
+											width="40" height="40" />
+									</p:blockUI></td>
+							</tr>
+							
+    
+ 
+    
+  
+  
+						</table>
+					</td>
+					</tr>
+					</table>
+                      <!-- </fieldset> -->
+
+					
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+		</p:layout>
+
+	</f:view>
+
+</h:body>
+</html>

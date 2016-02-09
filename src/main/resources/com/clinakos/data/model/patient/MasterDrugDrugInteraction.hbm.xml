@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 10, 2014 12:01:45 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.MasterDrugDrugInteraction" table="master_drug_drug_interaction">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="drug1ID" type="java.lang.String">
+            <column name="drug1_ID" />
+        </property>
+        <property name="drug2ID" type="java.lang.String">
+            <column name="drug2_ID" />
+        </property>
+        <property name="drug1Name" type="java.lang.String">
+            <column name="drug1_name" />
+        </property>
+        <property name="drug2Name" type="java.lang.String">
+            <column name="drug2_name" />
+        </property>
+         <property name="clinicalEffects" type="java.lang.String">
+            <column name="clinical_effects" />
+        </property>
+           <property name="severityLevels" type="java.lang.String">
+            <column name="severity_levels" />
+        </property>
+        
+         <property name="mechanismOfAction" type="java.lang.String">
+            <column name="mechanism_action" />
+        </property>
+           <property name="discussion" type="java.lang.String">
+            <column name="discussion" />
+        </property>
+         <property name="patientManagement" type="java.lang.String">
+            <column name="patient_management" />
+        </property>
+           <property name="predisposingFactors" type="java.lang.String">
+            <column name="predisposing_factors" />
+        </property>
+         <property name="references" type="java.lang.String">
+            <column name="references_drug" />
+        </property>
+           <property name="monographTitle" type="java.lang.String">
+            <column name="monograph_title" />
+        </property>
+         <property name="drug1Type" type="java.lang.String">
+            <column name="drug1_type" />
+        </property>
+           <property name="drug2Type" type="java.lang.String">
+            <column name="drug2_type" />
+        </property>
+         <property name="performance" type="java.lang.String">
+            <column name="performance_drug" />
+        </property>
+         
+    </class>
+</hibernate-mapping>

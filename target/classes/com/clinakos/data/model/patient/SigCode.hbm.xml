@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.SigCode"
+		table="sig_code">
+		<id name="id" type="int" column="id">
+			<generator class="increment" />
+		</id>
+
+		
+		<property name="sigCode" type="java.lang.String">
+			<column name="sig_code" />
+		</property>
+		
+
+		<property name="meaning" type="java.lang.String">
+			<column name="meaning" />
+		</property>		
+		
+		<property name="morning">
+			<column name="morning" />
+		</property>
+		<property name="noon">
+			<column name="noon" />
+		</property>
+		<property name="evening">
+			<column name="evening" />
+		</property>
+		<property name="bedTime">
+			<column name="bed_time" />
+		</property>
+		<property name="specialCase">
+			<column name="special_case" />
+		</property>
+		
+		<property name="newCropId" type="int">
+			<column name="new_crop_id" />
+		</property>
+		
+		<property name="sigCodeValue" type="java.lang.Double">
+			<column name="sig_code_value" />
+		</property>
+	</class>
+</hibernate-mapping>

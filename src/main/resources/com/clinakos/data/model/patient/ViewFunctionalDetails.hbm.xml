@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.ViewFunctionalDetails"
+		table="functional_details">
+		<id name="id" type="int" column="id">
+			<generator class="increment" />
+		</id>
+
+		<property name="name" type="java.lang.String">
+			<column name="name" />
+		</property>
+
+
+		<property name="unit" type="java.lang.String">
+			<column name="units" />
+		</property>
+
+		<property name="result" type="double">
+			<column name="result" />
+		</property>
+
+		<property name="procedureTypeId" type="int">
+			<column name="procedure_type_id" />
+		</property>
+
+		<property name="patientId" type="int">
+			<column name="user_id" />
+		</property>
+
+
+
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,1018 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+	
+
+<h:body styleClass="mypanel"  onload="#{dashBoardManageBean.setOverviewIndex()}" onFocus="parent_disable();" onclick="parent_disable();">
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<link href="../../JavaScript/nv.d31.css" rel="stylesheet" type="text/css"/>
+		 <script type="text/javascript">
+			function labComplete(xhr, status, args){
+				if(args.selectedLab==true){
+					searchLabDialog.hide();
+					medAactionPlanDialog.show();
+					if(args.validateMAP==true){
+						medPlanExistsWidgetVar.show();
+					}
+					}
+			}
+		function handleSearchLab(xhr, status, args){
+			if(args.searchResultSet==true){
+				searchLabDialog.show();
+				}
+			}
+
+		 
+		 function showBlockUI(){
+				//	alert("block UI show");
+					blockUI.show();
+					} 
+		 
+		 function hideBlockUI(){
+				//	alert("block UI hide");
+					blockUI.hide();
+					}
+		 
+		 function onmedplanclick(){
+			 document.getElementById('newGenericMedPlanFormIdforfilter:medplanwithout_diagonoses').click();
+			
+					}
+		 
+		 function onmedplanclickforinr() {
+			 
+			 document.getElementById('newGenericMedPlanFormIdforfilter:medplanwith_graeter_inr').click();	
+		}
+			
+		
+		 function genericMedActionPlanComplete(xhr,status,args){
+				if(args.savedOrNotDb==true){
+					medAactionPlanDialog.hide();
+					
+					/*  growlMsg.show([{summary:'', detail: 'Med Action Plan Saved Successfully', severity: 'info'}])  */
+					updateMedPlanRemotely();
+					
+					
+					}
+				else{
+					medAactionPlanDialog.show();
+					}
+				}
+		 
+		 function handleMedPlanMessageDialog(xhr, status, args){
+			 if(args.isMedPlanExists==true){
+				 drugMAPExists.show();
+			 }else {
+				 withoutMedActionPlanMessageShowForDelete.show();
+			 }
+			 
+		 }
+		 
+		 function showConfirmDialogBoxMAP(xhr,status,args){
+			 if(args.isMedPlanExists==true){
+				 drugMAPExists.hide();
+				 mapConfirmDialog.show();
+			 }
+			 
+		 }
+		 
+		 function showPanelForDiagnosis(xhr,status,args){
+			 if(args.isNewDiagnosisSelected==true){
+				 alert("inside if")
+			//	 patientExistingDiagnosisWidget.hide();
+				 addNewDiagnosisWidget.show();
+			 }else if(args.isNewDiagnosisSelected==false){
+				 alert("inside else if")
+			//	 addNewDiagnosisWidget.hide();
+				 patientExistingDiagnosisWidget.show();
+			 }
+		 }
+			
+		    $(document).ready(function() { 
+		    //	console.log("after the page has loaded successfully in overviewFilter page");
+		   /*    $(".ui-chkbox-box").addClass('ui-state-active');
+			    $(".ui-chkbox-box").children('span').addClass('ui-icon ui-icon-check'); */
+		   /*   $(':checkbox[id*=precriberFilterId]').click();
+		    $(':checkbox[id*=drugFilterId]').click();
+		    $(':checkbox[id*=formmularyFilterId]').click();
+		    $(':checkbox[id*=alertLevelChkBoxId]').click();
+		    $(':checkbox[id*=alertTypeChkBoxId]').click(); 
+		    $(':checkbox[id*=medCheckboxId]').click(); 
+		    $(':checkbox[id*=therapeuticChkBoxId]').click();   */
+		 
+		    if($('input:checkbox[name=precriberFilterId]').is(':checked')==false){
+		    	$('input:checkbox[name=precriberFilterId]').click();
+			    }else{
+			    	 $('input:checkbox[name=precriberFilterId]').attr('checked', false); 
+					  $('input:checkbox[name=precriberFilterId]').click();
+				    }
+		    if($('input:checkbox[name=drugFilterId]').is(':checked')==false){
+		    	$('input:checkbox[name=drugFilterId]').click();
+			    }else{
+			    	 $('input:checkbox[name=drugFilterId]').attr('checked', false); 
+					  $('input:checkbox[name=drugFilterId]').click();
+				    }
+		    if($('input:checkbox[name=formmularyFilterId]').is(':checked')==false){
+		    	$('input:checkbox[name=formmularyFilterId]').click();
+			    }else{
+			    	 $('input:checkbox[name=formmularyFilterId]').attr('checked', false); 
+					  $('input:checkbox[name=formmularyFilterId]').click();
+				    }
+		    if( $('input:checkbox[name=alertLevelChkBoxId]').is(':checked')==false){
+		    	$('input:checkbox[name=alertLevelChkBoxId]').click();
+		    
+			    }else{
+			    	 $('input:checkbox[name=alertLevelChkBoxId]').attr('checked', false); 
+			    	$('input:checkbox[name=alertLevelChkBoxId]').click();
+			    }
+				    
+		    if( $('input:checkbox[name=alertTypeChkBoxId]').is(':checked')==false){
+		    	$('input:checkbox[name=alertTypeChkBoxId]').click();
+			    }else{
+			   	 $('input:checkbox[name=alertTypeChkBoxId]').attr('checked', false); 
+			    	$('input:checkbox[name=alertTypeChkBoxId]').click();
+				    }
+		   if( $('input:checkbox[name=medCheckboxId]').is(':checked')==false){
+			   $('input:checkbox[name=medCheckboxId]').click();
+			   }else{
+				   $('input:checkbox[name=medCheckboxId]').attr('checked', false); 
+			    	$('input:checkbox[name=medCheckboxId]').click();
+				   }
+
+		   if( $('input:checkbox[name=therapeuticChkBoxId]').is(':checked')==false){
+			   $('input:checkbox[name=therapeuticChkBoxId]').click();
+			   }else{
+				   $('input:checkbox[name=therapeuticChkBoxId]').attr('checked', false); 
+			    	$('input:checkbox[name=therapeuticChkBoxId]').click();
+				   }
+		   
+		   if( $('input:checkbox[name=drugTypeChkBoxId]').is(':checked')==false){
+			   $('input:checkbox[name=drugTypeChkBoxId]').click();
+			   }else{
+				   $('input:checkbox[name=drugTypeChkBoxId]').attr('checked', false); 
+			    	$('input:checkbox[name=drugTypeChkBoxId]').click();
+				   }
+		   
+		    
+		/*     $('#selectAllId').click(function(){   
+			    $(".ui-chkbox-box").addClass('ui-state-active');
+			    $(".ui-chkbox-box").children('span').addClass('ui-icon ui-icon-check'); 
+			
+			    }); */
+
+		 
+		    	console.log("after the page has Loaded It is loading patient count from backend ");
+			    overviewFilterUpdateIssuesCount(); 
+			    updateMedPlanRemotely();
+			    
+				    
+		   });         
+
+		    var popupWindow=null;
+			function windowopen(){
+				var centerLeft = parseInt((window.screen.availWidth - 1000) / 2);
+			    var centerTop = parseInt(((window.screen.availHeight - 500) / 2) - 200);
+				popupWindow = window.open("hepatitis.jsf", "Sovaldi", "width=1000, height=500, top=100, left=200, directories=no");
+			    popupWindow.focus();
+			return false;
+				}
+		
+			 function updateMedPlanRemotely(){
+					updateMedPlanIndicator();
+					}
+			 
+			 
+			function lithiumWindowopen(){
+				var centerLeft = parseInt((window.screen.availWidth - 1000) / 2);
+			    var centerTop = parseInt(((window.screen.availHeight - 500) / 2) - 200);
+				popupWindow = window.open("quickPrecribePsychopharm.jsf", "Psychopharm", "width=1000, height=500, top=100, left=200, directories=no");
+			    popupWindow.focus();
+			return false;
+				}
+
+			 function parent_disable() {
+				 if(popupWindow &amp;&amp; !popupWindow.closed)
+				popupWindow.focus();
+				 document.onmousedown = focusPopup;
+	                document.onkeyup = focusPopup;
+	                document.onmousemove = focusPopup;
+				} 
+				
+			 function focusPopup() {
+	                if (popupWindow &amp;&amp; !popupWindow.closed) { popupWindow.focus(); }
+	            } 
+			     
+			</script>
+			<!--for ds d3 chart  -->
+			
+			
+
+<style>
+
+.mypiechart {
+  width: 300px;
+  border: 2px;
+}
+
+
+.bar,.containerMedT {
+ fill: #7cb5ec ;/*
+ #1aadce,#492970,#f28f43,#77a1e5,#c42525,#a6c96a #FF9999
+  rgb(70,130,180) rgb(56,156,173); #ced29d", "#33CCCC", "#389CAD", "#f7aa47", "#416c85", "#36908a", "#C5B47F" */
+
+}
+
+.bar:hover {
+  fill: #4682B4;/* rgb(4,180,180) rgb(0,128,192); #f08080 #416c85 *//* steelblue; */  
+}
+ .sector {
+        cursor: pointer;
+      }
+      
+     
+   .ui-radiobutton-icon{
+       padding-right: 5px;
+      border-width: 0;
+      
+      
+      
+   }
+ </style>
+
+
+		
+			
+			 
+
+			<style type="text/css">
+.datalist-noborder .ui-widget-content{
+border: none;
+ margin-top:-10px;
+margin-left:5px; 
+
+}
+ .changeRowColor
+ {
+  background-color: #FFFFFF !important;
+  background-image: none !important;
+ }  
+ 
+.redCircle
+    {
+    width:20px;
+    height:20px;
+    border-radius:15px;
+    font-size:12px;
+    color:#000000;
+ /*    padding:2 0 0 2; */
+  /*   line-height:10px; */
+    text-align:center;
+    vertical-align:middle;
+    background:#FF4962
+    }
+  .orangeCircle
+    {
+    width:20px;
+    height:20px;
+    border-radius:15px;
+    font-size:12px;
+    color:#000000;
+   /*  padding:2 0 0 2; */
+  /*   line-height:10px; */
+    text-align:center;
+    vertical-align:middle;
+    background:#FFCB00
+    }
+    .greenCircle
+    {
+    width:20px;
+    height:20px;
+    border-radius:15px;
+    font-size:12px;
+    color:#000000;
+   /*  padding:2 0 0 2; */
+   /*  line-height:10px; */
+    text-align:center;
+    vertical-align:middle;
+    background:#007F00
+    }
+    
+     .greenCircleRedOutline
+    {
+    width:15px;
+    height:15px;
+    border-radius:15px;
+    font-size:12px;
+    color:#000000;
+   /*  padding:2 0 0 2; */
+   /*  line-height:10px; */
+    text-align:center;
+    vertical-align:middle;
+    background:#007F00;
+    border-style: solid;
+    border-color: #FF4962;
+    }
+
+.chkBoxLabelClass label{
+margin-right: 10px;
+}
+.cmdLinkBgCol{
+background-color:#b7dbf2
+}
+.ui-datalist-item{
+font-weight: normal;
+}
+/*  .ui-layout-west { 
+overflow:hidden !important;
+} */
+/* .ui-layout-west .ui-layout-unit-content {
+overflow:hidden !important;
+}   */
+
+.datagrid-noborder .ui-widget-content{
+border: none;
+}
+</style>
+
+
+		</h:head>
+
+		<p:layout fullPage="true" >
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="93" minSize="60">
+			 <ui:include src="doctorHeader.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="29" style="border:none;">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+		
+				<p:layoutUnit position="west"   id="leftSidePanelId" collapsible="true" size="250" header="Filter" >
+				<!-- <ui:include src="anticoagleftmenu.xhtml">
+				</ui:include> -->
+				
+				<h:form id="filterForm" prependId="false">
+			
+			
+				
+				<ui:include src="filterPanel.xhtml"></ui:include>
+		
+                    
+				
+		
+				</h:form>
+      </p:layoutUnit>
+			<!-- </p:layoutUnit>	 -->	
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center">
+			<h:form id="msgVarId">
+			 <p:growl id="growlMsgId" showDetail="true"  widgetVar="growlMsgWidgetVar" sticky="false"/>
+			 </h:form>
+			<table width="100%">
+			<tr>
+			
+			<td valign="top">
+					<p:accordionPanel dynamic="true" activeIndex="0" >
+						<p:tab >
+						<f:facet name="title">
+						<h:outputText value="#{dashBoardManageBean.userLoginDetail.userId} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}"  rendered="#{userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header')}"></h:outputText>
+						<h:outputText value="#{dashBoardManageBean.userLoginDetail.firstName} #{dashBoardManageBean.userLoginDetail.lastName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"/>
+						</f:facet>
+						
+							<p:outputPanel deferred="true" >
+							<ui:include src="../Doctor/patientDetailsHeader.xhtml"></ui:include>
+							</p:outputPanel>
+						</p:tab>
+						 <!-- <p:tab
+							title="#{dashBoardManageBean.userLoginDetail.firstName} #{dashBoardManageBean.userLoginDetail.lastName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}" rendered="#!{userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header')}">
+							<p:outputPanel deferred="true" rendered="#!{userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header')}">
+							<ui:include src="../Doctor/patientDetailsHeader.xhtml"></ui:include>
+							</p:outputPanel>
+						</p:tab>  -->
+					</p:accordionPanel>
+					
+   <!--  ============================for testing time zone , have to implement later==============   -->
+ 
+	<h:inputHidden value="#{patientMedicineManageBean.checkIntegrationForNewCropforTesScenario8ForTest }" /> 
+	<table width="100%" style="display: none;">
+	<tr>
+	<td valign="top">
+	<!-- <fieldset class="fieldContent" style="height: 160px;">
+	<legend class="titleBar">#{msg.compliancemeter}</legend> -->
+	<table style="height: 170px;min-width: 200px">
+	  <tr>
+	   <td class="secHeadPart" valign="top">
+	     #{msg.compliancemeter}
+	   </td>
+	  </tr>
+	  <tr class="secContentBorder">
+	    <td>
+	   <!--  <div style="margin-top:20px;margin-left: 50px;"><span id="complianceGaugeContainer" ></span></div> -->
+	    </td>
+	  </tr>
+	</table>
+	
+	<!-- </fieldset> -->
+	</td>
+	<td valign="top" align="center" width="40%">
+	<!-- <fieldset class="fieldContent" style="height: 160px;">
+	<legend class="titleBar">#{msg.drug_cost}</legend> -->
+	<table style="height: 170px;min-width: 200px">
+	  <tr>
+	    <td class="secHeadPart">#{msg.drug_cost}</td>
+	  </tr>
+	  <tr class="secContentBorder" align="center">
+	   <td >
+	      <!-- <div id="containerMedT" style="width: 165px; height: 90px; float: center;margin-left: 30px;" ></div> -->
+	   </td>
+	  </tr>
+	  
+	</table>
+	
+	 <!-- </fieldset> -->
+	</td>
+	<td valign="top" align="right">
+	  <table style="height: 170px;min-width: 360px">
+	    <tr>
+	      <td class="secHeadPart">
+	        #{msg.alertType}
+	      </td>
+	    </tr>
+	    <tr class="secContentBorder">
+	      <td>
+	        <!-- <div id="containerAnticoagAnalysis" style="min-width: 180px; max-width: 400px; height: 140px;margin-left: 30px;"></div> -->
+	      </td>
+	    </tr>
+	  </table>
+		<!-- <fieldset class="fieldContent" style="height: 160px;">
+		<legend class="titleBar">#{msg.alertType}</legend> -->
+
+<!-- </fieldset> -->
+	</td></tr>
+	</table>
+	
+	   
+	<table width="100%" style="margin-top:10px" class="secContentBorder" cellpadding="0" cellspacing="0">
+	  <tr>
+	  <p:outputPanel rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+	    <td class="secHeadPart">
+	    <h:outputText value="#{msg.patient_issue_label1}"></h:outputText>
+	    </td>
+	   </p:outputPanel>
+	  </tr>
+	  <tr class="secContentBorder">
+	    <td>
+	    
+	      <div> <!-- style="border:1px solid #B7DBF2;border-radius:0px;"> -->
+		
+		<h:form id="alertsFormId" prependId="false">
+		 <p:outputPanel deferred="true" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+								
+				<table>
+				 <tr>
+				   <td><h:outputText value="#{msg.clinic_message_label}" style="font-weight:bold;font-size: 8pt;"></h:outputText>
+				   <br></br>
+				   </td>
+				 </tr>
+				</table><br/>
+				
+						<p:dataList value="#{patientMedicineManageBean.copyAlertMedPlansFilter}"
+						var="alertMedPlans"  type="definition" emptyMessage="#{msg.noMedFound}" id="alertGenericsLabsMsgDataTable" styleClass="datalist-noborder" >
+						
+						<!-- <f:facet name="header">
+				<h:outputText value="#{msg.clinic_message_label}" style="font-weight:bold;font-size: 8pt;"></h:outputText>
+				</f:facet> -->
+				
+				<table>
+                	<tr valign="middle">
+                		<td>
+                                                     <h:graphicImage value="./../../Images/red1.jpg" 
+                                                    height="12px" width="20px" id="highSeverityLevelToolFilter"
+                                                            rendered="#{alertMedPlans.severityLevel eq 'High'}" />
+                                                        <h:graphicImage value="./../../Images/orange1.jpg"
+                                                     height="12px" width="20px" id="midSeverityLevelToolFilter"
+                                                            rendered="#{alertMedPlans.severityLevel eq 'Medium'}" />
+                                                    <h:graphicImage value="./../../Images/green1.jpg"
+                                                height="12px" width="20px" id="lowSeverityLevelToolFilter"
+                                                            rendered="#{alertMedPlans.severityLevel eq 'Low'}" />
+                                                            
+                                                     
+                   <h:outputText  value=" #{alertMedPlans.labType}" />&nbsp;<h:outputText value="#{alertMedPlans.labResultValue}" />&nbsp;<h:outputText value="#{alertMedPlans.labUnit}" />
+                    <!--  <h:outputText value=" Value " /> -->
+                     <h:outputText value=" on " />   
+                     <h:outputText value=" #{alertMedPlans.labDateResult}" /> 
+                     <h:outputText value=" for " />    
+                     <h:outputText value="#{alertMedPlans.drugName}" />&nbsp;    
+                     <h:outputText value="with goal " /> 
+                     <h:outputText value="#{alertMedPlans.lowRangeSymbol}" rendered="#{(alertMedPlans.lowValue>0.0) and (alertMedPlans.severityLevel ne 'Low')}"/>         
+                     <h:outputText value="#{alertMedPlans.lowValue}" rendered="#{alertMedPlans.lowValue>0.0}"/>  
+                      <h:outputText value=" - " rendered="#{(alertMedPlans.lowValue>0.0) and (alertMedPlans.highValue>0.0)}"/>
+                      <h:outputText value="#{alertMedPlans.highRangeSymbol}" rendered="#{(alertMedPlans.highValue>0.0) and (alertMedPlans.severityLevel ne 'Low')}"/>  
+                       <h:outputText value="#{alertMedPlans.highValue}" rendered="#{alertMedPlans.highValue>0.0}"/>                   
+						<p:spacer height="22px;"></p:spacer>
+						
+						</td>
+                	</tr>
+                </table>       
+						</p:dataList>
+						
+						<!-- </div> -->
+						<!-- </p:panel> -->
+					<!-- </p:fieldset> -->
+						<p:outputPanel id="anticoagMsgUpdateId">
+												<p:outputPanel
+													
+													id="messageSection">
+													<table width="100%">
+
+														<tr>
+															<td>
+															<!-- <h:inputHidden
+																	value="#{patientMedicineManageBean.checkNotesForLab}"></h:inputHidden> -->
+															<h:inputHidden value="#{patientMedicineManageBean.checkNotesForWarfarinDrugInteraction}"></h:inputHidden>
+															  <h:inputHidden value="#{patientMedicineManageBean.showAnticoagMedactionPlanMessage}"></h:inputHidden>
+	
+																	<p:outputPanel rendered="#{!patientMedicineManageBean.drugInteractionForWarfarinList.isEmpty()}"> 
+																		  <p:dataTable value="#{patientMedicineManageBean.drugInteractionForWarfarinList}" var="drugInteractionForWarfarinListVar" emptyMessage="#{msg.noMedFound}">
+																	    <table>
+														                	<tr valign="middle">
+														                		<td>  
+						                		
+																		  <p:column style="border-style:none;">
+																		       <h:graphicImage value="./../../Images/orange1.jpg" height="12px" 
+																					width="20px" rendered="#{drugInteractionForWarfarinListVar.interaction eq 'Possible Interaction' || drugInteractionForWarfarinListVar.interaction eq 'Unlikely Interaction'}"/>
+																					
+																				<h:graphicImage value="./../../Images/red1.jpg" height="12px" 
+																					width="20px" rendered="#{drugInteractionForWarfarinListVar.interaction eq 'Known Interaction' ||  drugInteractionForWarfarinListVar.interaction eq 'Probable Interaction'}"/>
+																		       
+																		        #{drugInteractionForWarfarinListVar.drugName}
+																		        <h:outputText value=" found with a"></h:outputText>
+																		        <h:outputText value="  #{drugInteractionForWarfarinListVar.interaction}. "></h:outputText>
+																		        <h:outputText value="INR may be increased. Check INR within 5-7 days of interacting medicine's start date." 
+																		        	rendered="#{drugInteractionForWarfarinListVar.checkHighORLowInrFOrMessage eq 'INCREASE INR'}"></h:outputText>
+																		         <h:outputText value="INR may be decreased. Check INR within 5-7 days of interacting medicine's start date." 
+																		         rendered="#{drugInteractionForWarfarinListVar.checkHighORLowInrFOrMessage eq 'DECREASE INR'}"></h:outputText>
+																	      </p:column>
+																	      </td></tr></table>
+																	    </p:dataTable>
+																	 </p:outputPanel> 
+																		
+																		<!--  <p:outputPanel rendered="#{!patientMedicineManageBean.showAnticoagMedactionPlanMessage eq 0}"> -->
+		 	<p:outputPanel id="updateMedActionPlanAlertMsg1" >
+		 	<p:outputPanel  rendered="#{!patientMedicineManageBean.medactionPlanMessageAfterLab.isEmpty()}">
+		 	<p:dataTable id="updateMedActionPlanAlertMsg21" value="#{patientMedicineManageBean.medactionPlanMessageAfterLab}" 
+		 		var="medactionPlanMessageAfterLab"  style="border:none;" styleClass="noheader" emptyMessage="#{msg.noMedFound}">
+	 	   <table>
+                	<tr valign="middle">
+                		<td>
+	 	   		<p:column style="border-style:none;">
+		 	    	<h:graphicImage value="./../../Images/green1.jpg" height="12px" 
+						width="20px" rendered="#{medactionPlanMessageAfterLab.labImageStatusForINR eq 'Green'}"/>
+				
+					<h:graphicImage value="./../../Images/orange1.jpg" height="12px" 
+						width="20px" rendered="#{medactionPlanMessageAfterLab.labImageStatusForINR eq 'Amber'}"/>
+				
+					<h:graphicImage value="./../../Images/red1.jpg" height="12px" 
+						width="20px" rendered="#{medactionPlanMessageAfterLab.labImageStatusForINR eq 'Red'}"/>&nbsp;
+				
+		 			<h:outputText value="#{medactionPlanMessageAfterLab.lab} value "/>
+		 			<h:outputText value="#{medactionPlanMessageAfterLab.labResult} on "/>
+		 			
+		 			<h:outputText value="#{medactionPlanMessageAfterLab.labDate}">
+		 				<f:convertDateTime pattern="#{msg.dateFormat}" timeZone="#{userManageBean.loggedUsertimeZone}" dateStyle="full" type="date"/>
+		 			</h:outputText>
+		 			<h:outputText value=" for #{medactionPlanMessageAfterLab.medicineName}  "/>
+		 			
+		 				<h:outputText value=" Goal  #{medactionPlanMessageAfterLab.acceptableRange} " 
+ 							rendered="#{!medactionPlanMessageAfterLab.acceptableRange.isEmpty()}"></h:outputText>
+ 				
+ 				<h:outputText value=" Phase=Initiation, INR Day= #{medactionPlanMessageAfterLab.noOfDaysStartingFromMedActionPlan} !" 
+ 				rendered="#{((medactionPlanMessageAfterLab.medicineStage eq 'Initiation') 
+ 						and (medactionPlanMessageAfterLab.noOfDaysStartingFromMedActionPlan gt 6))}" style="color:red;"></h:outputText>
+ 				
+ 				
+ 				<h:outputText value=" High Risk for Haemorrhage" 
+ 				rendered="#{((medactionPlanMessageAfterLab.medicineStage eq 'Maintenance') and (medactionPlanMessageAfterLab.labResult gt 4.5))}" style="color:red;"></h:outputText>
+ 				
+		 			
+		 			
+				</p:column>
+				
+				</td></tr></table>
+		</p:dataTable>
+		 </p:outputPanel>
+		 <p:outputPanel  rendered="#{!patientMedicineManageBean.medactionPlanMessageBeforeLab.isEmpty()}">
+		 <p:dataTable id="updateMedActionPlanAlertMsg2" value="#{patientMedicineManageBean.medactionPlanMessageBeforeLab}" 
+		 		var="medactionPlanMessageBeforeLab"  style="border:none;" styleClass="noheader" emptyMessage="#{msg.noMedFound}">
+	 	   
+	 	   		<p:column style="border-style:none;">
+		 	    	<h:outputText value="No new lab value is available after the Med Action Plan for ">
+		 	    	</h:outputText>&nbsp;<h:outputText value="#{medactionPlanMessageBeforeLab.medicineName} #{medactionPlanMessageBeforeLab.lab}"/>&nbsp;
+ 					<h:outputText value="was last updated on"></h:outputText>&nbsp;
+ 					<h:outputText value="#{medactionPlanMessageBeforeLab.lastUpdateDate}">
+ 						<f:convertDateTime pattern="#{msg.dateFormat}" timeZone="#{userManageBean.loggedUsertimeZone}" dateStyle="full" type="date"/>
+ 					</h:outputText>
+				</p:column>
+		</p:dataTable>
+	</p:outputPanel>
+	 </p:outputPanel>
+																		
+																		
+																																
+															
+																</td>
+														</tr>
+													</table>
+												</p:outputPanel>
+												</p:outputPanel>
+												</p:outputPanel>
+											</h:form>
+					</div>
+				
+					<br/>
+					<h:form id="acoMeasureFormId" prependId="false" >
+					<p:outputPanel rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}">
+					<div style="border:1px solid #B7DBF2;border-radius:0px;">
+					
+<p:outputPanel deferred="true">
+
+<table width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+  <td class="secHeadPart">
+  #{msg.aco_measure}
+  </td>
+  </tr>
+				</table>
+				
+				<div align="right"  style="float: right;">
+<p:commandButton value="Recalculate" id="nonAjax" actionListener="#{patientMedicineManageBean.CalPatientmesureCount()}" ajax="false" />
+</div>
+<div align="left" style="float: left;" >
+<p:commandButton value="History" id="historybtn"  onclick="acoHistory.show();"/>
+</div>
+	<br/>	
+	<p:dataTable var="aco" value="#{patientMedicineManageBean.acoPatientMeasureFilterPageList}" id="acoMeasure" emptyMessage="#{msg.noMedFound}">
+									
+							<!-- 		<f:facet name="header">
+				<h:outputText value="#{msg.aco_measure}" style="font-weight: bold;font-size: 8pt;"></h:outputText>
+				</f:facet> -->
+									<p:column headerText="Measure">
+										<div align="center">
+											<h:outputText value="#{aco.mesureType}" />
+										</div>
+									</p:column>
+
+														<p:column headerText="Date">
+															<div align="center">
+																<h:outputText value="#{aco.measureDate}">
+																	<f:convertDateTime pattern="#{msg.dateFormat}" />
+																</h:outputText>
+															</div>
+														</p:column>
+
+														<p:column headerText="Status">
+										<center>
+											<h:graphicImage value="./../../Images/red1.jpg"
+												height="20px" id="affectedId" width="20px"
+												rendered="#{aco.active eq '1'}" />
+											<h:graphicImage value="./../../Images/green1.jpg" height="20px"
+												id="notaffectedId" width="20px"
+												rendered="#{aco.active eq '0'}" />
+
+										</center>
+									</p:column>
+									<p:column headerText="Exception">
+										<div align="center">
+											<h:outputText value="#{aco.exception}" />
+										</div>
+									</p:column>
+								</p:dataTable>
+     </p:outputPanel>
+     <p:dialog widgetVar="acoHistory" position="300,10" showEffect="clip" hideEffect="clip" height="500" width="800" modal="true"
+								              			appendTo="@(body)" style="overflow-x: hidden; overflow-y:hidden;">
+     
+    
+					
+						<p:dataTable var="aco" value="#{patientMedicineManageBean.patientmesureHistory}" id="acoMeasureHistory">
+									
+							<!-- 		<f:facet name="header">
+				<h:outputText value="#{msg.aco_measure}" style="font-weight: bold;font-size: 8pt;"></h:outputText>
+				</f:facet> -->
+									<p:column headerText="Measure">
+										<div align="center">
+											<h:outputText value="#{aco.mesureType}" />
+										</div>
+									</p:column>
+
+														<p:column headerText="Date">
+															<div align="center">
+																<h:outputText value="#{aco.measureDate}">
+																	<f:convertDateTime pattern="#{msg.dateFormat}" />
+																</h:outputText>
+															</div>
+														</p:column>
+
+														<p:column headerText="Status">
+										<center>
+											<h:graphicImage value="./../../Images/red1.jpg"
+												height="20px" id="affectedId" width="20px"
+												rendered="#{aco.active eq '1'}" />
+											<h:graphicImage value="./../../Images/green1.jpg" height="20px"
+												id="notaffectedId" width="20px"
+												rendered="#{aco.active eq '0'}" />
+
+										</center>
+									</p:column>
+									<p:column headerText="Exception">
+										<div align="center">
+											<h:outputText value="#{aco.exception}" />
+										</div>
+									</p:column>
+								</p:dataTable>
+					<!-- <h:outputText value="#{userManageBean.numberOfPatientforanticoagclinicforintiationphase}"></h:outputText> -->
+					
+					
+					</p:dialog>
+							<!-- </p:fieldset> -->
+							<!-- </div> -->
+							</div>
+							</p:outputPanel>
+							</h:form>
+	      
+	    </td>
+	  </tr>
+	</table>
+		<!-- <fieldset class="dataField" style="width: 97%;">	
+		<legend class="legendField">#{msg.patient_issue_label1}</legend> -->
+		<!-- 	</fieldset> -->
+		<br/>
+		             
+
+	<table width="100%" border="0" class="secContentBorder" cellpadding="0" cellspacing="0">
+	  <tr>
+	    <td class="secHeadPart">
+	      <a href="medication.jsf" style="color:#005E86;font-style: bold">Medication Summary</a>
+	    </td>
+	  </tr>
+	  <tr class="secContentBorder">
+	    <td>
+	       <h:form id="PMRFormIdFilter" >			
+		
+			<table class="contentTextPan" width="100%">
+			
+			<tr>
+				<!-- <table width="100%"  class="contentTextPan" border="0">
+				<tr> -->
+					<td >
+						<p:outputPanel id="lastReconcileINfo">
+						<div class="contentTextPan">
+							<h:outputText value="#{msg.lastReconcileDate} " style="font-weight: bold;"/>
+							<h:outputText id="reconcileDateIdForNA" value="NA" rendered="#{(auditManageBean.reconcileInfo.lastReconciledDateStr eq null)}" />
+						<!-- 	<h:outputText id="reconcileDateId" value="#{patientMedicineManageBean.lastReconcileInfo.get(1)} " rendered="#{!(patientMedicineManageBean.lastReconcileInfo.size() eq 0)}" /> -->
+						<!--Temporary Fix  for Last Recoincile date-->
+						 <h:outputText id="reconcileDateId" value="#{auditManageBean.reconcileInfo.lastReconciledDateStr}" rendered="#{auditManageBean.reconcileInfo.lastReconciledDateStr ne null}" />
+						<!-- <h:outputText id="reconcileDateId" value="#{patientMedicineManageBean.lastRecoinciledDate}" rendered="#{!(patientMedicineManageBean.lastReconcileInfo.size() eq 0)}" /> -->
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<h:outputText value="#{msg.lastReconciledBy} " style="font-weight: bold;"/>
+							<h:outputText id="reconcileByNA" value="NA" rendered="#{(auditManageBean.reconcileInfo.lastReconciledByName eq null)}" />
+						<!-- 	<h:outputText id="reconcileById" value="#{patientMedicineManageBean.lastReconcileInfo.get(0)} " rendered="#{!(patientMedicineManageBean.lastReconcileInfo.size() eq 0)}" /> -->
+						<!--  -->
+						 <h:outputText id="reconcileById" value="#{auditManageBean.reconcileInfo.lastReconciledByName}" rendered="#{auditManageBean.reconcileInfo.lastReconciledByName ne null}" />
+						<!-- <h:outputText id="reconcileById" value="#{patientMedicineManageBean.lastRecoinciledBy}" rendered="#{!(patientMedicineManageBean.lastReconcileInfo.size() eq 0)}" /> -->
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					
+					
+							
+						</div>
+					</p:outputPanel>
+					</td>
+		
+					<td align="right">
+					<div class="btnBoxDiv">
+			    	<p:commandButton value="#{msg.reconcile}" actionListener="#{patientMedicineManageBean.showReconcileMeds}" onstart="blockPage.show();"
+							oncomplete="reconcilePopUp.show();blockPage.hide();"  styleClass="btnSubmit" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('dashboard_reconcile')}">
+						</p:commandButton>
+						<!-- <p:commandButton value="#{msg.reconcile}" styleClass="btnSubmit"></p:commandButton> -->
+						<p:commandButton
+							value="#{msg.add_Medicine}" styleClass="btnSubmit"
+							actionListener="#{patientMedicineManageBean.searchMedicine}" update=":searchMedicinePopUp_Id"
+							rendered="#{userManageBean.rolePrivillegeUtil.isEnable('dashboard_addMed')}">
+						</p:commandButton> 
+						</div>
+						<!-- <p:commandButton
+							value="#{msg.done}"
+							action="go_to_visitSummary_page">
+						</p:commandButton> -->
+						
+							
+									
+					</td>
+		<!-- 	</tr>
+	</table> -->
+			
+			
+			</tr>
+	</table>
+	
+<ui:include src="/page/core/blockDialog.xhtml">
+				
+				</ui:include>
+
+	
+	<br/>
+	
+       <p:remoteCommand  name="updateMedPlanRemotely"
+                  process="@this"
+                  update="medPanelId"
+                  actionListener="#{patientMedicineManageBean.updateMedPlanIndicator}" async="true"/>              
+
+	  <p:remoteCommand  name="overviewFilterUpdateIssuesCount"
+                  process="@this"
+                  update="medPanelId"
+                  actionListener="#{patientMedicineManageBean.overviewFilterUpdateIssuesCount}" async="true"/> 
+                  <table style="min-width: 100%">
+<tr><td>
+<p:outputPanel deferred="true" id="medPanelId">
+<!-- include medication summary  datatable-->
+<ui:include src="overviewMedicationSummary.xhtml"></ui:include>
+	<!-- end medication summary datatable -->
+	
+	</p:outputPanel>
+	</td></tr>
+	</table>
+			
+			
+					<br />	
+																
+</h:form>
+	    </td>
+	  </tr>
+	</table>
+
+				
+	</td>
+	</tr>
+	</table>	
+	
+	
+<!-- ******************************* Pop up start for every thing ******************* -->	
+	
+	
+<!-- ******************************* start pop up display form Reconcile ******************* -->
+<ui:include src="reconcileDialog.xhtml"></ui:include>
+<!-- *********************************pop up END for Reconcile****************************..... -->
+
+
+<!-- *********************************pop up display for view RX..... -->
+<ui:include src="viewRXdialog.xhtml"></ui:include>
+<!-- end pop up for view RX********************************* -->
+
+<!--  message show when user delete any meds if meds having med action plan.... start.... -->
+<ui:include src="confirmBoxShowForHavingMedActionPlanDialog.xhtml"></ui:include>
+	
+	
+	
+<!--  message show when user delete any meds if meds having med action plan.... start.... -->
+<ui:include src="confirmBoxShowForDontHavingMedActionPlanDialog.xhtml"></ui:include>
+
+	
+	
+<!--  message show pop up start  when user delete any meds..without any med action plan.. -->
+<ui:include src="withoutMedActionPlanMessageShowForDeleteDialog.xhtml"></ui:include>
+	
+	
+<!--  message show pop up start  when user delete any meds..with  med action plan for different prompts.. -->
+<ui:include src="drugMAPExistsDialog.xhtml"></ui:include>
+	
+	
+<!--  Confirm Message dialog for Med Action Plan -->
+<ui:include src="mapConfirmDialog.xhtml"></ui:include>
+	
+<!--  message show pop up end when user delete any meds..without any med action plan.. -->
+		
+<!--  message show pop up start  when Meds have med action plan -->
+<ui:include src="medActionPlanMessageShowForDeleteDialog.xhtml"></ui:include>
+<!--  message show pop up end when user delete any meds..having med action plan. -->
+		
+<!-- ********************************Start pop up for Quick Prescribe for pesonalisedMedReview::::::::::::::::********************************* -->
+<ui:include src="quickPrescribeDialog.xhtml"></ui:include>
+<!-- ********************************End pop up for Quick prescribe******************************** -->
+
+<!-- ***************** Dose calculator pop up start......................... -->
+<ui:include src="warfarinDoseCalculator.xhtml"></ui:include>
+
+<!-- ******************88for Add new medicine For pop up startted PMR meds by gopal.......................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<ui:include src="newMedDialog.xhtml"></ui:include>
+<!-- ******************88for Add new medicine For pop up end anticoag meds by gopal.......................>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+
+<!-- - pop up for warfarin medicine for anticoage clinic..... -->
+<ui:include src="warfarinMedDialog.xhtml"></ui:include>
+
+<!-- ************************ pop up started for Dabigatran medicine************************************* -->
+<ui:include src="dabigratanDialog.xhtml"></ui:include>
+
+
+<!-- ************************ pop up started for Apixaban medicine************************************* -->
+<ui:include src="apixabanDialog.xhtml"></ui:include>
+ <!-- ************************ pop up end for Apixaban medicine************************************* -->
+
+
+<!-- ************pop up start  Rivaroxaban *********************************************************** -->
+<ui:include src="rivaroxabanDialog.xhtml"></ui:include>
+<!-- ************pop up end  Rivaroxaban *********************************************************** -->
+
+<!-- ************pop up start  Fondaparinux *********************************************************** -->
+<ui:include src="fondaparinuxDialog.xhtml"></ui:include>
+<!-- ************pop up End  Fondaparinux *********************************************************** -->
+
+<!-- ************pop up start  Desirudin *********************************************************** -->
+<ui:include src="desirudinDialog.xhtml"></ui:include>
+	<!-- ************pop up end  Desirudin *********************************************************** -->
+	
+	<!-- ######################## pop up start for Dalteparin medicine................................. -->
+	<ui:include src="dalteparinDialog.xhtml"></ui:include>
+	<!-- ######################## pop up end for Dalteparin medicine................................. -->
+	
+<!-- ######################## pop up start for Enoxaparin medicine................................. -->
+	<ui:include src="enoxaparinDialog.xhtml"></ui:include>
+<!-- ######################## pop up end for Enoxaparin medicine................................. -->
+	
+		 	
+<!-- ************pop up start  Bivalirudin *********************************************************** -->
+<!-- previously pop has been commented out -->	
+<!-- ************pop up End  Bivalirudin *********************************************************** -->
+		 	
+ 	
+<!-- ************pop up start  Heparin *********************************************************** -->
+	<!-- previously pop has been commented out -->		
+<!-- ************pop up End  Heparin *********************************************************** -->	
+	
+	
+		
+
+<!-- ******************************** pop up start for general medcine in PMR Page............................ -->
+<ui:include src="anticoagMedPlanDialog.xhtml"></ui:include>
+<!-- ########################### pop up start for search medicine..................................... -->
+		
+<ui:include src="searchMedDialog.xhtml"></ui:include>		
+<!-- ########################### pop up end for search medicine..................................... -->	
+	
+<!-- ******************************** pop up End for general medcine............................ -->
+	
+<!-- ******************************** pop up start for general med action plan............................ -->
+<ui:include src="generalMedPlanDialog.xhtml"></ui:include>	 	
+<!-- ******************************** pop up end for general med action plan............................ -->
+				
+<!-- ******************************** pop up start for diagnoses confirmation............................ -->		
+<ui:include src="confirmfordiagnosesDialog.xhtml"></ui:include>			
+<!-- ********************************  pop up end for diagnoses confirmation............................ -->
+
+<!-- ******************************** pop up start for inr value confirmation............................ -->
+<ui:include src="confirmINRdialog.xhtml"></ui:include>	
+<!-- ********************************  pop up end for inr value confirmation............................ -->					
+					
+<!-- ******************************** pop up start for Search Lab Monitoring parameters ............................ -->
+<ui:include src="searchLabDialog.xhtml"></ui:include>
+<!-- ******************************** pop up end for Search Lab Monitoring parameters............................ -->	
+
+<!-- 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>pop up for diagnosis>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<ui:include src="searchdiagnosisDialog.xhtml"></ui:include>
+
+<!-- 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>pop up for isMedPlanExistsDialog>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->	
+<ui:include src="isMedPlanExistsDialog.xhtml"></ui:include>
+	 
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+		</p:layout>
+		
+		
+	
+				
+		
+		
+	</f:view>
+</h:body>
+</html>

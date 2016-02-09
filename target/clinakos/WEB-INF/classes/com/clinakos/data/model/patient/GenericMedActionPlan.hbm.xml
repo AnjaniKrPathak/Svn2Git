@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 27, 2014 12:15:52 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.GenericMedActionPlan" table="generic_med_action_plan">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="patientId" type="int">
+            <column name="patient_id" />
+        </property>
+        <property name="clinicProviderId" type="int">
+            <column name="clinic_provider_id" />
+        </property>
+        <property name="monitoringParameter" type="java.lang.String">
+            <column name="monitoring_parameter" />
+        </property>
+         <property name="alertSevereLowRangeSymbol" type="java.lang.String">
+            <column name="alert_severe_low_range_symbol" />
+        </property>
+        <property name="alertSevereHighRangeSymbol" type="java.lang.String">
+            <column name="alert_severe_high_range_symbol" />
+        </property>
+        <property name="alertSevereLowRangeValue" type="double">
+            <column name="alert_severe_low_range_value" />
+        </property>
+        <property name="alertSevereHighRangeValue" type="double">
+            <column name="alert_severe_high_range_value" />
+        </property>
+        <property name="alertMediumLowRangeSymbol" type="java.lang.String">
+            <column name="alert_medium_low_range_symbol" />
+        </property>
+        <property name="alertMediumHighRangeSymbol" type="java.lang.String">
+            <column name="alert_medium_high_range_symbol" />
+        </property>
+        <property name="alertMediumLowRangeValue" type="double">
+            <column name="alert_medium_low_range_value" />
+        </property>
+        <property name="alertMediumHighRangeValue" type="double">
+            <column name="alert_medium_high_range_value" />
+        </property> 
+         <property name="goalRangeSymbol" type="java.lang.String">
+            <column name="goal_start_range_symbol" />
+        </property>
+        <property name="goalRangeValue" type="double">
+            <column name="goal_start_range_value" />
+        </property>
+        <property name="frequencyValue" type="java.lang.String">
+            <column name="frequency" />
+        </property>
+        <property name="doctorId" type="int">
+            <column name="doctor_id" />
+        </property>
+        <property name="drugId" type="java.lang.String">
+            <column name="drug_id" />
+        </property>
+        <property name="drugName" type="java.lang.String">
+            <column name="drug_name" />
+        </property>
+        <property name="parameterShortName" type="java.lang.String">
+            <column name="parameter_short_name" />
+        </property>
+    
+         <property name="createdDate" type="java.util.Date">
+            <column name="created_date" />
+        </property>
+        <property name="LastUpdatedDate" type="java.util.Date">
+            <column name="last_updated_date" />
+        </property>
+                <property name="strength" type="java.lang.String">
+            <column name="strength" />
+        </property>
+        <property name="regimen" type="java.lang.String">
+            <column name="regimen" />
+        </property>
+           <property name="goalRangeEndSymbol" type="java.lang.String">
+            <column name="goal_end_range_symbol" />
+        </property>
+        <property name="goalRangeEndValue" type="double">
+            <column name="goal_end_range_value" />
+        </property>
+     
+          <property name="createdBy" type="int">
+            <column name="created_by" />
+        </property>
+        <property name="lastUpdatedBy" type="int">
+            <column name="last_updated_by" />
+        </property>
+        <property name="createdByName" type="java.lang.String">
+            <column name="created_by_name" />
+        </property>
+        <property name="lastUpdatedByName" type="java.lang.String">
+            <column name="last_updated_by_name" />
+        </property>
+         <property name="patientDiagnosesDetailsId" type="int">
+            <column name="patient_diagonsis_id" />
+        </property>
+          <property name="diagnosisName" type="java.lang.String">
+            <column name="diagnosis_name" />
+        </property>
+      
+        <property name="prescriptionDate" type="java.util.Date">
+            <column name="prescription_date" />
+        </property>
+        <property name="prescribedBy" type="java.lang.String">
+            <column name="prescribed_by" />
+        </property>
+        <property name="unit" type="java.lang.String">
+            <column name="unit" />
+        </property>
+        <property name="dosageForm" type="java.lang.String">
+            <column name="dosage_Form" />
+        </property>
+          <property name="labUnit" type="java.lang.String">
+            <column name="lab_unit" />
+        </property>
+         <property name="drugNameId" type="double">
+            <column name="drug_name_id" />
+        </property>
+         <property name="dosingStartDate" type="java.util.Date">
+            <column name="dosing_start_date" />
+        </property>
+        <property name="frequencyUnit" type="java.lang.String">
+            <column name="frequency_unit" />
+        </property>
+        <property name="frequencyNo" type="java.lang.String">
+            <column name="frequency_no" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,1196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body onload="#{dashBoardManageBean.setPHOMedIndex()}"> <!-- onload="#{reportManageBean.getPopulationAnliticsValue()}" -->
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<!-- <script language="javascript" src="../js/basicMethod.js"></script> -->
+			
+			<script type="text/javascript" language="javascript">
+			$(document).ready(function() {
+		        noBack();
+		   });
+
+		   function noBack() {
+			   window.location.hash="no-back-button";
+				window.location.hash="Again-No-back-button";//again because google chrome don't insert first hash into history
+				window.onhashchange=function(){window.location.hash="";} 
+		       }
+			  function customExtender() {
+			    this.cfg.highlighter = {
+			      useAxesFormatters: false,
+			      tooltipAxes: 'y'
+			    }
+			  }
+		</script>
+			<style>
+
+.bar {
+  fill:rgb(70,130,190); /* steelblue; */
+}
+
+.bar:hover {
+  fill:rgb(255,89,89) ;/* #009acd; */
+}
+
+
+.bar2 {
+  fill:rgb(255,89,89); /* steelblue; */
+}
+
+.bar2:hover {
+  fill:rgb(70,130,190) ;/* #009acd; */
+}
+
+.bar3 {
+  fill: steelblue; 
+}
+
+.bar3:hover {
+  fill: #009acd;
+}
+
+.bar4 {
+  fill:rgb(75,178,97);
+}
+
+.bar4:hover {
+  fill:rgb(75,178,197);
+}
+
+.bar5 {
+  fill:rgb(185,122,87);
+}
+
+.bar5:hover {
+  fill:rgb(255,128,64);
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: block;
+}
+.bar3{
+ fill:rgb(75,178,197);
+}
+
+div.tooltip {
+        position: absolute;       
+        padding: 2px;
+        background: transparent;
+        /* -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px; */
+        margin-left: -2%;
+        margin-top: -5%;
+        min-width: 200px;       
+        height: 100%;    	
+    	display: inline;
+    	color: #4F57B7;
+}
+
+</style>
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="85" minSize="60">
+				<ui:include src="doctorheader2.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<h:form class="tab"><ui:include src="doctor_profile_leftmenu.xhtml">
+				</ui:include></h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center">
+			  <h:form>
+				<table width="100%">
+				  <tr>
+				    <td  colspan="2" valign="top" width="40%">			
+				      <!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Analytics Table >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->					      
+						         <table  align="left" style="font-size:14px;background-color: #FFFFFF; border:1px solid #E9E9E9;border-radius:0px;min-width:100%;height:294px;" cellpadding="0" cellspacing="0">
+									<tr style="background-color:#FFFFFF" height="25px">
+									<th style="border:none;background-color:#E9E9E9;color:#006;">
+										<h:outputText value="#{msg.analytics}" styleClass="contentPan" style="font-weight:bold;"></h:outputText>
+									
+									</th>
+									<th style="border:none;background-color:#E9E9E9;color:#006;">
+										<h:outputText value="#{msg.value}" styleClass="contentPan" style="font-weight:bold;"></h:outputText>
+									 
+									</th>
+									</tr>
+									 <tr class="oddRow" >
+									  <td>
+									   <h:outputText value="#{msg.total_patient}" styleClass="contentPan"/>
+									  </td>
+									  <td>
+									    <h:outputText value="#{userManageBean.numberOfPatientParticularProvider.size()}" styleClass="contentPan" style="margin-left:35%"/>
+									  </td>
+									 </tr>
+									 <tr class="evenRow">
+									  <td>
+									   <h:outputText value="#{msg.average_med}" styleClass="contentPan"/>
+									  </td>
+									 <td>
+									  <h:outputText value="#{userManageBean.averageMedicine}" styleClass="contentPan" style="margin-left:35%"/>
+									 </td>
+									 </tr>
+									 <tr class="oddRow">
+									  <td>
+									   <h:outputText value="#{msg.compliant}" styleClass="contentPan"/>
+									  </td>
+									  <td>
+									   <h:outputText value="#{reportManageBean.analyticsDetail.compliantPercentage} %" styleClass="contentPan" style="margin-left:35%"/>
+									  </td>
+									 </tr>
+									 <tr class="evenRow">
+									  <td>
+									   <h:outputText value="#{msg.overall_costs}" styleClass="contentPan"/>
+									  </td>
+									  <td>
+									  <h:outputText  />
+									  </td>
+									 </tr>
+									 <tr class="oddRow">
+									 <td>
+									  <h:outputText value="#{msg.who_should_on_clinic}" styleClass="contentPan"/>
+									 </td>
+									 <td>
+									 <h:outputText value="#{reportManageBean.analyticsDetail.patientShouldClinic} %" styleClass="contentPan" style="margin-left:35%"/>
+									 </td>
+									 </tr>
+									 <tr class="evenRow">
+									  <td>
+									     <h:outputText value="#{msg.optimized_with_pharmecogenomics}" styleClass="contentPan"/> 
+									  </td>
+									  <td>
+									   <h:outputText value="#{reportManageBean.analyticsDetail.optimizedWithPharmecogenomics} %" styleClass="contentPan" style="margin-left:35%"/>
+									  </td>
+									 </tr>
+									 <tr class="oddRow">
+									  <td>
+									  <h:outputText value="#{msg.non_tier_formulary}" styleClass="contentPan"/>
+									  </td>
+									  <td>
+									   <h:outputText value="#{reportManageBean.analyticsDetail.nonTierFormulary} %" styleClass="contentPan" style="margin-left:35%"/>
+									  </td>
+									 </tr>
+								</table>
+				    </td>
+			
+				    
+				 <td valign="top" width="30%" align="center">
+				 
+				  <!-- <fieldset style="min-width:200px;min-height:282px;" class="fieldContent">
+					  <legend class="titleBar"> #{msg.drugs}</legend> -->
+					  <table style="min-width:200px;min-height:290px;" class="secContentBorder" cellpadding="0" cellspacing="0">
+					    <tr height="25px">
+					      <td class="secHeadPart">
+					         #{msg.drugs}
+					      </td>
+					    </tr>
+					    <tr class="secContentBorder">
+					      <td>
+					        <center>
+				   <!--   <p:barChart id="chart_drugCategory" value="#{reportManageBean.drugCategoryModelObj}"  seriesColors="008000, 008000"   barMargin="25" 
+	                                	 min="0" max="100" style="height:150px;width:300px;font-weight: bold;" extender="customExtender" /> -->
+	                   
+	                   
+	                    <div id="DrugBarChart"></div>
+		 
+				<script src="http://d3js.org/d3.v3.min.js"></script>
+				<script src="../../JavaScript/nv.d3.js"></script>           	
+                                   	
+               	<script>
+                                   		
+                           $(document).ready(function(){
+	datavalue= '#{reportManageBean.rptDrugCategoryBarList}';
+	//alert(datavalue);
+
+	 var barData =$.parseJSON(datavalue);
+	   $.each(barData, function(index, value) {
+	    	//alert("drugCategory "+this['DrugCategory']+"totalDrug"+this['totalDrug']);
+	    	});
+
+	  
+	   var margin = {
+			    top: 25,
+			    right:70,
+			    bottom:80,
+			    left: 85
+			},
+			    w =300 - margin.left - margin.right,
+			    h =250 - margin.top - margin.bottom;
+	   var gridLabelHeight = 10; // space reserved for gridline labels
+	   var gridChartOffset =  25; 
+
+			var padding = 10;
+
+			
+			var dataset = barData;
+			var drugcategorySubstringArray=new Array();
+			for(var i in dataset){
+				var drug=dataset[i].DrugCategory;
+				var newString=drug.substr(0,15);
+				drugcategorySubstringArray.push(newString);
+			}
+			
+			
+			var div = d3.select("body").append("div")   
+    			.attr("class", "tooltip")               
+    			.style("opacity", 0);
+			
+			var xScale = d3.scale.ordinal()
+			    .domain(d3.range(dataset.length))
+			    .rangeRoundBands([0, w], .0001);
+		
+			var yScale = d3.scale.linear()
+			    .domain([0, d3.max(dataset, function (d) {
+			    return  d.totalDrug;
+			})])
+			    .range([h, 0]);
+			var xAxis = d3.svg.axis()
+			    .scale(xScale)
+			
+			    .tickFormat(function (d) {
+			    return drugcategorySubstringArray[d];
+			})
+			    .orient("bottom");
+			var yAxis = d3.svg.axis()
+			    .scale(yScale)
+			    .orient("left")
+			    .ticks(10);
+			var commaFormat = d3.format(',');
+
+			//SVG element
+			var svg = d3.select("#DrugBarChart")
+			    .append("svg")
+			    .attr("width", w + margin.left + margin.right)
+			    .attr("height", h + margin.top + margin.bottom)
+			    .append("g")
+			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			
+			
+			
+
+			// Graph Bars
+			var sets = svg.selectAll(".set")
+			    .data(dataset)
+			    .enter()
+			    .append("g")
+			    .attr("class", "set")
+			    .attr("transform", function (d, i) {
+			    return "translate(" + xScale(i) + ",0)";
+			});
+
+			
+			    sets.append("rect")
+			        .attr("class", "totalDrug")		
+			    	.attr("class","bar4")
+			        .attr("width", xScale.rangeBand() / 2)
+			        .attr("y", function (d) {
+			        return yScale(d.totalDrug);
+			    })
+			        .attr("height", function (d) {
+			        return h - yScale(d.totalDrug);
+			    })
+			   /*  .on("mouseover", function(d,i) {
+	div.transition()
+	
+		.duration(100)
+		.style("opacity", 1);
+	div.html(dataset[i].DrugCategory)
+		.style("left", (d3.event.pageX) + "px")
+		.style("top", (d3.event.pageY) + "px");
+	}).on("mouseout", function(d) {
+        div.transition()
+        .duration(500)
+        .style("opacity", 0);
+}) */
+
+     
+		  .attr('fill', 'rgb(0, 128, 0)');
+			   
+	
+
+			    // xAxis
+			    svg.append("g") // Add the X Axis
+			    .attr("class", "x axis")
+			        .attr("transform", "translate(0," + (h) + ")")
+			        .style("fill","#BBB")
+			        .call(xAxis)
+			        .selectAll("text")
+			        .style("text-anchor", "end")
+			        .style("fill",'#006')
+			        //.style("font-weight","bold")
+			        .attr("dx", "-.3em")
+			        .attr("dy", ".15em")
+			          
+			        .attr("transform", function (d) {
+			        return "rotate(-35)";
+			    });
+			    
+			   
+			    
+			    // yAxis
+			    svg.append("g")
+			        .attr("class", "y axis")
+			        .attr("transform", "translate(0 ,0)")
+			       .style("fill","#BBB")//y-axis color	
+			       .style("width", "1em")
+			        .call(yAxis)
+			        .selectAll("text")
+			        .style("text-anchor", "end")
+			        .style("fill",'#006')
+			        ;
+			    
+			    // xAxis label
+			    svg.append("text")
+			        .attr("transform", "translate(" + (w / 2) + " ," + (h + margin.bottom -4) + ")")
+			        .style("text-anchor", "middle")
+			        .style("text-anchor", "middle")
+			        .style("fill","#000")
+			        .style("font-weight",'bold')
+			        .text("Drug Category");
+			    	
+			    
+			    //yAxis label
+			    svg.append("text")
+			   
+			        .attr("transform", "rotate(-90)")
+			        .attr("y", 0 - margin.left)
+			        .attr("x", 0 - (h / 2))
+			        .attr("dy", "5em")
+			        .style("text-anchor", "middle")
+			        .style("fill","#000")
+			        .style("font-weight",'bold')
+			        .text("Total Drug");
+
+});
+	  
+	  
+	
+	 
+	
+	
+</script>	        		
+	                   
+	                   
+	                   
+	                    </center>
+					      </td>
+					    </tr>
+					  </table><!-- 
+				    	
+	                   </fieldset> -->
+					</td> 
+					<td valign="top" align="center" height="160px" width="30%">
+					<!-- <fieldset style="min-width:300px;min-height:282px;" class="fieldContent">
+					  <legend class="titleBar"> #{msg.specialty_drugs}</legend> -->
+					  <table style="min-width:300px;min-height:290px;" class="secContentBorder" cellpadding="0" cellspacing="0">
+					    <tr height="25px">
+					      <td class="secHeadPart">
+					          #{msg.specialty_drugs}
+					      </td>
+					    </tr>
+					    <tr>
+					      <td>
+					      
+				    	<center>
+						<!--  <p:barChart id="chart_specialDrug" value="#{reportManageBean.specialDrugBarChart}" seriesColors= "0000FF,0000FF"        barMargin="25" 
+                                   		 min="0" max="100" style="height:150px;width:300px;font-weight:bold;" extender="customExtender"/>  -->
+						
+						
+					<div id="specialdrugbarchar"></div>
+				<script src="http://d3js.org/d3.v3.min.js"></script>
+				<script src="../../JavaScript/nv.d3.js"></script>
+<script>
+$(document).ready(function(){
+dataset2= '#{reportManageBean.specialDrugCategoryBarList}';
+//alert(dataset2);
+
+ var barData =$.parseJSON(dataset2);
+   $.each(barData, function(index, value) {
+    	//alert("drugCategory "+this['drugCategory']+"totalDrug"+this['totalDrug']);
+    	});
+   
+   
+   var margin = {
+		    top: 25,
+		    right:70,
+		    bottom:80,
+		    left: 85
+		},
+		    w =300 - margin.left - margin.right,
+		    h =250 - margin.top - margin.bottom;
+  var gridLabelHeight = 10; // space reserved for gridline labels
+  var gridChartOffset = 25; 
+
+		var padding = 10;
+
+		
+		var dataset = barData;
+			
+			var div = d3.select("body").append("div")   
+			.attr("class", "tooltip")               
+			.style("opacity", 0);
+			
+		var xScale = d3.scale.ordinal()
+		    .domain(d3.range(dataset.length))
+		    .rangeRoundBands([0, w], .0001);
+	
+		var yScale = d3.scale.linear()
+		    .domain([0, d3.max(dataset, function (d) {
+		    return  d.totalDrug;
+		})])
+		    .range([h, 0]);
+		var xAxis = d3.svg.axis()
+		    .scale(xScale)
+		
+		    .tickFormat(function (d) {
+		    return dataset[d].drugCategory;
+		})
+		    .orient("bottom");
+		var yAxis = d3.svg.axis()
+		    .scale(yScale)
+		    .orient("left")
+		    .ticks(10);
+
+		var commaFormat = d3.format(',');
+
+		//SVG element
+		var svg = d3.select("#specialdrugbarchar")
+		    .append("svg")
+		    .attr("width", w + margin.left + margin.right)
+		    .attr("height", h + margin.top + margin.bottom)
+		    .append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		
+		
+		
+
+		// Graph Bars
+		var sets = svg.selectAll(".set")
+		    .data(dataset)
+		    .enter()
+		    .append("g")
+		    .attr("class", "set")
+		    .attr("transform", function (d, i) {
+		    return "translate(" + xScale(i) + ",0)";
+		});
+
+		
+		    sets.append("rect")
+		        .attr("class", "totalDrug")
+			 	.attr("class", "bar3")
+		        .attr("width", xScale.rangeBand() / 2)
+		        .attr("y", function (d) {
+		        return yScale(d.totalDrug);
+		    })
+		        .attr("height", function (d) {
+		        return h - yScale(d.totalDrug);
+		    })
+		
+		/* .on("mouseover", function(d,i) {
+	div.transition()
+	
+		.duration(100)
+		.style("opacity", 1);
+	div.html(dataset[i].drugCategory)
+		.style("left", (d3.event.pageX) + "px")
+		.style("top", (d3.event.pageY) + "px");
+	}).on("mouseout", function(d) {
+        div.transition()
+        .duration(500)
+        .style("opacity", 0);
+}) */
+ 
+		.attr('fill','rgb(0, 0, 255)');
+		   
+
+
+		    // xAxis
+		    svg.append("g") // Add the X Axis
+		    .attr("class", "x axis")
+		        .attr("transform", "translate(0," + (h) + ")")
+		        .call(xAxis)
+		        .selectAll("text")
+		        .style("text-anchor", "end")
+		        .attr("dx", "-.3em")
+		        .attr("dy", ".15em")
+		          
+		        .attr("transform", function (d) {
+		        return "rotate(-55)";
+		    });
+		    // yAxis
+		    svg.append("g")
+		        .attr("class", "y axis")
+		        .attr("transform", "translate(0 ,0)")
+		        .call(yAxis);
+		    // xAxis label
+		    svg.append("text")
+		        .attr("transform", "translate(" + (w / 2) + " ," + (h + margin.bottom -4) + ")")
+		        .style("text-anchor", "middle")
+	            .style("fill","#000")
+	           .style("font-weight",'bold')	        
+		        .text("Drug Category");
+		    //yAxis label
+		    svg.append("text")
+		   
+		        .attr("transform", "rotate(-90)")
+		        .attr("y", 0 - margin.left)
+		        .attr("x", 0 - (h / 2))
+		        .attr("dy", "5em")
+		        .style("text-anchor", "middle")
+		        .style("fill","#000")
+		        .style("font-weight",'bold')
+		        .text("Total Drug");
+});
+ 
+       </script>	
+						
+						</center>
+				</td>
+			</tr>
+		</table>
+				<!-- 	   </fieldset> -->
+					</td>
+				  </tr>
+				  
+				
+				  <tr >
+			  <!-- <td rowspan="2" width="30px"></td>  -->
+				  <!-- <td  valign="top" align="center" height="160px" width="300px">
+				      <p:pieChart id="chart_therapeutic" value="#{reportManageBean.therpeuticAreaBarChart}" legendPosition="e" fill="true" showDataLabels="true"  
+                       					title="Therapeutic Area" style="width:300px;height:150px;font-weight: bold;" diameter="100" />
+						           
+				    </td>   -->
+				<td valign="top" align="center" width="30%">
+				<!-- <fieldset style="min-height:280px;" class="fieldContent">
+					  <legend class="titleBar">Therapeutic Area</legend> -->
+		<table style="min-height:300px;" class="secContentBorder" cellpadding="0" cellspacing="0">
+		  <tr height="25px;">
+		    <td class="secHeadPart" >
+		      Therapeutic Area
+		    </td>
+		  </tr>
+		  <tr class="secContentBorder">
+		    <td>
+		  
+				<svg id="test1" style="height:239px;margin-top:0px; margin-left:10px"></svg>
+			
+	    <script src="../../JavaScript/d3.v3.js"></script>
+		<script src="../../JavaScript/nv.d3.js"></script>
+			<script src="../../JavaScript/pie.js"></script>
+			
+		<script type="text/javascript">
+		$(document).ready(function(){
+		/* nv.addGraph(function() { */
+			   dataset1='#{reportManageBean.therapeuticAreaPieChart}';
+			 // alert(dataset1);
+			   var dataset =$.parseJSON(dataset1);
+			   $.each(dataset, function(index, value) {
+			// alert("drugCategory "+this['drugCategory']+"totalDrug "+this['totalDrug']);
+			    	});
+			  
+			   var color = d3.scale.ordinal() //33CCCC 910000 8BBC21  389CAD  4BB2C5   
+			   .range(["#ced29d", "#36908a", "#C5B47F", "#389CAD","#416c85", "#0085ce", "#C5B47F"]);
+			   //.range(["#2e5467", "#7499af", "#ced29d", "#f7aa47", "#416c85", "#36908a", "#C5B47F"]);
+			   //.range(["#2e5467", "#7499af", "#416c85", "#f7aa47", "#C5B47F", "#36908a", "#ced29d"]);
+			   //.range(["#4BB2C5", "#ff4629", "#9AB6A8", "#00B3B3", "#0085ce", "#d0743c", "#ff8c00"]);
+		    var width =300;
+		        height =250;
+		   /* color= d3.scale.ordinal()
+	.range(["#336699", "#C5B47F", "#4BB2C5", "#1FBED6", "#a05d56", "#d0743c", "#ff8c00"]); */
+		    var chart = nv.models.pieChart()
+		        .x(function(d) { return d.drugCategory })
+		        .y(function(d) { return d.totalDrug })
+		    // .color(d3.scale.category10().range())  	
+		    .color(color.range())  	
+              .width(width)
+		        .height(height);
+	chart.pie.pieLabelsOutside(false).labelType("percent");
+   
+	
+		      d3.select("#test1")
+		          .datum(dataset)
+		         .transition().duration(350)
+		       
+                      
+		          .attr('width', width)
+		          .attr('height', height)
+		          .call(chart);
+		   
+		    
+		    chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+
+		    return chart;
+		});
+</script>
+		</td>
+	</tr>
+	</table>
+		<!-- </fieldset> -->		
+				
+				</td>
+				
+				    <td  valign="top" align="center" width="30%">
+				    <!-- <fieldset style="min-width:200px;min-height:280px;" class="fieldContent">
+					  <legend class="titleBar">#{msg.clinics}</legend> -->
+		   <table style="min-width:200px;min-height:300px;" class="secContentBorder" cellpadding="0" cellspacing="0">
+		    <tr height="25px;">
+		      <td class="secHeadPart">
+		          #{msg.clinics}
+		      </td>
+		    </tr>
+		    <tr class="secContentBorder">
+		      <td>
+					 <center><br></br>
+				   <!-- <p:barChart id="chart_clinic" value="#{reportManageBean.clinicBarChart}" barMargin="35"    xaxisAngle="-8"  extender="customExtender"
+                                   		 min="0" max="#{reportManageBean.maxClinicPatient}"  
+                                   		style="height:150px;width:300px;font-weight:normal;
+                                   		xaxisLabel-font:11px;font-weight: bold;"/>   -->
+                                   	
+                        <div id="ClinicBarChart"></div>
+                        
+				<script src="http://d3js.org/d3.v3.min.js"></script>
+				<script src="../../JavaScript/nv.d3.js"></script>
+<script>
+$(document).ready(function(){
+dataset2= '#{reportManageBean.clinicPatientDetailBarList}';
+//alert(dataset2);
+
+ var barData =$.parseJSON(dataset2);
+   $.each(barData, function(index, value) {
+    	//alert("drugCategory "+this['drugCategory']+"totalDrug"+this['totalDrug']);
+    	});
+   
+   
+   var margin = {
+		    top: 25,
+		    right:70,
+		    bottom:80,
+		    left: 85
+		},
+		    w =300 - margin.left - margin.right,
+		    h =250 - margin.top - margin.bottom;
+  var gridLabelHeight = 10; // space reserved for gridline labels
+  var gridChartOffset = 25; 
+
+		var padding = 10;
+
+		
+		var dataset = barData;
+			
+		
+
+		var xScale = d3.scale.ordinal()
+		    .domain(d3.range(dataset.length))
+		    .rangeRoundBands([0, w], .0001);
+	
+		var yScale = d3.scale.linear()
+		    .domain([0, d3.max(dataset, function (d) {
+		    return  d.totalPatient;
+		})])
+		    .range([h, 0]);
+		var xAxis = d3.svg.axis()
+		    .scale(xScale)
+		
+		    .tickFormat(function (d) {
+		    return dataset[d].clinicName;
+		})
+		    .orient("bottom");
+		var yAxis = d3.svg.axis()
+		    .scale(yScale)
+		    .orient("left")
+		    .ticks(10);
+
+		var commaFormat = d3.format(',');
+
+		//SVG element
+		var svg = d3.select("#ClinicBarChart")
+		    .append("svg")
+		    .attr("width", w + margin.left + margin.right)
+		    .attr("height", h + margin.top + margin.bottom)
+		    .append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		
+		
+		
+
+		// Graph Bars
+		var sets = svg.selectAll(".set")
+		    .data(dataset)
+		    .enter()
+		    .append("g")
+		    .attr("class", "set")
+		    .attr("transform", function (d, i) {
+		    return "translate(" + xScale(i) + ",0)";
+		});
+
+		
+		    sets.append("rect")
+		        .attr("class", "totalDrug")
+			    .attr("class","bar5")
+		        .attr("width", xScale.rangeBand() / 2)
+		        .attr("y", function (d) {
+		        return yScale(d.totalPatient);
+		    })
+		        .attr("height", function (d) {
+		        return h - yScale(d.totalPatient);
+		    })
+		
+		
+ 
+		  .attr('fill', 'rgb(75,178,197)');
+		   
+	    // xAxis
+		    svg.append("g") // Add the X Axis
+		    .attr("class", "x axis")
+		        .attr("transform", "translate(0," + (h) + ")")
+		        .call(xAxis)
+		        .selectAll("text")
+		        .style("text-anchor", "end")
+		        .attr("dx", "-.3em")
+		        .attr("dy", ".15em")
+		          
+		        .attr("transform", function (d) {
+		        return "rotate(-25)";
+		    });
+		    // yAxis
+		    svg.append("g")
+		        .attr("class", "y axis")
+		        .attr("transform", "translate(0 ,0)")
+		        .call(yAxis);
+		    // xAxis label
+		    svg.append("text")
+		        .attr("transform", "translate(" + (w / 2) + " ," + (h + margin.bottom -4) + ")")
+		        .style("text-anchor", "middle")
+	            .style("fill","#000")
+	           .style("font-weight",'bold')	        
+		        .text("Clinic Name");
+		    //yAxis label
+		    svg.append("text")
+		   
+		        .attr("transform", "rotate(-90)")
+		        .attr("y", 0 - margin.left)
+		        .attr("x", 0 - (h / 2))
+		        .attr("dy", "5em")
+		        .style("text-anchor", "middle")
+		        .style("fill","#000")
+		        .style("font-weight",'bold')
+		        .text("Total Patient");
+});
+                        
+		 </script>
+                                   		
+                                   		
+                                   		
+					</center>
+		</td>
+	</tr>
+</table><!-- 
+					</fieldset>
+		 -->			     
+				    </td>
+				  <!-- <td valign="top" align="center" height="160px">
+				     <p:barChart id="genericDrug" value="#{reportManageBean.genericDrugBarChart}" seriesColors="8B008B, 8B008B"  extender="customExtender"   barMargin="25" 
+	                    			 title="#{msg.generic_drugs}"  min="0" max="100" style="height:150px;width:300px;font-weight: bold;"/>
+	                    			 
+					</td> 
+					 -->
+					<td valign="top" align="center" width="30%">
+					<!--  <fieldset style="min-width:200px;min-height:280px;" class="fieldContent">
+					  <legend class="titleBar">#{msg.generic_drugs}</legend> -->
+			<table style="min-width:200px;min-height:300px;" class="secContentBorder" cellpadding="0" cellspacing="0">
+			  <tr height="25px;">
+			    <td class="secHeadPart">
+			      #{msg.generic_drugs}
+			    </td>
+			  </tr>
+			  <tr class="secContentBorder">
+			    <td>
+			    
+					 <center>	 
+					<div id="GenericBarChart"></div>
+		 
+				<script src="http://d3js.org/d3.v3.min.js"></script>
+				<script src="../../JavaScript/nv.d3.js"></script>
+					<script>
+
+
+$(document).ready(function(){
+	datavalue= '#{reportManageBean.genericDrugCategoryBarChartList}';
+	//alert(datavalue);
+
+	 var barData =$.parseJSON(datavalue);
+	   $.each(barData, function(index, value) {
+	    	//alert("DrugCategory "+this['DrugCategory']+"totalDrug"+this['totalDrug']);
+	    	});
+
+	  
+	   var margin = {
+			    top: 25,
+			    right:70,
+			    bottom:80,
+			    left: 85
+			},
+			    w =300 - margin.left - margin.right,
+			    h =250 - margin.top - margin.bottom;
+	   var gridLabelHeight = 10; // space reserved for gridline labels
+	   var gridChartOffset =  25; 
+
+			var padding = 10;
+
+			
+			var dataset = barData;
+				
+			
+
+			var xScale = d3.scale.ordinal()
+			    .domain(d3.range(dataset.length))
+			    .rangeRoundBands([0, w], .0001);
+		
+			var yScale = d3.scale.linear()
+			    .domain([0, d3.max(dataset, function (d) {
+			    return  d.totalDrug;
+			})])
+			    .range([h, 0]);
+			var xAxis = d3.svg.axis()
+			    .scale(xScale)
+			
+			    .tickFormat(function (d) {
+			    return dataset[d].DrugCategory;
+			})
+			    .orient("bottom");
+			var yAxis = d3.svg.axis()
+			    .scale(yScale)
+			    .orient("left")
+			    .ticks(10);
+			var commaFormat = d3.format(',');
+
+			//SVG element
+			var svg = d3.select("#GenericBarChart")
+			    .append("svg")
+			    .attr("width", w + margin.left + margin.right)
+			    .attr("height", h + margin.top + margin.bottom)
+			    .append("g")
+			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			
+			
+			
+
+			// Graph Bars
+			var sets = svg.selectAll(".set")
+			    .data(dataset)
+			    .enter()
+			    .append("g")
+			    .attr("class", "set")
+			    .attr("transform", function (d, i) {
+			    return "translate(" + xScale(i) + ",0)";
+			});
+
+			
+			    sets.append("rect")
+			        .attr("class", "totalDrug")		
+			        .attr("class", "bar")
+			        .attr("width", xScale.rangeBand() / 2)
+			        .attr("y", function (d) {
+			        return yScale(d.totalDrug);
+			    })
+			        .attr("height", function (d) {
+			        return h - yScale(d.totalDrug);
+			    })
+			
+			
+      
+			.attr('fill','rgb(139,0,139)');
+			   
+	
+
+			    // xAxis
+			    svg.append("g") // Add the X Axis
+			    .attr("class", "x axis")
+			        .attr("transform", "translate(0," + (h) + ")")
+			        .style("fill","#BBB")
+			        .call(xAxis)
+			        .selectAll("text")
+			        .style("text-anchor", "end")
+			        .style("fill",'#006')
+			        //.style("font-weight","bold")
+			        .attr("dx", "-.3em")
+			        .attr("dy", ".15em")
+			          
+			        .attr("transform", function (d) {
+			        return "rotate(-75)";
+			    });
+			    
+			   
+			    
+			    // yAxis
+			    svg.append("g")
+			        .attr("class", "y axis")
+			        .attr("transform", "translate(0 ,0)")
+			       .style("fill","#BBB")//y-axis color	
+			       .style("width", "1em")
+			        .call(yAxis)
+			        .selectAll("text")
+			        .style("text-anchor", "end")
+			        .style("fill",'#006')
+			        ;
+			    
+			    // xAxis label
+			    svg.append("text")
+			        .attr("transform", "translate(" + (w / 2) + " ," + (h + margin.bottom -4) + ")")
+			        .style("text-anchor", "middle")
+			        .style("text-anchor", "middle")
+			        .style("fill","#000")
+			        .style("font-weight",'bold')
+			        .text("Drug Category");
+			    	
+			    
+			    //yAxis label
+			    svg.append("text")
+			   
+			        .attr("transform", "rotate(-90)")
+			        .attr("y", 0 - margin.left)
+			        .attr("x", 0 - (h / 2))
+			        .attr("dy", "5em")
+			        .style("text-anchor", "middle")
+			        .style("fill","#000")
+			        .style("font-weight",'bold')
+			        .text("Total Drug");
+
+});
+
+</script>	
+
+</center>
+<!-- </fieldset> -->
+</td>
+</tr>
+</table>
+					</td>
+				
+		      <!--  <td  valign="top" align="center" height="160px">
+				    <p:barChart id="DrugClass" value="#{reportManageBean.drugClassBarChart}" seriesColors="FF5959, FF5959"  extender="customExtender"     barMargin="25" 
+                                   title="#{msg.drug_class}" min="0" max="100" style="height:150px;width:300px;font-weight: bold;"/> 
+						      
+				  
+				</td>  -->
+			<td valign="top" align="center" width="30%">
+			 <!-- <fieldset style="min-width:200px;min-height:280px;" class="fieldContent">
+					  <legend class="titleBar">#{msg.drug_class}</legend> -->
+		<table style="min-width:200px;min-height:300px" class="secContentBorder" cellpadding="0" cellspacing="0">
+		  <tr height="25px;">
+		     <td class="secHeadPart">
+		        #{msg.drug_class}
+		     </td>
+		  </tr>
+		  <tr class="secContentBorder">
+		    <td>
+					 <center>	
+			<div id="barchar"></div>
+				<script src="http://d3js.org/d3.v3.min.js"></script>
+				<script src="../../JavaScript/nv.d3.js"></script>
+<script>
+$(document).ready(function(){
+dataset2= '#{reportManageBean.drugClassCategoryBarList}';
+//alert(dataset2);
+
+ var barData =$.parseJSON(dataset2);
+   $.each(barData, function(index, value) {
+    	//alert("DrugCategory "+this['DrugCategory']+"totalDrug"+this['totalDrug']);
+    	});
+   
+   
+   var margin = {
+		    top: 25,
+		    right:70,
+		    bottom:80,
+		    left: 85
+		},
+		    w =300 - margin.left - margin.right,
+		    h =250 - margin.top - margin.bottom;
+  var gridLabelHeight = 10; // space reserved for gridline labels
+  var gridChartOffset = 25; 
+
+		var padding = 10;
+
+		
+		var dataset = barData;
+			
+		
+
+		var xScale = d3.scale.ordinal()
+		    .domain(d3.range(dataset.length))
+		    .rangeRoundBands([0, w], .0001);
+	
+		var yScale = d3.scale.linear()
+		    .domain([0, d3.max(dataset, function (d) {
+		    return  d.totalDrug;
+		})])
+		    .range([h, 0]);
+		var xAxis = d3.svg.axis()
+		    .scale(xScale)
+		
+		    .tickFormat(function (d) {
+		    return dataset[d].DrugCategory;
+		})
+		    .orient("bottom");
+		var yAxis = d3.svg.axis()
+		    .scale(yScale)
+		    .orient("left")
+		    .ticks(10);
+
+		var commaFormat = d3.format(',');
+
+		//SVG element
+		var svg = d3.select("#barchar")
+		    .append("svg")
+		    .attr("width", w + margin.left + margin.right)
+		    .attr("height", h + margin.top + margin.bottom)
+		    .append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		
+
+		// Graph Bars
+		var sets = svg.selectAll(".set")
+		    .data(dataset)
+		    .enter()
+		    .append("g")
+		    .attr("class", "set")
+		    .attr("transform", function (d, i) {
+		    return "translate(" + xScale(i) + ",0)";
+		});
+
+		
+		    sets.append("rect")
+		        .attr("class", "totalDrug")
+			    .attr("class", "bar2")
+		        .attr("width", xScale.rangeBand() / 2)
+		        .attr("y", function (d) {
+		        return yScale(d.totalDrug);
+		    })
+		        .attr("height", function (d) {
+		        return h - yScale(d.totalDrug);
+		    })
+		
+		.attr('fill','rgb(255, 89, 89)');
+		
+		    // xAxis
+		    svg.append("g") // Add the X Axis
+		    .attr("class", "x axis")
+		        .attr("transform", "translate(0," + (h) + ")")
+		        .call(xAxis)
+		        .selectAll("text")
+		        .style("text-anchor", "end")
+		        .attr("dx", "-.3em")
+		        .attr("dy", ".15em")
+		          
+		        .attr("transform", function (d) {
+		        return "rotate(-75)";
+		    });
+		    // yAxis
+		    svg.append("g")
+		        .attr("class", "y axis")
+		        .attr("transform", "translate(0 ,0)")
+		        .call(yAxis);
+		    // xAxis label
+		    svg.append("text")
+		        .attr("transform", "translate(" + (w / 2) + " ," + (h + margin.bottom -4) + ")")
+		        .style("text-anchor", "middle")
+	            .style("fill","#000")
+	           .style("font-weight",'bold')	        
+		        .text("Drug Category");
+		    //yAxis label
+		    svg.append("text")
+		   
+		        .attr("transform", "rotate(-90)")
+		        .attr("y", 0 - margin.left)
+		        .attr("x", 0 - (h / 2))
+		        .attr("dy", "5em")
+		        .style("text-anchor", "middle")
+		        .style("fill","#000")
+		        .style("font-weight",'bold')
+		        .text("Total Drug");
+});
+ 
+      </script>
+    
+</center>
+<!-- </fieldset> -->
+</td>
+</tr>
+</table>
+				</td>
+				<td>
+				
+				</td>
+				
+				  </tr>
+				
+				 
+				</table>
+				
+			  </h:form>
+			  
+			</p:layoutUnit>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+		</p:layout>
+
+	</f:view>
+	<!-- <script language="JavaScript">
+loadmypage();
+function loadmypage()
+{
+	var x=document.getElementById('txtReload').value;
+	//alert(x);
+	if(x==2)
+		{
+			window.location.reload();
+		}
+	}
+</script> -->
+</h:body>
+
+</html>

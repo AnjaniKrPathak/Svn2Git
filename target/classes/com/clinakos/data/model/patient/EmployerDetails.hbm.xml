@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 9, 2014 4:46:11 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.EmployerDetails" table="employer_details">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+         <property name="patientId" type="int">
+            <column name="patient_id" />
+        </property>
+        <property name="companyName" type="java.lang.String">
+            <column name="company_name" />
+        </property>
+        <property name="addressLine1" type="java.lang.String">
+            <column name="address_line1" />
+        </property>
+        <property name="addressLine2" type="java.lang.String">
+            <column name="address_line2" />
+        </property>
+        <property name="companyCity" type="java.lang.String">
+            <column name="city" />
+        </property>
+        <property name="companyState" type="java.lang.String">
+            <column name="state" />
+        </property>
+        <property name="companyCountry" type="java.lang.String">
+            <column name="country" />
+        </property> 
+        <property name="companyZipCode" type="java.lang.String">
+            <column name="zip_code" />
+        </property>
+        <property name="companyPhoneNumber" type="java.lang.String">
+            <column name="phone_number" />
+        </property>
+        </class>
+</hibernate-mapping>

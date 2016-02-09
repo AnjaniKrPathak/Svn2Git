@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 23, 2014 3:33:13 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.Icd9Diagnosis" table="icd9_dx_code">
+        <id name="id" type="int">
+            <column name="dx_id" />
+            <generator class="assigned" />
+        </id>
+        <property name="dxCode" type="java.lang.String">
+            <column name="dx_code" />
+        </property>
+        <property name="formatedCode" type="java.lang.String">
+            <column name="formatted_dx_code" />
+        </property>
+        <property name="shortDescription" type="java.lang.String">
+            <column name="short_desc" />
+        </property>
+        <property name="longDiscription" type="java.lang.String">
+            <column name="long_desc" />
+        </property>
+        <property name="active" type="int">
+            <column name="active" />
+        </property>
+        <property name="revision" type="int">
+            <column name="revision" />
+        </property>
+    </class>
+</hibernate-mapping>

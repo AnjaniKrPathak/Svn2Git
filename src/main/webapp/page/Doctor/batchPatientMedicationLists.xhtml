@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+<h:body>
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+			<script src="tabmenu/labHtmlPageDisplay.js" type="text/javascript"></script>
+			
+			
+			<script src="tabmenu/labHtmlPageDisplay.js" type="text/javascript"></script>  
+			<script type="text/javascript" language="javascript"></script>
+			
+			
+			
+			<style type="text/css">
+.animated .ui-progressbar-value {
+	background-image: url("../../Images/progress_bar.gif");
+}
+</style>
+		</h:head>
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="93" minSize="60">
+				<ui:include src="doctorheader2.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<ui:include src="toolleftmenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center" resizable="true">
+				<h:form id="form_batchPatientMedListReport">
+					<p:growl id="messages" showDetail="true" />
+					<p:panel>
+						<table width="100%">
+						    <tr>
+						     <td width="9%">
+						        <h:outputText value="From Patient Id:"></h:outputText>
+						     </td>
+						     <td width="13%">
+						        <p:selectOneMenu value="#{userManageBean.fromPatientIdForReport}">
+						           <f:selectItem itemLabel="---ALL---"/>
+						           <f:selectItems value="#{userManageBean.patientIdList}"></f:selectItems>
+						        </p:selectOneMenu>
+						     </td>
+						     <td width="9%">
+						       <h:outputText value="To Patient Id:"></h:outputText>
+						     </td>
+						     <td width="13%">
+						       <p:selectOneMenu value="#{userManageBean.toPatientIdForReport}">
+						           <f:selectItem itemLabel="---ALL---"/>
+						           <f:selectItems value="#{userManageBean.patientIdList}"></f:selectItems>
+						        </p:selectOneMenu>
+						     </td>
+						     <td width="25" align="right">
+						        <p:commandButton id="btn_filterPatient" value="Filter Patient" action="#{userManageBean.filterPatientForReport}"></p:commandButton>
+						     </td>
+						      <!-- <td width="10%" align="right">
+						         <p:commandButton id="btn_generateReport" value="Generate Repor" actionListener="#{userManageBean.batchMedicationReportGenration}" oncomplete="initLabPopUp();showLabPopWin('batchPatientReport.jsf', 1000, 528, null);"/>
+						      </td> -->
+						      <td width="15%" align="right">
+						       <p:commandButton  value="Batch Patient Detail Report" actionListener="#{userManageBean.batchPatientMedicineReportInPDF}" ajax="false" />
+						      </td>
+						      <td width="15%" align="right">
+						       <p:commandButton value="Batch Patient Report With Lab" actionListener="#{userManageBean.batchPatientReportWithLabDetailInPdf}" ajax="false"></p:commandButton>
+						      </td>
+						    </tr>
+							<tr>
+								<td colspan="8"><p:outputPanel id="batchDataPull_report">
+										<p:dataTable
+											value="#{userManageBean.batchPatientForReportList}"
+											var="patDataBatPull"
+											selection="#{userManageBean.selectedUserDetailForReport}"
+											rowKey="#{patDataBatPull.userId}"
+											id="dtable_batchPatientMedListReport" scrollHeight="400" paginator="true" paginatorPosition="bottom" rows="50" rowsPerPageTemplate="25,50,100,200">
+											 <p:ajax event="rowSelectCheckbox" update="dtable_batchPatientMedListReport" process="@this"   />
+				                             <p:ajax event="rowUnselectCheckbox" update="dtable_batchPatientMedListReport" process="@this"   />
+				                             <p:ajax event="rowSelect" update="dtable_batchPatientMedListReport" process="@this"   />
+				                             <p:ajax event="rowUnselect" update="dtable_batchPatientMedListReport" process="@this"   />
+											<p:column selectionMode="multiple"
+												style="width:3%; text-align:center;align:center;">	
+												<!--  <h:outputText value="This Patient can not be batched "  ></h:outputText> -->
+											</p:column>
+											<p:column sortBy="userId">
+												<f:facet name="header">
+													<h:outputText value="#{msg.patientID}" />
+												</f:facet>
+												<h:outputText value="#{patDataBatPull.userId}" />
+											</p:column>
+											<p:column sortBy="firstName">
+												<f:facet name="header">
+													<h:outputText value="#{msg.patientName}" />
+												</f:facet>
+												<h:outputText
+													value="#{patDataBatPull.firstName} #{patDataBatPull.lastName}" />
+											</p:column>
+											<p:column sortBy="dateOfBirth">
+												<f:facet name="header">
+													<h:outputText value="#{msg.dob}" />
+												</f:facet>
+												<h:outputText value="#{patDataBatPull.dateOfBirth}">
+													<f:convertDateTime pattern="#{msg.dateFormat}" />
+												</h:outputText>
+											</p:column>
+											<p:column sortBy="gender">
+												<f:facet name="header">
+													<h:outputText value="#{msg.gender}" />
+												</f:facet>
+												<h:outputText value="#{patDataBatPull.gender}" />
+											</p:column>
+											<p:column sortBy="state">
+												<f:facet name="header">
+													<h:outputText value="#{msg.state}" />
+												</f:facet>
+												<h:outputText value="#{patDataBatPull.state}" />
+											</p:column>
+										</p:dataTable>
+									</p:outputPanel></td>
+
+							</tr>
+							<!-- <tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+								<p:outputPanel id="progressBarPanel">
+										<p:progressBar widgetVar="pbAjax"
+											rendered="#{!(userManageBean.completedPerc eq 100)}"
+											ajax="true" value="#{userManageBean.progressBatchProcess}"
+											interval="50"
+											labelTemplate="{value}th  patient is running in total selected patient.">
+											<p:ajax event="complete"
+												listener="#{userManageBean.onComplete}" update="messages" />
+										</p:progressBar>
+									</p:outputPanel></td>
+							</tr> -->
+						</table>
+					</p:panel>
+					<!-- <p:blockUI block="batchDataPull_report" trigger="btn_generateReport">  
+                              Batch Running ...<br />
+						<p:graphicImage value="./../../Images/ajax_loader.gif" width="40"
+							height="40" />
+					</p:blockUI> -->
+				</h:form>
+			</p:layoutUnit>
+			
+			<!--     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> dialog box for report >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.  -->
+			<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true" height="100">
+			    
+			
+			</p:dialog>
+			
+		</p:layout>
+	</f:view>
+</h:body>
+</html>

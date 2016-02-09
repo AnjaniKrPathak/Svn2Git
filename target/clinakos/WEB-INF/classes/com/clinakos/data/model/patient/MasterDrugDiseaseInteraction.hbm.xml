@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 12, 2014 4:46:48 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.MasterDrugDiseaseInteraction" table="master_drug_disease_interaction">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="drugID" type="java.lang.String">
+            <column name="drug_id" />
+        </property>
+        <property name="drugName" type="java.lang.String">
+            <column name="drug_name" />
+        </property>
+        <property name="directCondition" type="java.lang.String">
+            <column name="direct_condition" />
+        </property>
+        <property name="severityLevelText" type="java.lang.String">
+            <column name="severity_level_text" />
+        </property>
+        <property name="diseaseRelation" type="java.lang.String">
+            <column name="disease_relation" />
+        </property>
+        
+        <property name="icd9" type="java.lang.String">
+            <column name="icd9" />
+        </property>
+        <property name="relatedCondition" type="java.lang.String">
+            <column name="related_condition" />
+        </property>
+        <property name="severityLevel" type="java.lang.String">
+            <column name="severity_level" />
+        </property>
+        <property name="severityLevelShortText" type="java.lang.String">
+            <column name="severity_level_short_text" />
+        </property>
+        <property name="diseaseRelationText" type="java.lang.String">
+            <column name="disease_relation_text" />
+        </property>
+    </class>
+</hibernate-mapping>

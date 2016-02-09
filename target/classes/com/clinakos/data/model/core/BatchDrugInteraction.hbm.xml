@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12 Aug, 2015 3:03:56 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.core.BatchDrugInteraction" table="batch_drug_interaction_data">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <property name="drug1Id" type="double">
+            <column name="drug_1_id" />
+        </property>
+        <property name="drug2Id" type="double">
+            <column name="drug_2_id" />
+        </property>
+        <property name="interactionText" type="java.lang.String">
+            <column name="interaction_text" />
+        </property>
+        <property name="severityLevel" type="java.lang.String">
+            <column name="severity_level" />
+        </property>
+        <property name="interactionType" type="int">
+            <column name="interaction_type" />
+        </property>
+        
+         <property name="clinicalEffects" type="java.lang.String">
+            <column name="clinical_effects" />
+        </property>
+         <property name="patientManagement" type="java.lang.String">
+            <column name="patient_management" />
+        </property>
+         <property name="drug1Name" type="java.lang.String">
+            <column name="drug_1" />
+        </property>
+         <property name="drug2Name" type="java.lang.String">
+            <column name="drug_2" />
+        </property>
+    </class>
+</hibernate-mapping>

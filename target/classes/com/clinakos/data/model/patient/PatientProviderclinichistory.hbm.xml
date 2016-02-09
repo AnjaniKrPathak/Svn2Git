@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.PatientProviderClinicHistory"
+		table="clinic_patient_provider_history">
+		<id name="id" type="int" column="id">
+			<generator class="increment" />
+		</id>
+
+		<property name="clinicProviderId" type="int">
+			<column name="clinic_provider_id" />
+		</property>
+
+
+		<property name="patientId" type="int">
+			<column name="patient_id" />
+		</property>
+		<property name="deletedate" type="java.util.Date">
+			<column name="date" />
+		</property>
+		<property name="prescibername" type="java.lang.String">
+			<column name="prescriber_name" />
+		</property>
+		
+		<property name="providerid" type="int">
+			<column name="provider_id" />
+		</property>
+		
+
+
+	</class>
+</hibernate-mapping>

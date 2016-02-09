@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 17, 2013 12:08:47 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.DosageFrom" table="dosage_form">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="dosageFrom" type="java.lang.String">
+            <column name="dosage_name" />
+        </property>
+        
+        
+        <property name="newCropId" type="int">
+			<column name="new_crop_id" />
+		</property>
+       
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body onload="#{patientManageBean.setMyAllergyIndex()}">
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			 <p:layoutUnit position="north" size="85" minSize="60">
+		<ui:include src="patientHeader.xhtml" />
+	</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				<ui:include src="patient_diagnoses_left_menu.xhtml">
+				</ui:include>
+		</p:layoutUnit>
+			<br />
+			<br />
+			<br /> 
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center">
+				<!--  <ui:include src="../Doctor/patientTabHeader.xhtml"></ui:include>-->
+				
+				
+				<h:form id="allergyInformation" prependId="false"> 
+						
+						<p:growl id="messageUpdate"   redisplay="false" style="color:red;margin:8px;" showSummary="true" showDetail="true" autoUpdate="true" closable="true" life="3000"/> 
+					
+					
+					
+					
+					<table width="100%" style="margin-top:10px">
+					 <tr>
+				      <td class="secHeadPart">#{msg.patientalergydetail}</td>
+				      </tr>
+				      <tr class="secContentBorder">
+				       <td>
+				      <!-- <fieldset class="dataField" style=" min-height:150px; " >
+				      <legend class="legendField">#{msg.patientalergydetail}</legend> -->
+					<p:dataTable id="patientAllergy" value="#{patientMedicineManageBean.patientAllergyList}" var="patAllergy"  rowIndexVar="rowNum"
+						binding="#{patientMedicineManageBean.allergyDataTableBinding}" scrollable="true" lazy="true">
+					
+						  <p:column headerText="#{msg.alrgyNm}">
+						  		<div align="left">
+						  		<h:outputText value="#{patAllergy.allergyName}" /></div>
+						  </p:column>
+						  
+						  <p:column headerText="#{msg.alrgyServty}">
+						  		<div align="left">
+						  		<h:outputText value="#{patAllergy.allergySeverity}" /></div>
+						  </p:column>
+						  
+						  <p:column headerText="Allergy Notes">
+						  		<div align="left">
+						  		<h:outputText value="#{patAllergy.allergyNotes}" /></div>
+						  </p:column>
+						  
+						  
+						  <p:column headerText="On Set Date">
+						  		<div align="center">
+						  		<h:outputText value="#{patAllergy.onSetDate}" >
+						  		 <f:convertDateTime pattern="MM/dd/yyyy" />
+						  		 </h:outputText></div>
+
+						  </p:column>						  
+						 
+					</p:dataTable>
+					<!-- </fieldset> -->
+					</td>
+				   </tr>
+				</table>
+			</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+		</p:layout>
+
+	</f:view>
+
+</h:body>
+</html>

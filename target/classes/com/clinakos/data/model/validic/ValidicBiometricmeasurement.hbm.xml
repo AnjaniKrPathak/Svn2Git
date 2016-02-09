@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 19, 2014 1:30:22 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.validic.ValidicBiometricmeasurement" table="validic_biometric_measurements">
+        <id  name="id" type="int" >
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+       <property name="clinakosUserId" type="java.lang.String">
+            <column name="clinakos_user_id" />
+        </property>
+         <property name="ldl" type="double">
+            <column name="ldl" />
+        </property>
+        <property name="_id" type="java.lang.String">
+            <column name="validic_biometric_measurement_id" />
+        </property>
+        <property name="timestamp" type="java.lang.String">
+            <column name="timestamp" />
+        </property>
+        <property name="utc_offset" type="java.lang.String">
+            <column name="utc_offset" />
+        </property>
+        <property name="blood_calcium" type="double">
+            <column name="blood_calcium" />
+        </property>
+        <property name="blood_chromium" type="double">
+            <column name="blood_chromium" />
+        </property>
+        <property name="blood_folic_acid" type="double">
+            <column name="blood_folic_acid" />
+        </property>
+        <property name="blood_magnesium" type="double">
+            <column name="blood_magnesium" />
+        </property>
+        <property name="blood_potassium" type="double">
+            <column name="blood_potassium" />
+        </property>
+        <property name="blood_sodium" type="double">
+            <column name="blood_sodium" />
+        </property>
+        <property name="blood_vitamin_b12" type="double">
+            <column name="blood_vitamin_b12" />
+        </property>
+        <property name="blood_zinc" type="double">
+            <column name="blood_zinc" />
+        </property>
+        <property name="creatine_kinase" type="double">
+            <column name="creatine_kinase" />
+        </property>
+        <property name="crp" type="double">
+            <column name="crp" />
+        </property>
+        <property name="diastolic" type="double">
+            <column name="diastolic" />
+        </property>
+        <property name="systolic" type="double">
+            <column name="systolic" />
+        </property>
+        <property name="ferritin" type="double">
+            <column name="ferritn" />
+        </property>
+        <property name="hdl" type="double">
+            <column name="hdl" />
+        </property>
+        <property name="hscrp" type="double">
+            <column name="hscrp" />
+        </property>
+        <property name="il6" type="double">
+            <column name="il6" />
+        </property>
+        <property name="resting_heartrate" type="double">
+            <column name="resting_heartrate" />
+        </property>
+        <property name="testosterone" type="double">
+            <column name="testosterone" />
+        </property>
+        <property name="total_cholesterol" type="double">
+            <column name="total_cholesterol" />
+        </property>
+        <property name="tsh" type="double">
+            <column name="tsh" />
+        </property>
+       
+        <property name="vitamin_d" type="double">
+            <column name="vitamin_d" />
+        </property>
+        <property name="white_cell_count" type="double">
+            <column name="white_cell_count" />
+        </property>
+        <property name="spo2" type="double">
+            <column name="spo2" />
+        </property>
+        <property name="temperature" type="double">
+            <column name="temparature" />
+        </property>
+        <property name="source" type="java.lang.String">
+            <column name="source" />
+        </property>
+        <property name="source_name" type="java.lang.String">
+            <column name="source_name" />
+        </property>
+        <property name="last_updated" type="java.lang.String">
+            <column name="last_updated" />
+        </property>
+        <property name="dataId" type="java.lang.String">
+            <column name="data_id" />
+        </property> 
+        <property name="user_id" type="java.lang.String">
+            <column name="validic_user_id" />
+        </property> 
+        <property name="uric_acid" type="java.lang.String">
+            <column name="uric_acid" />
+        </property> 
+    </class>
+</hibernate-mapping>

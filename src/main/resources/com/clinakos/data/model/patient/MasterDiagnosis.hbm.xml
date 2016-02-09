@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.MasterDiagnosis" table="icd10_dx_order_code">
+        <id name="dxId" type="int">
+            <column name="dx_id" />
+            <generator class="increment" />
+        </id>
+        <property name="dxCode" type="java.lang.String">
+            <column name="dx_code" />
+        </property>
+        <property name="formattedDxCode" type="java.lang.String">
+            <column name="formatted_dx_code" />
+        </property>
+        <property name="validforCoding" type="java.lang.String">
+            <column name="valid_for_coding" />
+        </property>
+        <property name="shortDesc" type="java.lang.String">
+        <column name="short_desc"/>
+        
+        </property>
+        <property name="longDesc" type="java.lang.String">
+        <column name="long_desc"/>
+        
+        </property>
+        
+       
+    </class>
+</hibernate-mapping>

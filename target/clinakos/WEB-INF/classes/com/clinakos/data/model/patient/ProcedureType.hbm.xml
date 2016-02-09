@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 24, 2013 2:07:02 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.ProcedureType"
+		table="procedure_type"  >
+		<id name="id" type="int">
+			<column name="procedure_type_id" />
+			<generator class="increment" />
+		</id>
+		  <property name="longName" type="java.lang.String">
+			<column name="long_name" />
+		</property>
+		<property name="labid" type="int">
+			<column name="lab_id" />
+		</property>
+		
+		<property name="rank" type="int">
+			<column name="rank" />
+		</property>
+		
+		<property name="loincCode" type="java.lang.String">
+			<column name="loinc_code" /> 
+		</property>
+		
+		<property name="labType" type="java.lang.String">
+			<column name="lab_type" />
+		</property>
+		
+		 <property name="specimen" type="java.lang.String">
+			<column name="specimen" />
+		</property>
+		<property name="routeAdmin" type="java.lang.String">
+			<column name="route_admin" />
+		</property>
+		<property name="procedureDescription" type="java.lang.String">
+			<column name="description" />
+		</property>
+		<property name="shortKey" type="java.lang.String">
+			<column name="short_key" />
+		</property>
+		<property name="relatedCode" type="java.lang.String">
+			<column name="related_code" />
+		</property>
+		<property name="range" type="java.lang.String">
+			<column name="range" />
+		</property>
+		<property name="units" type="java.lang.String">
+			<column name="units" />
+		</property>
+		<property name="laboratoryName" type="java.lang.String">
+			<column name="lab_name" />
+		</property> 
+		
+		 
+		 
+		
+       
+        
+       
+        
+		
+		
+	</class>
+</hibernate-mapping>

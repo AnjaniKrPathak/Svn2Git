@@ -1,0 +1,716 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body>
+	<f:view contentType="text/html">
+		<h:head>
+			
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			 <script src="tabmenu/subModal.js" type="text/javascript"></script> 
+	<script type="text/javascript">
+ 	function messageToUser(xhr, status, args){
+		if(args.showDialogToUser==true){
+			systemDialogAlertsWidgetVar.show();
+			}else{
+				systemDialogAlertsWidgetVar.hide();
+				}
+
+		} 
+
+ 	
+		
+		function hidePopForClinic(xhr,status,args){
+			 
+			if(args.pageName == "overViewFilter"){
+				window.parent.parent.location.assign("overViewFilter.jsf");
+				window.close();
+			}else if(args.pageName=="psychopharm"){
+				window.parent.parent.location.assign("psychopharm.jsf");
+				window.close();
+				
+			} 
+			/* console.log("URL to redirect "+args.pageName)
+			window.parent.parent.location.assign(args.pageName);
+			window.close(); */
+		}
+		
+		 
+	</script>
+		</h:head>
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center" >
+
+<h:outputText value="Dosing Guideline Wizard: " />
+ <h:outputText value="#{patientMedicineManageBean.patientMedicationData.drugs}" />
+
+				<p:accordionPanel  dynamic="true" activeIndex="#{patientMedicineManageBean.psychopharmModelDataObj.activeIndexDefault}" id="accrdPanelId" >
+				 <!--  <p:ajax event="tabChange"  /> -->
+				
+				<p:tab title="#{msg.psychopharm_step1_label}" id="step1" disabled="#{patientMedicineManageBean.psychopharmModelDataObj.dosing_step_1_disabled}" >
+					<h:form>
+					   <p:messages id="messages"  autoUpdate="true" closable="true" showDetail="false" />  
+					
+						<p:dataGrid
+							value="#{patientMedicineManageBean.psychopharm_parameters}"
+							var="psychopharmVar" columns="3">
+							
+							<table width="100%">
+								<tr>
+									<td width="25%"><h:outputText
+											value="#{psychopharmVar.value.label}" id="psychopharmLabelId" />:&nbsb;
+											<p:tooltip for="psychopharmLabelId" value="#{psychopharmVar.value.toolTip}"></p:tooltip>
+											<p:tooltip for="psycpharm_value_id"  value="Done on #{psychopharmVar.value.labDate}" rendered="#{psychopharmVar.value.labDate!=''}" id="tooltipLabDateId">
+											
+											</p:tooltip>
+											</td>
+									<td width="10%">
+										 <p:inputText  
+											value="#{psychopharmVar.value.paramter_value}" id="psycpharm_value_id" label="#{psychopharmVar.value.label}">
+											<f:convertNumber type="number" for="psycpharm_value_id" ></f:convertNumber>
+							
+											</p:inputText>
+										
+									</td>
+									<td><h:outputText
+											value="#{psychopharmVar.value.paramter_unit}" /></td>
+									
+								</tr>
+							</table>
+						</p:dataGrid>
+						<p:commandButton value="Calculate CrCl" actionListener="#{patientMedicineManageBean.calculateCrCl}" process="@form" 
+						update=":accrdPanelId"></p:commandButton>
+						<p:commandButton value="Next"
+							actionListener="#{patientMedicineManageBean.psychopharm_validateStep1}"
+							process="@form" oncomplete="messageToUser(xhr, status, args);" update=":accrdPanelId" style="float:right;"></p:commandButton>
+					</h:form>
+				</p:tab>
+				
+				<p:tab title="#{msg.psychopharm_step2_label}" id="step2" disabled="#{patientMedicineManageBean.psychopharmModelDataObj.dosing_step_2_disabled}">
+				<h:form id="psychoPharmStep2FormId">
+				 <p:messages id="messages"  autoUpdate="true" closable="true" showDetail="false" />  
+				<table width="100%">
+				<tr >
+				<td>
+				<h:outputText value="#{msg.pregnancy_label}" rendered="#{patientMedicineManageBean.genderOfPatient eq 'female'}"> :</h:outputText>
+				 </td>
+				<td> 
+				<p:selectOneMenu id="pregnancy_id"  value="#{patientMedicineManageBean.psychopharmModelDataObj.pregnancyOption}" converter="javax.faces.Boolean" style="width:82px;"  rendered="#{patientMedicineManageBean.genderOfPatient eq 'female'}" >
+				    <f:selectItems value="#{patientMedicineManageBean.optionsValue}" var="optionVar" itemLabel="#{optionVar.key}" 
+                  itemValue="#{optionVar.value}"></f:selectItems>
+				</p:selectOneMenu>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<h:outputText value="#{msg.drug_screen_label}" > :</h:outputText>
+				 </td>
+				<td > 
+				<p:selectOneMenu id="drug_screening_id"  value="#{patientMedicineManageBean.psychopharmModelDataObj.drugScreenOption}" style="width:82px;" converter="javax.faces.Boolean">
+				    <f:selectItems value="#{patientMedicineManageBean.drugScreeningOptions}" var="optionVarObj" itemLabel="#{optionVarObj.key}" 
+                  itemValue="#{optionVarObj.value}" ></f:selectItems>
+				</p:selectOneMenu>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<h:outputText value="#{msg.contraindicated_diagnosis}" />
+				  <p:selectManyCheckbox id="contraindicatedDiagnosisId" 
+                                                    value="#{patientMedicineManageBean.selectedContraindicatedDiagnosis}"
+                                                   layout="grid" columns="1"  styleClass="checkCase" >
+                    	
+                       <f:selectItems value="#{patientMedicineManageBean.contraindicatedDiagnosisForPsychopharmClinic}" var="contraindicatedDiagnosis" itemLabel="#{contraindicatedDiagnosis}" 
+                  itemValue="#{contraindicatedDiagnosis}" ></f:selectItems>
+                
+                    </p:selectManyCheckbox>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<h:outputText value="#{msg.contraindicated_medications}" />
+				  <p:selectManyCheckbox id="contraindicatedMedicineId" 
+                                                    value="#{patientMedicineManageBean.selectedContraindicatedMeds}"
+                                                  layout="grid" columns="1"  styleClass="checkCase">
+                    	
+                       <f:selectItems value="#{patientMedicineManageBean.contraindicatedMedsForPsychopharmClinic}" var="contraindicatedMedications" itemLabel="#{contraindicatedMedications}" 
+                  itemValue="#{contraindicatedMedications}" ></f:selectItems>
+                
+                    </p:selectManyCheckbox>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<table width="100%">
+				<tr>
+				<td align="left" width="34%">
+				 <h:outputText value="#{msg.baseline_phq9_scale_label}" /> </td>
+				
+				<td  ><p:commandButton value="#{msg.phq9_questions}" onclick="phq9_WidgetVar.show()"></p:commandButton>
+				</td>
+				 <td align="right">
+				 <h:outputText value="#{msg.latest_date} : " />
+				<p:calendar  value="#{patientMedicineManageBean.psychopharmModelDataObj.phq9Date}"  showOn="button"  id="phq9DateId" pattern="#{msg.dateFormat}">
+					<f:convertDateTime pattern="#{msg.dateFormat}" for="phq9DateId" dateStyle="full" type="date" timeZone="#{userManageBean.loggedUsertimeZone}" />	
+				 </p:calendar>
+				 </td>
+				 </tr>
+				 </table>
+			<!-- 	<p:commandButton value="psychopharm_questionaire" onclick="question_WidgetVar.show()"></p:commandButton> -->
+				</td>
+				<td>
+				<h:outputText value="#{msg.current_score} : " />
+				<p:inputText value="#{patientMedicineManageBean.psychopharmModelDataObj.phq9Scale}" id="phq_9_scale_id" label="PHQ-9 Scale">
+				<f:convertNumber type="number" for="phq_9_scale_id" ></f:convertNumber>
+				</p:inputText>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<table width="100%">
+				<tr><td align="left" width="34%">
+					<h:outputText value="#{msg.baseline_altman_scale_label}" /></td>
+					 
+					<td><p:commandButton value="#{msg.altman_questions}" onclick="altman_WidgetVar.show()"></p:commandButton></td>
+					 <td align="right">
+					  <h:outputText value="#{msg.latest_date} : " />
+						 <p:calendar  value="#{patientMedicineManageBean.psychopharmModelDataObj.altmanManiaDate}"  showOn="button"  id="altmanDateId" pattern="#{msg.dateFormat}">
+					<f:convertDateTime pattern="#{msg.dateFormat}" for="altmanDateId" dateStyle="full" type="date" timeZone="#{userManageBean.loggedUsertimeZone}" />	
+				 </p:calendar>
+				 </td>
+				 </tr>
+				 </table>
+					</td>
+					
+					<td>
+					<h:outputText value="#{msg.current_score} : " />
+					<p:inputText value="#{patientMedicineManageBean.psychopharmModelDataObj.altmanManiaRatingScale}" label="Altman Scale" id="altman_scale_id" >
+					<f:convertNumber type="number" for="altman_scale_id" ></f:convertNumber>
+					</p:inputText>
+					</td>
+				</tr>
+				</table>
+				<p:commandButton value="Previous"
+							actionListener="#{patientMedicineManageBean.psychopharm_previous_button_wizard}"
+							process="@form"  update=":accrdPanelId" style="float:left;" immediate="true">
+							<f:setPropertyActionListener target="#{patientMedicineManageBean.psychopharmModelDataObj}" value="#{patientMedicineManageBean.psychopharmModelDataObj}"></f:setPropertyActionListener>
+							</p:commandButton>
+				 <p:commandButton value="#{msg.psychopharm_next_label}" actionListener="#{patientMedicineManageBean.validatePsychopharmStep2}" process="@form"
+				  oncomplete="messageToUser(xhr, status, args);" style="float:right;" update=":accrdPanelId"></p:commandButton> 
+				</h:form>
+				</p:tab>
+				
+		 			<p:tab title="#{msg.psychopharm_step3_label}" id="step3" disabled="#{patientMedicineManageBean.psychopharmModelDataObj.dosing_step_3_disabled}">
+					<h:form>
+					
+					<table width="100%">
+						 <tr>
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="Recommendation:" style="font-weight:bold;"/>&nbsp;&nbsp;<h:outputText value="#{patientMedicineManageBean.psychopharmModelDataObj.recommendedDose}" id="rec"/>
+	 	 	 	 		</td>
+	 	 	 	 		</tr>
+	 	 	 	 		<tr>
+	 	 	 	 		<td>
+	 	 	 	 			<h:outputText value="Recommended Dose:" style="font-weight:bold;"/>&nbsp;&nbsp;<h:outputText value="#{patientMedicineManageBean.psychopharmModelDataObj.strengths}" />
+	 	 	 	 		</td>
+	 	 	 	 	</tr>
+					</table>
+					<p:messages id="messagesLabNameId"  closable="true"></p:messages>
+					 	<table width="100%">
+	 	 	 	 	<tr>
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="Strength" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<p:selectOneMenu  requiredMessage="Please Select Strength"
+										value="#{patientMedicineManageBean.patientMedicationData.strengths}"
+										style="width:122px;">
+									
+										<f:selectItems value="#{patientMedicineManageBean.doseDetailList}"
+											var="doseList" itemLabel="#{doseList.dose}" itemValue="#{doseList.dose}" />
+										<p:ajax event="change" listener="#{patientMedicineManageBean.updateDoasgeForm}" update="dosageLithiumDosingFormId"></p:ajax>
+									</p:selectOneMenu>
+	 	 	 	 	</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	<td>
+	 	 	 	 				<h:outputText value="unit" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<p:selectOneMenu 
+										value="#{patientMedicineManageBean.patientMedicationData.unit}"
+										style="width:145px;">
+										
+										<f:selectItems value="#{patientMedicineManageBean.unitSummaryList}"
+											var="unitList" itemLabel="#{unitList.unit}" itemValue="#{unitList.unit}" />
+										<p:ajax listener="#{patientMedicineManageBean.calculateTotalDispence}" update="dispenceNumber,input"></p:ajax>		
+									
+									</p:selectOneMenu>
+	 	 	 	 	</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="Dosage form" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 		
+	 	 	 	 		<p:selectOneMenu required="true" requiredMessage="Please insert Dosage form"
+															value="#{patientMedicineManageBean.patientMedicationData.dosageForm}"
+															style="width:122px;" id="dosageLithiumDosingFormId">
+															<!-- <f:selectItem itemLabel="#{patientMedicineManageBean.patientMedicationData.dosageForm}" itemValue="#{patientMedicineManageBean.patientMedicationData.dosageForm}" />
+											
+													<f:selectItems value="#{patientMedicineManageBean.unitDetailsList}"
+															var="unitList" itemLabel="#{unitList.unitName}" itemValue="#{unitList.unitName}" /> -->
+														<f:selectItems value="#{patientMedicineManageBean.dosageForms}"
+															var="dosageObj" itemLabel="#{dosageObj}" itemValue="#{dosageObj}" />
+													</p:selectOneMenu>
+	 	 	 	 	
+								<!-- <p:inputText  value="#{patientMedicineManageBean.patientMedicationData.dosageForm}" readonly="true"></p:inputText>	 -->
+	 	 	 	 	 </td>
+	 	 	 	 	</tr>
+	 	 	 	 	
+	 	 	 	 	<tr>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	<td>
+	 	 	 	 				<h:outputText value="Route" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 		<p:selectOneMenu  required="true" requiredMessage="Please insert Route"
+															value="#{patientMedicineManageBean.patientMedicationData.byRoute}"
+															style="width:122px;">
+															<f:selectItem itemLabel="#{patientMedicineManageBean.patientMedicationData.byRoute}" itemValue="#{patientMedicineManageBean.patientMedicationData.byRoute}" />
+															<f:selectItems value="#{patientMedicineManageBean.routeDetailsList}"
+																var="routeDetailList" itemLabel="#{routeDetailList.routeName}" itemValue="#{routeDetailList.routeName}" />
+												</p:selectOneMenu>
+	 	 	 	 		
+									
+									<!-- <p:inputText  value="#{patientMedicineManageBean.patientMedicationData.byRoute}" readonly="true"></p:inputText> -->
+	 	 	 	 		</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	<td>
+	 	 	 	 				<h:outputText value="Regimen" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	 	 		</td>
+	 	 	 	 		<td>
+	 	 	 	 			<p:selectOneMenu  requiredMessage="Please Select Regimen" required="true"
+										value="#{patientMedicineManageBean.patientMedicationData.directions}"
+										style="width:145px;">
+										<f:selectItem
+											itemLabel=""
+											itemValue="" />
+										<f:selectItems value="#{patientMedicineManageBean.regimenList}"
+											var="regimen" itemLabel="#{regimen}" itemValue="#{regimen}" />
+										
+										<p:ajax listener="#{patientMedicineManageBean.calculateTotalDispence}" update="dispenceNumber,input"></p:ajax>	
+										
+									</p:selectOneMenu>
+	 	 	 	 	</td>
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 	
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="PRN" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 		 <td>
+	 	 	 	 			<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.prn}" />  
+	 	 	 	 		</td> 
+	 	 	 	 		
+	 	 	 	 		<td>
+	 	 	 	 				<h:outputText value="Allow substitution" />
+	 	 	 	 		</td>
+	 	 	 	 		
+	 	 	 	 		 <td>
+	 	 	 	 			<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.allowSubstitution}" />  
+	 	 	 	 		</td> 
+	 	 	 	 		
+	 	 	 	 		
+	 	 	 	 </tr>
+	 	 	 	 <tr valign="top">
+	 	 	 	 <table width="100%">
+				<tr align="center">
+					
+					<td>
+						<h:outputText value="DAW / DNS"/>
+					</td>
+					&nbsp;
+					<td>
+						<h:outputText value="One Time"/>
+					</td>
+					<!-- &nbsp;
+					<td>
+						<h:outputText value="2nd rx 90 Day"/>
+					</td>
+					&nbsp;
+					<td>
+						<h:outputText value="Save this sig and add to Doctor's List"/>
+					</td> -->
+				</tr>
+				
+				
+				<tr>
+					<td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.daw_dns}" />  
+					</td>
+					<td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.one_Time}" />  
+					</td>
+				<!-- 	<td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.secondrx_90days}" />  
+					</td>
+					<td align="center">
+						<p:selectBooleanCheckbox value="#{patientMedicineManageBean.patientMedicationData.savetodoctorlist}" />  
+					</td> -->
+				</tr>
+			</table>
+	 	 	 	 
+	 	 	 	 
+	 	 	 	 </tr>
+	 	 	 	 </table>
+	 	 	 <table width="100%">
+	 	 	  	<tr valign="top">
+	 	 	  		<td valign="top">
+	 	 	  			<h:outputText value="Dispense" /><h:outputText value="*" styleClass="mandatoryField"/>
+	 	 	  		</td>
+						<td valign="top">
+							<p:inputText id="dispenceNumber" style="width:50px;"   converter="#{Integer}" maxlength="3"
+										value="#{patientMedicineManageBean.patientMedicationData.quantity}" >
+								<f:convertNumber  pattern="#0" integerOnly="true"  minFractionDigits="3" maxIntegerDigits="3" type="number"/>
+							</p:inputText>
+						</td>
+						
+					<td valign="top">
+	 	 	  			<h:outputText value="Days Supply" />
+	 	 	  		</td>
+						<td valign="top">
+						
+							<p:selectOneMenu 
+										value="#{patientMedicineManageBean.patientMedicationData.daySupply}"
+										style="width:80px;">
+										
+										<f:selectItems value="#{patientMedicineManageBean.daySupplyList}"
+											var="daySupplyDetailList" itemLabel="#{daySupplyDetailList}" itemValue="#{daySupplyDetailList}" />
+										
+										<p:ajax listener="#{patientMedicineManageBean.calculateTotalDispence}" update="dispenceNumber"></p:ajax>	
+										
+									</p:selectOneMenu>
+						</td>
+	 	 	  		
+	 	 	  		<td valign="top">
+	 	 	  			<h:outputText value="Refill"/>
+	 	 	  		</td>
+						<td valign="top">
+							
+						
+						<p:selectOneMenu 
+										value="#{patientMedicineManageBean.patientMedicationData.reffils}"
+										style="width:60px;">
+										
+										<f:selectItems value="#{patientMedicineManageBean.refillDetailsList}"
+											var="refillList" itemLabel="#{refillList}" itemValue="#{refillList}" />
+										
+									</p:selectOneMenu>
+						
+						</td>
+	 	 	  		 <td valign="top">
+	 	 					<h:outputText value="Instructions" />
+	 	 				</td>
+	 	 				<td valign="top">
+	 	 					<p:inputTextarea readonly="true" id="input" 
+	 	 							value="Take #{patientMedicineManageBean.patientMedicationData.unit} &nbsp;&nbsp;
+	 	 									 #{patientMedicineManageBean.patientMedicationData.dosageForm} &nbsp;&nbsp;
+	 	 									#{patientMedicineManageBean.patientMedicationData.byRoute} &nbsp;&nbsp;
+	 										 #{patientMedicineManageBean.patientMedicationData.directions}" cols="15" rows="4">
+											
+								</p:inputTextarea>
+	 	 				</td> 
+	 	 	  	</tr>
+	 	 	  </table> 
+	 	 	  <table width="100%"><tr>
+	 	 	  <td>
+	 	 	 <p:commandButton value="Previous"
+							actionListener="#{patientMedicineManageBean.psychopharm_previous_button_wizard}"
+							  update=":accrdPanelId" style="float:left;" process="@form" immediate="true">
+							<f:setPropertyActionListener target="#{patientMedicineManageBean.psychopharmModelDataObj}" value="#{patientMedicineManageBean.psychopharmModelDataObj}"></f:setPropertyActionListener>
+							</p:commandButton>
+							</td>
+			<td> <p:commandButton value="#{msg.psychopharm_next_label}" actionListener="#{patientMedicineManageBean.validatePsychopharmStep3}" oncomplete="messageToUser(xhr, status, args);"
+			  update=":accrdPanelId,messagesLabNameId" style="float:right;" process="@form"></p:commandButton>
+			  </td></tr>
+			  </table> 
+			  </h:form>
+					</p:tab>
+				<p:tab id="step4" title="Step 4" disabled="#{patientMedicineManageBean.psychopharmModelDataObj.dosing_step_4_disabled}" >
+				<h:form id="medPlanFilterId">
+				<!--  <h:outputText value="#{msg.phase_lbl}">:</h:outputText> 
+				<p:selectOneMenu value="#{patientMedicineManageBean.psychopharmModelDataObj.selectedPhase}">
+									<f:selectItems value="#{patientMedicineManageBean.phase}" var="phaseVar" itemLabel="#{phaseVar}"
+									itemValue="#{phaseVar}"/>
+									</p:selectOneMenu> -->
+				<h:outputText value="#{msg.dosing_start_date}"></h:outputText>
+				<h:outputText value=": " />
+				 <p:calendar  value="#{patientMedicineManageBean.dosingStartDate}"  showOn="button"  id="dosingStartDateId" pattern="#{msg.dateFormat}">
+					<f:convertDateTime pattern="#{msg.dateFormat}" for="dosingStartDateId" dateStyle="full" type="date" timeZone="#{userManageBean.loggedUsertimeZone}" />	
+				 </p:calendar>
+				<p:messages id="messagesLabName"  closable="true"></p:messages>
+				 <p:dataTable value="#{patientMedicineManageBean.parentMedActionPlan.childLabParameters}" var="genericMedActionPlanVar" widgetVar="genericMedPlanWidgetVar"
+                   id="genericMedActionTableIdforfilterId"  selection="#{patientMedicineManageBean.selectedLabParamtersPsychopharm}" rowKey="#{genericMedActionPlanVar.id}" emptyMessage="#{msg.noMedFound}">
+                  <p:ajax event="rowSelect" oncomplete="disableRowSelect();"></p:ajax>
+                   <p:column selectionMode="multiple" style="width:16px;text-align:center" />
+			    <p:column headerText="#{msg.monitoring_parameter_label}">
+                 <h:outputText value="#{genericMedActionPlanVar.labParameterObj.labType} #{genericMedActionPlanVar.labParameterObj.units}"/>  
+                   </p:column>
+                    <p:column headerText="#{msg.goal}">
+                  <table cellpadding="1" cellspacing="1">
+                  <tr>
+                  <td style="border:none;">
+                   <p:selectOneMenu value="#{genericMedActionPlanVar.goalLowRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="goalRange" itemLabel="#{goalRange.key}"
+									itemValue="#{goalRange.value}"/>
+									</p:selectOneMenu>
+					</td>
+					<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.goalLowRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Goal " style="width:50px"></p:inputText>
+					</td>
+					<td style="border: none;">
+					<h:outputText	value="#{msg.or_label}" />
+					</td>
+					 <td style="border:none;">
+                   <p:selectOneMenu value="#{genericMedActionPlanVar.goalHighRangeSymbol}" >
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="goalRangeEnd" itemLabel="#{goalRangeEnd.key}"
+									itemValue="#{goalRangeEnd.value}"/>
+									</p:selectOneMenu>
+					</td>
+					<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.goalHighRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Goal " style="width:50px"></p:inputText>
+					</td>
+									</tr>
+                  </table>
+                   </p:column>  
+                  <p:column headerText="#{msg.frequency_label}" >
+                   
+                   <table ><tr><td style="border:none;">
+                    <p:selectOneMenu value="#{genericMedActionPlanVar.frequencyNumber}" style="width:50px;">
+									<f:selectItems value="#{patientMedicineManageBean.frequencyNoList}" var="frequencyNo" itemLabel="#{frequencyNo.key}"
+									itemValue="#{frequencyNo.value}"/>
+				<p:ajax event="change" process="genericMedActionTableIdforfilterId" listener="#{patientMedicineManageBean.findNextlabDatePsychopharm}"
+															 update="genericMedActionTableIdforfilterId"></p:ajax>
+									</p:selectOneMenu>
+                   </td>
+                   <td style="border:none;"></td>
+                   <td style="border:none;">
+                   <p:selectOneMenu value="#{genericMedActionPlanVar.frequencyUnit}" style="width:90px;">
+									<f:selectItems value="#{patientMedicineManageBean.frequencyList}" var="frequencyRange" itemLabel="#{frequencyRange.key}"
+									itemValue="#{frequencyRange.value}"/>
+						<p:ajax  event="change" process="genericMedActionTableIdforfilterId" listener="#{patientMedicineManageBean.findNextlabDatePsychopharm}"
+															></p:ajax>
+									</p:selectOneMenu>
+									
+						</td></tr></table>
+                   </p:column> -->
+                  <p:column headerText="#{msg.alert_level_label}">
+								<table>
+								<tr>
+								<td style="border:none;">
+									<h:graphicImage value="./../../Images/red1.jpg" height="15px"
+										width="20px" />
+								</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertSevereLowRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symSevereLowRange" itemLabel="#{symSevereLowRange.key}"
+									itemValue="#{symSevereLowRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertSevereLowRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Alert " style="width:50px"></p:inputText>
+									</td>
+									<td style="border:none;">
+									<h:outputText value="#{msg.or_label}" />
+									</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertSevereHighRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symSevereHighRange" itemLabel="#{symSevereHighRange.key}"
+									itemValue="#{symSevereHighRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertSevereHighRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Alert " style="width:50px"></p:inputText>
+									</td>
+									</tr>
+									<tr>
+									<td style="border:none;">
+									<h:graphicImage value="./../../Images/orange1.jpg"
+										height="15px" width="20px" />
+									</td>
+									<td style="border:none;">
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertMediumLowRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symMediumLowRange" itemLabel="#{symMediumLowRange.key}"
+									itemValue="#{symMediumLowRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertMediumLowRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Alert " style="width:50px" ></p:inputText>
+									</td>
+									<td style="border:none;">
+									<h:outputText value="#{msg.or_label}" />
+									</td>
+									<td style="border:none;">	
+									<p:selectOneMenu value="#{genericMedActionPlanVar.alertMediumHighRangeSymbol}">
+									<f:selectItems value="#{patientMedicineManageBean.alertSymbolsList}" var="symMediumHighRange" itemLabel="#{symMediumHighRange.key}"
+									itemValue="#{symMediumHighRange.value}"/>
+									</p:selectOneMenu>
+									</td>
+									<td style="border:none;">
+									<p:inputText value="#{genericMedActionPlanVar.alertMediumHighRangeValue}" size="2" label="#{genericMedActionPlanVar.labParameterObj.labType} Alert " style="width:50px"></p:inputText>
+									</td>
+									</tr>
+							 </table>
+
+							</p:column> 
+                 
+                  </p:dataTable>
+				 <p:commandButton value="Previous"
+							actionListener="#{patientMedicineManageBean.psychopharm_previous_button_wizard}"
+							 update=":accrdPanelId" style="float:left;" process="@form"  immediate="true">
+							<f:setPropertyActionListener target="#{patientMedicineManageBean.psychopharmModelDataObj}" value="#{patientMedicineManageBean.psychopharmModelDataObj}"></f:setPropertyActionListener>
+							</p:commandButton>
+			 <p:commandButton value="#{msg.done}" actionListener="#{patientMedicineManageBean.validatePsychopharmStep4}"  oncomplete="hidePopForClinic(xhr,status,args)"
+			 update=":accrdPanelId" style="float:right;" process="@form"></p:commandButton> 
+			 </h:form>
+				</p:tab>
+				 </p:accordionPanel> 
+				
+
+
+<p:dialog id="systemDialogAlertsId"
+					widgetVar="systemDialogAlertsWidgetVar"
+					resizable="true"  modal="true" dynamic="true"
+					closable="true" appendTo="@(body)" >
+				<p:ajax event="close" update="systemDialogAlertsId" />
+				<h:form>
+				<h:outputText value="#{msg.psychopharm_alert_confirm_message_label}" style="align:center"/>
+				
+				<p:dataList value="#{patientMedicineManageBean.modelMessageList}" var="msgVarObj" type="definition">
+				<table><tr><td >
+				<h:graphicImage value="./../../Images/red1.jpg" height="15px"
+										width="15px" rendered="#{msgVarObj.alertLevel eq 'high'}"/>
+				<h:graphicImage value="./../../Images/orange1.jpg" height="15px" width="15px"
+																				rendered="#{msgVarObj.alertLevel eq 'medium'}" />
+				</td><td class="contentTextPan">
+				<p:spacer width="10px"></p:spacer>
+				
+				<h:outputText value="#{msgVarObj.recomendationMessage}" />
+				</td>
+				</tr>
+				</table>
+				</p:dataList>
+				 <p:commandButton value="Proceed"
+							actionListener="#{patientMedicineManageBean.psychopharm_proceed_button}"
+							 update=":accrdPanelId" style="float:right;" process="@form" oncomplete="systemDialogAlertsWidgetVar.hide();">
+							<f:setPropertyActionListener target="#{patientMedicineManageBean.psychopharmModelDataObj}" value="#{patientMedicineManageBean.psychopharmModelDataObj}"></f:setPropertyActionListener>
+							</p:commandButton>
+			 <p:commandButton value="Cancel" onclick="systemDialogAlertsWidgetVar.hide();"
+			 update=":accrdPanelId" style="float:left;" process="@form"></p:commandButton> 
+				</h:form>
+				</p:dialog>
+<!-- Altman Scale Start Questionarre Pop up -->
+			<p:dialog id="altman_WidgetVar_dialog_id" widgetVar="altman_WidgetVar"
+				resizable="true" modal="true" dynamic="true" closable="true"
+				appendTo="@(body)" height="250" >
+				<center><h2>Altman Self-Rating Mania Scale</h2></center>
+				<h:form>
+				<p:dataGrid
+					value="#{patientMedicineManageBean.altmanManiaQuestions}"
+					var="psychopharmVarAltman" columns="1">
+					<h:outputText value="#{psychopharmVarAltman.key}" />
+					<br />
+					<p:selectOneRadio layout="pageDirection" value="#{psychopharmVarAltman.value.selectedValue}">
+						<f:selectItems
+							value="#{psychopharmVarAltman.value.responeLinkedMapList.entrySet()}"
+							var="question_obj" itemLabel="#{question_obj.value}"
+							itemValue="#{question_obj.key}" />
+					</p:selectOneRadio>
+				</p:dataGrid>
+				<p:commandButton value="#{msg.calculate}" style="float:right" actionListener="#{patientMedicineManageBean.altmanScoreCalculation}" oncomplete="altman_WidgetVar.hide()" update=":accrdPanelId"></p:commandButton>
+			</h:form>
+			</p:dialog>
+	<!--End popup altman scale  -->
+	
+	<!-- PHQ 9 Scale Start Questionarre Pop up -->
+			<p:dialog id="phq9_WidgetVar_dialog_id" widgetVar="phq9_WidgetVar"
+				resizable="true" modal="true" dynamic="true" closable="true"
+				appendTo="@(body)" height="250" >
+				<center><h2>PATIENT HEALTH QUESTIONNAIRE (PHQ-9)</h2></center>
+				<h:form>
+				<p:dataGrid
+					value="#{patientMedicineManageBean.phq9Questions}"
+					var="psychopharmVarPhq9" columns="1">
+					<h:outputText value="#{psychopharmVarPhq9.key}" />
+					<br />
+					<p:selectOneRadio layout="pageDirection" value="#{psychopharmVarPhq9.value.selectedValue}">
+						<f:selectItems
+							value="#{psychopharmVarPhq9.value.responeLinkedMapList.entrySet()}"
+							var="question_obj" itemLabel="#{question_obj.value}"
+							itemValue="#{question_obj.key}" />
+					</p:selectOneRadio>
+				</p:dataGrid>
+				<p:commandButton value="#{msg.calculate}" style="float:right" actionListener="#{patientMedicineManageBean.phq9ScoreCalculation}" oncomplete="phq9_WidgetVar.hide()" update=":accrdPanelId"></p:commandButton>
+			</h:form>
+			</p:dialog>
+	<!--End popup PHQ 9 scale  -->
+	
+		<p:dialog id="question_WidgetVar_dialog_id" widgetVar="question_WidgetVar"
+				resizable="true" modal="true" dynamic="true" closable="true"
+				appendTo="@(body)" height="250" >
+				<h:form>
+				<p:dataGrid
+					value="#{patientMedicineManageBean.psychopharmQuestions}"
+					var="psychopharmVarPhq9" columns="2" >
+					<h:outputText value="#{psychopharmVarPhq9.key}" />
+					<br />
+					<table width="100%">
+					<tr>
+					<td>
+					<p:dataList value="#{psychopharmVarPhq9.value.responseList}" var="questionObj">
+					<h:outputText value="#{questionObj}" />
+					</p:dataList>
+					</td>
+					<td>
+					<p:selectOneMenu  value="#{psychopharmVarPhq9.value.selectedValue}">
+						<f:selectItems
+							value="#{psychopharmVarPhq9.value.responeLinkedMapList.entrySet()}"
+							var="question_obj" itemLabel="#{question_obj.value}"
+							itemValue="#{question_obj.key}" />
+					</p:selectOneMenu>
+					</td>
+					</tr>
+					</table>
+				</p:dataGrid>
+				<!-- <p:commandButton value="#{msg.calculate}" actionListener="#{patientMedicineManageBean.phq9ScoreCalculation}" oncomplete="phq9_WidgetVar.hide()" update=":accrdPanelId"></p:commandButton> -->
+			</h:form>
+			</p:dialog>
+		</p:layoutUnit>
+			
+	</f:view>
+	<script type="text/javascript">
+
+	function disableRowSelect(){
+	
+	//genericMedPlanWidgetVar.unselectAllRows();
+	genericMedPlanWidgetVar.onRowClick= function(event, rowElement) {
+		event.preventDefault();
+	}
+	}
+		
+	</script>
+</h:body>
+</html>
+
+

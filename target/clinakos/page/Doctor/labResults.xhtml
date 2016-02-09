@@ -1,0 +1,1062 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body onload="#{dashBoardManageBean.setLabResultIndex()}">
+
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+			</f:facet>
+			 <link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			
+		<script type="text/javascript">
+			  function customExtender() {
+			    this.cfg.highlighter = {
+			      useAxesFormatters: false,
+			      tooltipAxes: 'y'
+			    }
+			  }
+
+
+			  function handleSearchLab(xhr, status, args){
+					if(args.searchResultSet==true){
+						//alert("ajay");
+						add_lab_details.show();
+						}
+					}
+
+			  function genericMedActionPlanComplete(xhr,status,args){
+				    if(args.savedOrNotDb==true){
+				     //medAactionPlanDialog.hide();
+				     
+				     msgGrol.show([{summary:'', detail: 'Med Action Plan Saved Successfully', severity: 'info'}])
+				    // updateMedPlanRemotely();
+				     
+				     
+				     }
+				   
+				    }
+			  
+		</script>
+		<!-- add css for line chart -->
+	<style type="text/css">
+			
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: black;
+				shape-rendering: crispEdges;
+			}
+			
+			.axis text {
+				font-family: sans-serif;
+				font-size: 11px;
+			}
+
+			.y1 {
+				fill: white;
+				stroke: orange;
+				stroke-width: 1.5px;
+			}
+
+			.y2 {
+				fill: white;
+				stroke: red;
+				stroke-width: 1.5px;
+			}
+
+			.y3 {
+				fill: white;
+				stroke: steelblue;
+				stroke-width: 1.5px;
+			}
+
+			.line {
+			  fill: none;
+			  stroke-width: 1.5px;
+			}
+
+			div.tooltip {
+	            position: absolute;
+	            text-align: center;
+	            width: 50px;
+	            height: 10px;
+	            padding: 5px;
+	            font: 10px sans-serif;
+	            background: whiteSmoke;
+	            border: solid 1px #aaa;
+	            pointer-events: none;
+	            box-shadow: 2px 2px 1px #888;
+            }
+
+            .legend {
+	            padding: 5px;
+	            font: 10px sans-serif;
+	            background: yellow;
+	            box-shadow: 2px 2px 1px #888;
+            }
+
+            .title {
+            	font: 13px sans-serif;
+            }
+
+		</style>
+	
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="93" minSize="60">
+				<ui:include src="doctorHeader.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<h:form >
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			  <p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				  <ui:include src="docMenu.xhtml">
+				</ui:include>
+			</p:layoutUnit>
+			
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center" resizable="true">
+										
+				<p:accordionPanel id="accordian_patientHeader" dynamic="false" activeIndex="1">
+						<p:tab
+							title="#{dashBoardManageBean.userLoginDetail.firstName} #{dashBoardManageBean.userLoginDetail.lastName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}">
+
+							<ui:include src="../Doctor/patientDetailsHeader.xhtml"></ui:include>
+						</p:tab>
+					</p:accordionPanel>
+					
+
+				    <table width="100%" >
+				  		  <tr>
+				  		    <td align="right">
+				  		       <p:commandButton value="#{msg.ad_lab}" onclick="add_new_lab.show()" immediate="true"  actionListener="#{labManageBean.clearLabDetailsData}" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('labResult_addLab')}"/>
+				  		    </td>
+				  		  </tr>
+				  	
+				  		</table>
+				   <table width="100%" style="margin-top:10px" class="secContentBorder">
+				     <tr>
+				       <td valign="top">
+				  		<h:form id="form_labtable">
+				  		
+				  		<p:growl id="messageUpdate" style="color:red;margin:8px;" redisplay="false" widgetVar="msgGrol"  life="3000" globalOnly="true"/> 
+						<p:dataTable value="#{labManageBean.procedureResultListForCurrentLab}" 
+							var="procedure" binding="#{labManageBean.labDataTable}"
+							id="labResult" resizableColumns="true" 
+							draggableColumns="true" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" paginatorTemplate="25,50,100" rows="25"
+							style="white-space:normal;overflow: hidden!important; overflow-x: hidden !important; width:auto%;" emptyMessage="#{msg.noMedFound}">
+						  
+						  <p:ajax event="rowToggle" 
+								listener="#{labManageBean.onRowExpensionProcedureResultHistory}"/>
+							<p:column  width="3%" >
+							<p:rowToggler id="labResult"  />
+							</p:column>
+							
+					      <p:column sortBy="#{procedure.labName}" >
+								<f:facet name="header">
+									<h:outputText value="#{msg.lab_type}" />
+								</f:facet>
+								<div align="left">
+								<h:outputText value="#{procedure.labName}" />
+								<h:outputText value=" #{procedure.labUnit}" />
+								</div>
+								<h:inputHidden  value="#{procedure.id}" />
+						  </p:column>
+						  
+						 <!-- <p:column style="text-align:right;">
+								<f:facet name="header">
+									<h:outputText value="#{msg.order_date}" />
+								</f:facet>
+								<h:outputText value="#{procedure.dateOrdered}">
+									<f:convertDateTime pattern="#{msg.dateFormat}" timeZone="#{userManageBean.loggedUsertimeZone}" dateStyle="full" type="date"/>
+								</h:outputText>
+						  </p:column> -->	
+						  <p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.lab_date}" />
+								</f:facet>
+								<div align="center">
+								<h:outputText value="#{procedure.dateResult}">
+									<f:convertDateTime pattern="MM/dd/yy" timeZone="#{userManageBean.loggedUsertimeZone}" />
+								</h:outputText></div>
+							</p:column>
+							<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.results}" />
+								</f:facet>
+								<div align="right">
+								<h:outputText value="#{procedure.result}" styleClass="#{procedure.colorCodeIndexForCurrentLabResult eq '0' ? null: 'labRowColor'}"/></div>
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{msg.ref_range}" />
+								</f:facet>
+								<div align="left">
+								<h:outputText value="#{procedure.labRange}" /></div>
+							</p:column>
+							<p:column >
+								<f:facet name="header">
+									<h:outputText value="#{msg.ordered_by}" />
+								</f:facet>
+								<div align="left">
+								<h:outputText
+									value="#{procedure.doctorName}" /></div>
+							</p:column>
+							<!-- <p:column style="text-align:left;">
+								<f:facet name="header">
+									<h:outputText value="#{msg.laboratory}" />
+								</f:facet>
+								<h:outputText
+									value="#{procedure.laboratoryName}" />
+							</p:column> -->
+							<p:column >
+								 <f:facet name="header">
+									<h:outputText value="#{msg.action}" />
+								</f:facet>
+							 <div align="center"> <p:commandLink
+								  oncomplete="editlabresult.show();" actionListener="#{labManageBean.setIdforEditCurrentLab}" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('labResult_editLab')}">
+								            <h:graphicImage value="./../../Images/editIcon.jpg" 
+									                   width="25px" height="20px" id="editLabResult"/>
+									                   <p:tooltip for="editLabResult">
+									                   	<h:outputText value="#{msg.edit}" />
+									                   </p:tooltip>
+							      <f:param name="result" value="#{procedure.result}"></f:param>
+								  <f:param name="labName" value="#{procedure.labName}"></f:param> 
+								  <f:param name="rowIdForLab" value="#{procedure.id}"></f:param>
+							  </p:commandLink></div>
+							</p:column> 
+						
+
+							<p:rowExpansion>
+								<p:dataTable id="tbl_labhistory" value="#{labManageBean.procedureResultHistoryList}"
+									var="proc" emptyMessage="#{msg.noMedFound}"> <!-- style="margin-left:105px;"> -->
+									<p:column >
+										<f:facet name="header">
+											<h:outputText value="#{msg.lab_type}" />
+										</f:facet>
+										<div align="left">
+										<h:outputText value="#{proc.procedureType.labType}" />
+										<h:outputText value=" #{proc.procedureType.units}"/>
+										</div>
+									</p:column>
+										<!-- <p:column style="text-align:right;">
+										<f:facet name="header">
+											<h:outputText value="#{msg.order_date}" />
+										</f:facet>#{procedure.procedureOrder.dateOrdered}
+										<h:outputText value="#{proc.dateOrdered}">
+											<f:convertDateTime pattern="#{msg.dateFormat}" />
+										</h:outputText>
+									</p:column> -->
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg.lab_date}" />
+										</f:facet>
+										<div align="center">
+										<h:inputHidden value="#{proc.id}" />
+										<h:outputText value="#{proc.dateResult}">
+											<f:convertDateTime pattern="#{msg.dateFormat}" timeZone="#{userManageBean.loggedUsertimeZone}" />
+										</h:outputText></div>
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg.results}" />
+										</f:facet>
+										<div align="right">
+										<h:outputText value="#{proc.result}" styleClass="#{proc.colorCodeIndexForLabHistory eq '0' ? null: 'labRowColor'}"/></div>
+									</p:column>
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg.ref_range}" />
+										</f:facet>
+										<div align="left">
+										<h:outputText value="#{proc.procedureType.range}">
+
+										</h:outputText></div>
+									</p:column>
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msg.ordered_by}" />
+										</f:facet>
+										<div align="left">
+										<h:outputText
+											value="#{proc.userLoginDetail.firstName}  #{proc.userLoginDetail.middleName} #{proc.userLoginDetail.lastName}"/></div>
+									</p:column>
+									<!-- <p:column style="text-align:left;">
+										<f:facet name="header">
+											<h:outputText value="#{msg.laboratory}" />
+										</f:facet>
+										<h:outputText
+											value="#{proc.laboratoryName}" />
+									</p:column> -->
+									
+								 	<p:column headerText="#{msg.action}">
+										<div align="center"><p:commandLink  oncomplete="editlabresulthistory.show();" actionListener="#{labManageBean.setidtoEditLabHistory}" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('labResult_editLab')}">
+											
+											<h:graphicImage value="./../../Images/editIcon.jpg" 
+									                   width="25px" height="20px" id="editLabResultHistory1"/>
+									                   <p:tooltip for="editLabResultHistory1">
+									                   	<h:outputText value="#{msg.edit}" />
+									                   </p:tooltip>
+								  		 <f:param name="resultForLabHistory1" value="#{proc.result}"></f:param>
+							             <f:param name="rowIdOfLabHistory" value="#{proc.id}"></f:param>
+							            <f:param name="historylabName1" value="#{proc.procedureType.labType}"></f:param>
+							</p:commandLink>
+							
+							<p:spacer width="10px;"></p:spacer>
+							
+							<p:commandLink 
+								    oncomplete="deleteLabresult.show();" action="#{labManageBean.setidtodeleteLabData}" rendered="#{userManageBean.rolePrivillegeUtil.isEnable('labResult_deleteLab')}">
+								
+								 <h:graphicImage value="./../../Images/delIcon.jpg" 
+									                   width="25px" height="20px" id="deleteLabResultHistory"/>
+									                   <p:tooltip for="deleteLabResultHistory">
+									                   	<h:outputText value="#{msg.delete}" />
+									                   </p:tooltip>
+									      <f:param name="rowIdForLabHistory" value="#{proc.id}"></f:param>
+							   
+							</p:commandLink></div>
+							</p:column> 
+					</p:dataTable>
+				</p:rowExpansion>
+					
+						</p:dataTable>
+						<p:blockUI id="block_labHistory" block="labResult" trigger="labResult">  
+                               LOADING ...<br />
+							<p:graphicImage value="./../../Images/ajax_loader.gif" width="40" height="40" />
+						</p:blockUI>
+							
+					</h:form>
+			 </td>
+		</tr>
+	</table>
+<!--  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< DataTable Ends  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+
+<!--    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ADD LAB DIALOG BOX STARTssssss>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.  -->
+
+<p:dialog id="dlg_addLab" widgetVar="add_new_lab"  header="#{msg.addLabResult}" appendTo="@(body)" modal="true" hideEffect="fold"
+   			
+   			 resizable="false" position="300,280" closable="false" style="width:1000px;height:1300;" >
+   			 
+   		<h:form id="labform">
+   		
+   				<table>
+		        
+				 <tr>	  
+				    <td>
+				       <p:selectOneRadio id="radio_labsearch" value="#{labManageBean.searchLabOption}" >
+							<f:selectItem itemLabel="Search According Name" itemValue="1" />
+							<f:selectItem itemLabel="Search According Loinc Code" itemValue="2" />
+							<p:ajax update="radio_labsearch,txt_labSearch"></p:ajax>
+					   </p:selectOneRadio> 
+					   
+					 
+				     </td>
+				   </tr>
+				 </table>
+				 
+				 <table>
+				 	<tr>
+				 		<td><p:messages  id="searchLabDetailMessageId" closable="true"></p:messages> </td>
+				 	</tr>
+				 </table>
+				 
+				  <table>
+				   	    	<tr>
+				   	    	
+				   	    	<!--   <td>
+						     	<h:outputText value="#{msg.lab_type}"  /><h:outputText value="*" styleClass="mandatoryField"/>
+						   	  </td> -->
+						   	  
+				   	    	  <td>
+				   	    	    <p:inputText id="txt_labSearch" value="#{labManageBean.inputForLabSearch}"   style="width:300px;"
+				   	    	   >
+				   	    	    		<!-- <p:ajax update="txt_labSearch"></p:ajax>  -->
+				   	    	    </p:inputText>
+					       	<p:watermark value="Search lab to select lab type " for="txt_labSearch"></p:watermark>
+				   	    	  </td>
+				   	    	 
+				   	    	 <td>
+				   	    	 	<p:commandButton id="btn_searchLab"  value="search" action="#{labManageBean.searchLab}" 
+				   	    	 	update=":labform:searchLabDetailMessageId" oncomplete="handleSearchLab(xhr, status, args)" process="@this,txt_labSearch" partialSubmit="true"/>
+				   	    	 </td>
+				   	    	 
+				   	    	</tr>
+				   	    </table>
+   		
+   				<table>
+   					<!-- <p:messages id="labDetails" closable="true"  globalOnly="false" /> -->
+   					<tr>
+   						<td>
+						     	<h:outputText value="#{msg.lab_type}" styleClass="outputtext" /><h:outputText value="*" styleClass="mandatoryField"/>
+						    </td>
+   						
+   						
+   						 <td width="250px;">
+				   	    	    <h:outputText id="nameUpdate"  value="#{labManageBean.labNameForAddingNew}" >
+				   	    	    
+				   	    	   				<!--    <p:ajax update="txt_labSearch"></p:ajax>    -->
+				   	    	   </h:outputText>
+				   	    	    
+					       			
+				   	    	  </td>
+				   	    	  
+				   	    	  
+   						<!-- <td>
+   						
+   						<p:commandLink  actionListener="#{labManageBean.deleteLabName}" immediate="true" update=":labform:nameUpdate">
+								
+								 <h:graphicImage value="./../../Images/delIcon.jpg" 
+									                   width="20px" height="20px" id="deleteLab"/>
+									                   <p:tooltip for="deleteLab">
+									                   	<h:outputText value="#{msg.delete}" />
+									                   </p:tooltip>
+							   
+							</p:commandLink >
+   						</td> -->
+   						<!-- <td>
+   							<p:commandLink id="addLab" oncomplete="add_lab_details.show()" actionListener="#{labManageBean.openLabDetailForSearch}" 
+   							update=":labSearchDialogId" immediate="true">
+									<h:graphicImage value="./../../Images/medActionIcon.jpg"
+										width="20px" height="20px" />
+										 <p:tooltip for="addLab" >
+											<h:outputText value="Add Lab"/>
+										</p:tooltip> 
+							</p:commandLink>
+						</td> -->
+						
+						
+   					</tr>
+   				</table>
+   			 
+   			 <br />
+				  <table>   
+				   
+				    <tr>
+				           	 <td>
+				           	   <h:outputText   value="#{msg.lab_date}" styleClass="outputtext"/><h:outputText value="*" styleClass="mandatoryField"/>
+				           	 </td>
+				           	 <td>
+							 	<!-- <p:calendar id="cal_dateResult1" pattern="MM/dd/yyyy"  showOn="button" navigator="true"  
+							 			dateStyle="full" type="date"
+							 			value="#{labManageBean.dateForLabSearch}" 
+							 			
+							       		 
+								         readonlyInput="true"
+								         
+		                    		 maxdate="#{labManageBean.today}" required="true" requiredMessage="Please insert date">
+						     	</p:calendar> -->
+						     	
+						     	
+						     	
+						<p:calendar id="cal_dateResult" value="#{labManageBean.dateForLabSearch}"  showOn="button" navigator="true" 
+						  readonlyInput="true" pattern="#{msg.dateFormat}"
+								         
+		                    		 maxdate="#{labManageBean.today}" required="true" requiredMessage="Please insert date">
+				 		<f:convertDateTime pattern="MM/dd/yy" for="cal_dateResult" dateStyle="full" type="date" timeZone="#{userManageBean.loggedUsertimeZone}" />	
+					</p:calendar>
+						      </td>
+						      
+						      
+						   	  <td>
+							     <h:outputText value="#{msg.results}" styleClass="outputtext"/><h:outputText value="*" styleClass="mandatoryField"/> 
+					   		  </td>
+						   	  <td>
+						    	 <p:inputText id="result" value="#{labManageBean.resultForLabSearch}" style="width:94%;"  
+						    	 required="true" requiredMessage="Please insert lab result" >
+						    	 
+						    	 <f:convertNumber type="number" pattern="0.00"/> 
+										    
+						    	 </p:inputText>
+						      </td> 
+						      
+						    
+				         </tr>
+				      </table>
+				 <br />
+				   <table align="left">      
+				         <tr>
+				   	  		<!-- <p:commandButton id="save" value="clear data" actionListener="#{labManageBean.addLabdata}" 
+						     			update="@form" >
+				   	    	   -->
+				   	    	   
+				   	    	   <td >
+				   	    	   
+				   	    	   <p:commandButton  id="saveLab" value="save" action="#{labManageBean.addLabdata}" 
+				   	    	   			disabled="#{labManageBean.labNameForAddingNew eq ''}" update=":labform:searchLabDetailMessageId"/>
+						     			 
+						     			
+				   	    	   		<!-- <p:commandLink value="#{labSearch.labType}" actionListener="#{labManageBean.addLabdata}" 
+         oncomplete="add_new_lab.hide()" update=":labform:lab1,:form_labtable,:labform,:form_chart,:accordian_patientHeader" style="font-weight: bold;text-decoration:underline;">
+         <f:param name="rowIdForLabSearch" value="#{labSearch.id}"/>
+         <f:param name="labTypeForLabSearch" value="#{labSearch.labType}"/>
+         <f:param name="loincForLabSearch" value="#{labSearch.loincCode}"/>
+       </p:commandLink> -->
+				   	    	   </td>
+				   	    	   
+				   	    	    
+				   	    	   <!-- <td>
+								<p:commandButton value="Clear" actionListener="#{labManageBean.clearLabData}" update="@form" immediate="true" type="reset"/>
+							</td>  -->
+							
+							<td>
+				   	    	   		<p:commandButton onclick="add_new_lab.hide()" value="cancel" action="#{labManageBean.clearLabResultDetails}" immediate="true" update="txt_labSearch,:dlg_addLab" />
+				   	    	   </td> 
+				   	    </tr>
+				   
+				 </table> 
+   			 		
+   			 </h:form> 
+   			 <br />
+   			 <br />
+   			
+   			 
+   			 	
+   			 
+    </p:dialog>
+    
+    
+    
+    
+    <p:dialog  widgetVar="add_lab_details"  header="Add Lab"  appendTo="@(body)" modal="true" hideEffect="fold" id="labSearchDialogId"
+   			
+   			 position="300,280" closable="true"  height="400"  dynamic="true" width="800px">
+   			 <p:ajax event="close" update=":labSearchDialogId,labform:txt_labSearch" />
+   					
+   		<h:form id="updateForm">
+   			
+				 <!--   <table ><tr><td> -->
+				   	    		
+				   	   <p:dataTable id="tbl_searchLab" value="#{labManageBean.procedureTypeListForSearchLab}" 
+				   	   		binding="#{labManageBean.labMasterDatetable}"
+				  	  		var="labSearch" draggableColumns="true" scrollable="true" scrollHeight="300" style="width:100%" emptyMessage="#{msg.noMedFound}">
+				  	  	  <p:column style="width:60px">
+							<f:facet name="header">
+								<h:outputText value="#{msg.lab_type}" />
+								
+							</f:facet>
+							<p:commandLink id="updateId" value="#{labSearch.labType}" actionListener="#{labManageBean.findLabName}" update=":dlg_addLab"
+									  style="font-weight: bold;text-decoration:underline;" oncomplete="add_lab_details.hide();">
+							 <!--  <f:param name="rowIdForLabSearch" value="#{labSearch.id}"/>
+							  <f:param name="labTypeForLabSearch" value="#{labSearch.labType}"/>
+							  <f:param name="loincForLabSearch" value="#{labSearch.loincCode}"/> -->
+							   
+							</p:commandLink>
+							<h:inputHidden value="#{labSearch.id}" />
+						 </p:column>
+				  	  	  <p:column style="width:40px">
+							<f:facet name="header">
+								<h:outputText value="#{msg.loinc}" />
+							</f:facet>
+							<h:outputText value="#{labSearch.loincCode}" />
+						 </p:column>
+						 
+						 <!--  <p:column style="width:40px">
+							<f:facet name="header">
+								<h:outputText value="Rank" />
+							</f:facet>
+							<h:outputText value="#{labSearch.rank}" />
+						 </p:column> -->
+						 
+						 <p:column style="width:80px">
+							<f:facet name="header">
+								<h:outputText value="Short Name" />
+							</f:facet>
+							<h:outputText value="#{labSearch.shortKey}" />
+						 </p:column>
+						 
+						 <p:column style="width:180px">
+							<f:facet name="header">
+								<h:outputText value="Long Name" />
+							</f:facet>
+							<h:outputText value="#{labSearch.longName}" />
+						 </p:column>
+				  	  </p:dataTable>
+				  	   <!--  <p:blockUI id="block_searchLab" block="tbl_searchLab" trigger="btn_searchLab">  
+                               LOADING ...<br />
+							<p:graphicImage value="./../../Images/ajax_loader.gif" width="20" height="20" />
+					    </p:blockUI> -->
+					 <!-- </td></tr></table>	 -->
+   			</h:form> 
+   			 
+   		</p:dialog>
+	
+<!-- <p:dialog id="dlg_addLab" widgetVar="add_new_lab"  header="#{msg.addLabResult}" appendToBody="true" modal="true" hideEffect="fold"
+   			
+   			 resizable="false" position="300,280" closable="true" style="max-width:550px;max-height:auto;" >
+     
+          <h:form id="labform">
+			  <table>
+		        <p:messages id="lab1" closable="true" autoUpdate="true"/>
+				 <tr>	  
+				    <td>
+				       <p:selectOneRadio id="radio_labsearch" value="#{labManageBean.searchLabOption}" required="true" requiredMessage="Please select search option">
+							<f:selectItem itemLabel="Search According Name" itemValue="1" />
+							<f:selectItem itemLabel="Search According Loinc Code" itemValue="2" />
+							<p:ajax update="radio_labsearch"></p:ajax>
+					   </p:selectOneRadio> 
+					   
+					 
+				     </td>
+				   </tr>
+				   <tr>
+				     <td>
+				       <table>
+				           <tr>
+				           	 <td>
+				           	   <h:outputText   value="#{msg.lab_date}"/><h:outputText value="*" styleClass="mandatoryField"/>
+				           	 </td>
+				           	 <td>
+							 	<p:calendar id="cal_dateResult" pattern="MM/dd/yyyy"  showOn="button" navigator="true"  value="#{labManageBean.dateForLabSearch}" 
+							        onfocus="$('#queryForm\\:msgs > div').hide();$('#queryForm\\:msgs > div').eq(1).show();$(this).mask('99/99/9999');return false;"  readonlyInput="true"
+		                    		required="true" requiredMessage="Please Enter Lab Date" maxdate="#{labManageBean.today}">
+						     	</p:calendar>
+						      </td>
+						   	  <td>
+							     <h:outputText value="#{msg.results}" /><h:outputText value="*" styleClass="mandatoryField"/> 
+					   		  </td>
+						   	  <td>
+						    	 <p:inputText id="txt_labresult" value="#{labManageBean.resultForLabSearch}"   required="true" requiredMessage="Please Enter Lab Result"  style="width:94%;"/>
+						      </td>
+				           </tr>
+				       </table>
+				     
+				      
+				      </td>
+				   </tr>
+				   <tr>
+				   	  <td>
+				   	    <table>
+				   	    	<tr>
+				   	    	  <td>
+						     	<h:outputText value="#{msg.lab_type}"  /><h:outputText value="*" styleClass="mandatoryField"/>
+						   	  </td>
+				   	    	  <td>
+				   	    	    <p:inputText id="txt_labSearch" value="#{labManageBean.inputForLabSearch}" style="width:258%;" >
+				   	    	    <p:ajax update="txt_labSearch"></p:ajax> 
+				   	    	    </p:inputText>
+					       		<p:watermark value="Search Lab Type/Loinc Code" for="txt_labSearch"/>
+					       		
+					       		
+					       		<p:inputText id="labSearch" value="#{labManageBean.resultForLabSearch}" style="width:258%;" >
+				   	    	    <p:ajax update="labSearch"></p:ajax> 
+				   	    	    </p:inputText>
+					       		<p:watermark value="Search Lab Type/Loinc Code" for="labSearch"/>
+				   	    	  </td>
+				   	    	  <td>
+				   	    	  
+				   	    	  </td>
+				   	    	</tr>
+				   	    </table>
+				      </td>
+				 </tr>
+				 <tr>
+				    <td>
+				      <table>
+						  <tr>
+						    <td>
+						     	<p:commandButton id="btn_searchLab" value="search" action="#{labManageBean.searchLab}" immediate="true" onclick="lab_search_popup.show();" update=":labform:tbl_searchLab" />
+						     </td>
+						     <td>
+						     	<p:commandButton id="btn_cancelSearchLab" value="clear data" actionListener="#{labManageBean.clearLabSearchData}" 
+						     			update="@form" />
+						     			
+						     			<p:commandButton id="save" value="clear data" actionListener="#{labManageBean.addLabdata}" 
+						     			update="@form" >
+						     			<f:param name="rowIdForLabSearch" value="#{labSearch.id}"/>
+							 			 <f:param name="labTypeForLabSearch" value="#{labSearch.labType}"/>
+							  				<f:param name="loincForLabSearch" value="#{labSearch.loincCode}"/>
+							  		</p:commandButton>
+						     </td>
+						  </tr>				      
+				      </table>
+				    </td>
+				 </tr>
+				 <tr>
+				   <td>
+				     <p:commandButton value="#{msg.done}"  actionListener="#{labManageBean.addLabdata}" action="go_to_LabResult"   ajax="true" update=":labform:lab1"/>
+				  	  <p:dataTable id="tbl_searchLab" value="#{labManageBean.procedureTypeListForSearchLab}" binding="#{labManageBean.labMasterDatetable}"
+				  	  		var="labSearch" draggableColumns="true" scrollable="true" scrollHeight="130" scrollWidth="97%" >
+				  	  	  <p:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg.lab_type}" />
+								
+							</f:facet>
+							<p:commandLink id="updateId" value="#{labSearch.labType}" actionListener="#{labManageBean.findLabName}" 
+									update=":labSearch" style="font-weight: bold;text-decoration:underline;">
+							  <f:param name="rowIdForLabSearch" value="#{labSearch.id}"/>
+							  <f:param name="labTypeForLabSearch" value="#{labSearch.labType}"/>
+							  <f:param name="loincForLabSearch" value="#{labSearch.loincCode}"/>
+							   
+							</p:commandLink>
+							<h:inputHidden value="#{labSearch.id}" />
+						 </p:column>
+				  	  	  <p:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg.loinc}" />
+							</f:facet>
+							<h:outputText value="#{labSearch.loincCode}" />
+						 </p:column>
+						 <p:column >
+							<f:facet name="header">
+								<h:outputText value="#{msg.long_name}" />
+							</f:facet>
+							<h:outputText value="#{labSearch.longName}" />
+						 </p:column>
+				  	  </p:dataTable>
+				  	    <p:blockUI id="block_searchLab" block="tbl_searchLab" trigger="btn_searchLab">  
+                               LOADING ...<br />
+							<p:graphicImage value="./../../Images/ajax_loader.gif" width="20" height="20" />
+					    </p:blockUI>
+				   </td>
+				 </tr>
+			 </table>	
+		</h:form>
+    </p:dialog> -->
+    
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ADD LAB DIALOG BOX ENDsssssss>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->	
+		
+		
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Delete lab pop>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+		
+		 <p:dialog widgetVar="deleteLabresult" id="deletelabresultDetails" header="#{msg.deletemsg}" message="#{msg.deletemsg}"
+                    	closable="false" width="260"  modal="true" appendTo="@(body)" hideEffect="fold">
+                   <h:form >		 
+					        <h:panelGroup layout="block" style="text-align: center">
+					            <p:commandButton value="Yes"  actionListener="#{labManageBean.deleteLabResultRow}"   oncomplete="deleteLabresult.hide();"  update=":form_labtable:labResult" style="text-decoration:underline;"  ajax="false"  />
+					            <p:commandButton value="No"  oncomplete="deleteLabresult.hide();" />
+					        </h:panelGroup>
+					    </h:form>
+   					 </p:dialog>
+		
+		
+<!--   >>>>>>>>>>> >>>>>>>>>>>>>>>>>>>>>>>>>>>>>edit PopUp Current Lab Result>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+       <p:dialog id="dlg_id_editLab" widgetVar="editlabresult" resizable="true" closable="false"
+			  			modal="true" appendTo="@(body)" hideEffect="fold" header="#{msg.labresult}" dynamic="true" >
+			    <h:form  id="editlab"> 
+			   
+			        <table>
+			        
+			          <p:messages id="msgUp" closable="true"  globalOnly="false"/> 
+                     <tr>
+					 	<td>  
+						   <h:outputText value="#{msg.lab_type}:"  style="font-weight:bold;" />
+						</td> 
+						<td style="width:50px;"></td>
+						<td>
+							<h:outputText value="#{labManageBean.selectedCurrentLabNameForEdit}" />
+						</td>
+						
+					</tr>
+					 <tr>
+			           <td> 
+					    	<h:outputText value="#{msg.results}:" style="font-weight:bold;" />
+					    </td>
+			            <td style="width:50px;"></td> 
+					   <td>
+						  <p:inputText id="Result" value="#{labManageBean.selectedCurrentLabResultForEdit}" 
+						  				style="font-weight:bold;" required="true" requiredMessage="Please Enter Lab Result"/>
+					   </td>
+			        </tr>
+			        </table>
+			        <table>
+					 <tr>
+					   <td>     
+		 			      <p:commandButton value="#{msg.save}" actionListener="#{labManageBean.editLab}" action="go_to_LabResult" update=":editlab:msgUp"/>
+		 			   </td>
+				       <td>
+				          <p:commandButton value="#{msg.cancel}"  oncomplete="editlabresult.hide();" action="#{labManageBean.cleanValuesAfterCancel}" ajax="false"/>
+				       </td>
+					 </tr>
+				  </table>
+			    </h:form>
+			  </p:dialog>
+			  
+<!--   >>>>>>>>>>>>>>>>>>>>>>>>>>>>.popup for EditHistory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+			  
+			   <p:dialog id="editLabhistory" widgetVar="editlabresulthistory" resizable="true"
+			  			modal="true" appendTo="@(body)" hideEffect="fold" header="#{msg.labHistory}" dynamic="true" closable="false">
+			    <h:form  id="editlabhistory"> 
+			        <table>
+			            <p:messages id="msgSubLab" closable="true"   /> 
+                     <tr>
+					 	<td>  
+						   <h:outputText value="#{msg.lab_type}:"  style="font-weight:bold;" />
+						</td> 
+						<td>
+							<h:outputText value="#{labManageBean.labNameForLabHistory}" />
+						</td>
+						
+					</tr>
+					  <tr>
+			           <td> 
+					    	<h:outputText value="#{msg.results}:" style="font-weight:bold;" />
+					    </td>
+			             
+					   <td>
+						  <p:inputText value="#{labManageBean.labHistoryResult}" style="font-weight:bold;"  required="true" requiredMessage="Please Enter Lab Result"/>
+						
+					   </td>
+			        </tr>
+					 <tr>
+					   <td>     
+		 			      <p:commandButton value="#{msg.save}" actionListener="#{labManageBean.editHistory}" update=":editlabhistory:msgSubLab"
+		 			             action="go_to_LabResult" />
+		 			   </td>
+				       <td>
+				          <p:commandButton value="#{msg.cancel}"  oncomplete="editlabresulthistory.hide();" ajax="false"/>
+				       </td>
+					 </tr> 
+				  </table>
+			    </h:form>
+			  </p:dialog>
+	
+<!--  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Graph Starts  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+					<br />
+					<h:form id="form_chart" >
+							
+						<!-- <p:panel  id="formchart" style=" border:1px; border-color:#4682B4;"
+							rendered="#{empty labManageBean.loincKeyMasterList}">
+							<h:outputText value=" #{msg.no_lab_data}"
+								style=" font-family: verdana;" />
+						</p:panel> -->
+						<p:panel  rendered="#{not empty labManageBean.loincKeyMasterList}">
+							<table style="width: 100%;">
+								<tr>
+									<td width="10%" align="right"><h:outputText
+											value="#{msg.lab_type}"
+											style="font-family:Times New Roman, Times, serif;font-size:14px;font-face:bold;" />
+									</td>
+									<td width="15%" align="center" valign="top"><p:selectOneMenu id="lab_type"
+											value="#{labManageBean.loincKeyMaster.name}"
+											style="width:70%;vertical-align: top;font-family: bold Verdana, Arial, sans-serif;"
+							             required="true" requiredMessage="Select Lab Type" 	>
+									
+										 <f:selectItem itemLabel="#{msg.select_lab_type}" />  
+									
+											<f:selectItems value="#{labManageBean.loincKeyMasterList}"
+												var="loinc" itemLabel="#{loinc.name}"
+												itemValue="#{loinc.name}" noSelectionValue="3" />
+										</p:selectOneMenu></td>
+									<td width="10%" align="right"><h:outputText
+											value="#{msg.time_duration}"
+											style="font-family:Times New Roman, Times, serif;font-size:14px;font-face:bold;"/>
+									</td>
+									<td width="15%" align="center" valign="top"><p:selectOneMenu
+											value="#{labManageBean.chartPeriod}"
+											style="width:70%;margin-top: 0px;font-family: bold Verdana, Arial, sans-serif;"
+		                                  required="true" requiredMessage="Select Time Duration">
+		                                  
+								  <f:selectItem itemLabel="#{msg.select_time_duration}"/>  
+											<f:selectItem itemLabel="#{msg.one_month}" itemValue="1m" />
+											<f:selectItem itemLabel="#{msg.three_month}" itemValue="3m" />
+											<f:selectItem itemLabel="#{msg.six_month}" itemValue="6m" />
+											<f:selectItem itemLabel="#{msg.one_yr}" itemValue="1y" />
+										</p:selectOneMenu></td>
+									<td width="10%" align="center" valign="top"><p:commandButton
+											value="#{msg.show_chart}"
+										
+											actionListener="#{labManageBean.testValue}"
+									
+									       oncomplete="handleComplete(xhr, status, args)" 
+									     ajax="true" 
+                                         update=":form_chart,:form_labtable:messageUpdate,:form_chart:megUpdateForLab"
+											style="valign:top;"  /></td>
+								</tr>
+								
+								<tr>
+									<td> <p:messages  id="megUpdateForLab" closable="true" redisplay="false"/></td>
+								</tr>
+							<tr>
+								<td width="100%" align="center" colspan="5" style="background-color:rgb(255,255,255);"><br></br>
+							<!--  <p:lineChart id="chart_lab" 
+										value="#{labManageBean.labtestChart}" legendPosition="nw" animate="true"
+										
+										rendered="#{not empty labManageBean.loincKeyMasterList}"
+										minY="#{labManageBean.labtestMin}" 
+										maxY="#{labManageBean.labtestMax}"
+										xaxisLabel="#{msg.labdate}" xaxisAngle="-30" extender="customExtender" 
+										style="height:auto;width:600px;margin-left:0px;" /> -->
+										
+								 <div id="container"   style="height:400px"></div>
+					 
+										
+     				<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+					<script>
+//<![CDATA[
+function handleComplete(xhr, status, args){
+	
+								$("#container").empty();
+							  // alert(args.jsonDataSet);
+						    if(args.jsonDataSet!=null)
+							{
+								//console.log("data set from bean "+args.jsonDataSet);
+							 	var dataSetBar=args.jsonDataSet;
+								var barchartDataSet=$.parseJSON(dataSetBar);
+								//alert(barchartDataSet);
+							
+								 $.each(barchartDataSet, function(index, data) {
+								//alert(barchartDataSet);
+							        });
+								
+						
+								  var dataset=barchartDataSet; 
+								  
+								 
+								 var processed_json = new Array();
+								 var inr = dataset;
+
+								 for(var i in inr)
+								 {
+									
+								 var date= inr[i].longStartDate;
+								
+								 var reslt = inr[i].result;
+								 
+								  processed_json.push([(date),parseFloat(reslt)]);
+								  
+								  
+								
+								 }
+								
+								
+								 var chart, defaultOptions, options;
+								   //options.xAxis.categories = [];
+						
+                                 alert("Chart Starting");
+							        $('#container').highcharts({
+							            chart: {
+							                zoomType: 'xy',
+							                type: 'line'
+							            },
+							            title: {
+							                text: ' '
+							            },
+							            subtitle: {
+							                text: ' '
+							            },
+							           
+							            xAxis: {
+							            	
+							            	 lineColor: '#474747',
+						 	            	
+						                type: "datetime",  
+							              // categories: [processed_json] 
+						                
+						                   
+						                dateTimeLabelFormats: { // don't display the dummy year
+						                    month: '%e. %b. %y',
+						                   
+						                }
+						                   
+						                
+								        },
+								      
+								        yAxis: {
+								            min: 0,
+								         /*    max: '{value}' */
+								            tickInterval: 50,
+								            lineColor: '#474747',
+								            lineWidth: 1.2,
+								            title: {
+								                text: 'Lab Value'
+
+								            },
+								            plotLines: [{
+								                value: 0,
+								                width:.8,
+								                color: '#474747'
+								            }]
+								        },
+								        tooltip: {
+								            valueSuffix: ''
+								        },
+								       /*  legend: {
+								            layout: 'vertical',
+								            align: 'right',
+								            verticalAlign: 'middle',
+								            borderWidth: 0
+								        }, */
+
+                                        
+								        series: [{
+								            name: 'Lab',
+								            type: 'line',
+								            data: processed_json
+								           
+								        }]
+								        
+								       
+								    });
+							        
+							        
+
+              
+								 
+								 
+								 
+								 
+								 
+								 
+								 
+							   
+
+
+}
+}
+//]]>
+							   </script>
+     				
+										
+										</td> 
+							</tr>
+						</table>
+						</p:panel>
+						
+
+					</h:form>
+			
+		
+         
+
+
+			</p:layoutUnit>
+  
+
+
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+ 
+		</p:layout>
+
+	</f:view>
+
+</h:body>
+</html>

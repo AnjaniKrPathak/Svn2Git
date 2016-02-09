@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 10, 2014 5:05:53 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.core.PatientFormularyCompositeDrugDetailInfo" table="patient_formulary_composite_drug_detail_info">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="formularyCode" type="java.lang.String">
+            <column name="formulary_code" />
+        </property>
+        <property name="formularyText" type="java.lang.String">
+            <column name="formulary_text" />
+        </property>
+        <property name="drugInfoPlus" type="java.lang.String">
+            <column name="drug_info_plus" />
+        </property>
+        <property name="drugId" type="java.lang.String">
+            <column name="drug_id" />
+        </property>
+        <property name="drugName" type="java.lang.String">
+            <column name="drug_name" />
+        </property>
+        <property name="strength" type="java.lang.String">
+            <column name="strength" />
+        </property>
+        <property name="strengthUOM" type="java.lang.String">
+            <column name="strength_uom" />
+        </property>
+        <property name="route" type="java.lang.String">
+            <column name="route" />
+        </property>
+        <property name="dosageForm" type="java.lang.String">
+            <column name="dosage_form" />
+        </property>
+        <property name="genericName" type="java.lang.String">
+            <column name="generic_name" />
+        </property>
+        <property name="deaClassCode" type="java.lang.String">
+            <column name="dea_class_code" />
+        </property>
+        <property name="deaLegendCode" type="java.lang.String">
+            <column name="dea_legend_code" />
+        </property>
+        <property name="therapeuticCategory" type="java.lang.String">
+            <column name="therapeutic_category" />
+        </property>
+        <property name="drugNameID" type="java.lang.String">
+            <column name="drug_name_id" />
+        </property>
+        <property name="status" type="java.lang.String">
+            <column name="status" />
+        </property>
+        <property name="ndc" type="java.lang.String">
+            <column name="ndc" />
+        </property>
+        <property name="patientId" type="int">
+            <column name="patient_id" />
+        </property>
+        <property name="deaGenericNamedCode" type="java.lang.String">
+            <column name="dea_generic_named_code" />
+        </property>
+         <property name="orignalDrugId" type="java.lang.String">
+            <column name="original_drug_id" />
+        </property>
+        
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 Feb, 2015 2:08:33 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.GeriatricPrecaution" table="geriatricprecaution">
+        <id name="drugId" type="java.lang.Double">
+            <column name="DrugID" />
+            <generator class="assigned" />
+        </id>
+        <property name="drugTypeId" type="java.lang.String">
+            <column name="DrugTypeID" />
+        </property>
+        <property name="drugInfo" type="java.lang.String">
+            <column name="DrugInfo" />
+        </property>
+        <property name="drugSubID1" type="java.lang.Double">
+            <column name="DrugSubID1" />
+        </property>
+        <property name="precautionSeverityLevel" type="java.lang.String">
+            <column name="PrecautionSeverityLevel" />
+        </property>
+        <property name="precautionDescription" type="java.lang.String">
+            <column name="PrecautionDescription" />
+        </property>
+    </class>
+</hibernate-mapping>

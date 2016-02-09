@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+ <h:head>
+ <style>.red a:hover{
+color:red;
+}
+ 
+ </style>
+
+ 
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<title><h:outputText value="#{msg.clinakos}" /></title>
+	</f:facet>
+
+	<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+	<script type="text/javascript" src="tabmenu/Menu_Script.js"></script>
+
+</h:head>
+<h:body> 
+<h:form id="patientMenu">
+
+		
+			<!-- <div id="lefpmenu1" class="leftActiveLink">
+      <p:commandButton  value="#{msg.mymedgol}" actionListener="#{dashBoardManageBean.setPharmacotherapyClinicIndex}" action="go_to_My_Medication_Goal" styleClass="btnLink"/>
+    </div> -->
+		
+		 <input type="text" id="txtCTabIndex" value="#{dashBoardManageBean.indexValue}" style="display:none;"></input>
+
+</h:form>
+
+<script type="text/javascript">
+//initialize tab menu, by passing in ID of UL
+//initalizetab(document.getElementById('txtTab').value)
+changeLeftMenuIndex('mymedication');
+</script>
+
+ </h:body> 
+</html>
+
+
+
+

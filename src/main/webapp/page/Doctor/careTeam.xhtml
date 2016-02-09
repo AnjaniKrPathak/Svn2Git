@@ -1,0 +1,418 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="../templates/ui.xhtml">
+
+<h:body >
+
+
+	<f:view contentType="text/html">
+		<h:head>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+				<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+				<title><h:outputText value="#{msg.clinakos}" /></title>
+				
+			</f:facet>
+			<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+			<script language="javascript" src="../js/basicMethod.js"></script>
+		</h:head>
+
+		<p:layout fullPage="true">
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DOCTOR HEADER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+			<p:layoutUnit position="north" size="93" minSize="60">
+				<ui:include src="doctorHeader.xhtml" />
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOTTOM INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit id="bottom" position="south" size="24">
+				<h:form>
+					<ui:include src="../core/footer.xhtml"></ui:include>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LEFT INCLUDE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			  <p:layoutUnit id="left" position="west" size="0" closable="false"
+				collapsible="true" minSize="0" style="border:none;">
+				 <!--   <ui:include src="docMenu.xhtml"> </ui:include>  -->
+				
+				<!--<p:accordionPanel dynamic="true" activeIndex="0">
+						<p:tab
+							title="#{dashBoardManageBean.userLoginDetail.firstName} #{dashBoardManageBean.userLoginDetail.lastName}">
+
+							<ui:include src="../Doctor/patientDetailsHeader.xhtml"></ui:include>
+						</p:tab>
+					</p:accordionPanel>-->
+			</p:layoutUnit>
+			
+
+			<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+
+			<p:layoutUnit position="center" resizable="true">
+				<!-- <ui:include src="../Doctor/patientTabHeader.xhtml"></ui:include> -->
+				
+				<p:accordionPanel dynamic="true" activeIndex="1">
+						<p:tab >
+						<f:facet name="title">
+						<h:outputText value="#{dashBoardManageBean.userLoginDetail.userId} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}"  rendered="#{userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header')}"></h:outputText>
+						<h:outputText value="#{dashBoardManageBean.userLoginDetail.firstName} #{dashBoardManageBean.userLoginDetail.lastName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #{dashBoardManageBean.userLoginDetail.age} yo #{dashBoardManageBean.userLoginDetail.gender}" rendered="#{!(userManageBean.rolePrivillegeUtil.isEnable('role_pharma_disabled_header'))}"/>
+						</f:facet>
+						
+							<p:outputPanel deferred="true" >
+							<ui:include src="../Doctor/patientDetailsHeader.xhtml"></ui:include>
+							</p:outputPanel>
+						</p:tab>
+					</p:accordionPanel>
+					
+					<br/>
+						<h:form id="form_careTeamDtl">
+						<!-- 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>command button for add doctor in care team>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+					      <table  width="100%" class="contentTextPan">
+					        <tr>
+					           <td align="right">
+					             <p:commandButton value="#{msg.addphysician}" actionListener="#{patientManageBean.cancelDocForCareTeam}" oncomplete="addPhysicianPopUp.show()"></p:commandButton>
+					           </td>
+					        </tr>
+					      </table> 
+					     <!-- 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>dataTable for care team>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+					     
+							<p:dataTable emptyMessage="#{msg.nodataavailable}" id="dataTable_careTeam"
+								value="#{patientManageBean.careTeamListForPatient}" var="careTeam"
+								 scrollHeight="400" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="25,50,100" rows="25" >
+								<p:column sortBy="fName" style="width:13%;">
+								<f:facet name="header">
+								<h:outputText value="#{msg.physicianname}" />
+								</f:facet>
+									<div align="center">
+									<h:outputText
+										value="#{careTeam.fName} #{careTeam.lName}" />&nbsp;
+										<h:outputText
+										value="#{careTeam.degree}" rendered="#{!(careTeam.degree eq null)}"/>
+										<h:inputHidden value="#{careTeam.id}"></h:inputHidden>
+										</div>
+								</p:column>
+								<p:column sortBy="speciality" style="width:15%;" >
+								<f:facet name="header">
+								<h:outputText value="#{msg.specialty}"/>
+								</f:facet>
+									<div align="center">
+									<h:outputText value="#{careTeam.speciality}" style="text-align:left; width:3%;" rendered="#{!(careTeam.speciality eq null)}"/></div>
+								</p:column>
+								<p:column sortBy="doorNo" style="width:35%;">
+								<f:facet name="header">
+								<h:outputText value="#{msg.address}"/>
+								</f:facet>
+								   <div align="center">
+									  <h:outputText value="#{careTeam.address}" rendered="#{!(careTeam.address eq null)}"/>
+   								   </div>
+								</p:column>
+								<p:column sortBy="phoneNumber" style="width:13%;">
+								<f:facet name="header">
+								<h:outputText value="#{msg.phonenumber}" />
+								</f:facet>
+									<div align="center">
+									<h:outputText value="#{careTeam.phoneNumber}" rendered="#{!(careTeam.phoneNumber eq null)}"/></div>
+								</p:column>
+								<p:column sortBy="emailId" style="width:16%;">
+								<f:facet name="header">
+								<h:outputText value="#{msg.emailaddress}" />
+								</f:facet>
+									<div align="center">
+									<a href="mailto:#{careTeam.emailId}"
+										style="color: #006; text-decoration: underline;" target="_blank"><h:outputText
+											value="#{careTeam.emailId}" rendered="#{!(careTeam.emailId eq null)}"/></a></div>
+								</p:column>
+								<p:column  style="width:16%;">
+								<f:facet name="header">
+								<h:outputText value="NPI No"/>
+								</f:facet>
+									<div align="center">
+									<h:outputText value="#{careTeam.npi}" rendered="#{!(careTeam.npi eq null)}"/></div>
+								</p:column>
+								<p:column  >
+								    <f:facet name="header">
+										<h:outputText value="Action"/>
+									</f:facet>
+									<div align="left">
+									 <table  >
+									 <tr>
+									 <td  style="border:0;" > 
+									 
+
+									         <p:commandLink  actionListener="#{patientManageBean.selectRowIdForEditDoctorFromCareTeam}" oncomplete="editPhysicianPopUp.show()"
+									         		rendered="#{!(careTeam.clinakosUser)}"	>
+									                <h:graphicImage value="./../../Images/editIcon.jpg"
+															width="25px" height="20px" id="editPhysician" />
+														<p:tooltip for="editPhysician" >
+															<h:outputText value="#{msg.edit}"/>
+														</p:tooltip>
+									                <f:param name="careTeamRowId" value="#{careTeam.id}"></f:param>
+									                <f:param name="careTeamDocFirstName" value="#{careTeam.fName}"></f:param>
+									                <f:param name="careTeamLastName" value="#{careTeam.lName}"></f:param>
+									                <f:param name="careTeamDegree" value="#{careTeam.degree}"></f:param>
+									                <f:param name="careTeamSpeciality" value="#{careTeam.speciality}"></f:param>
+									                <f:param name="careTeamAddress" value="#{careTeam.address}"></f:param>
+									                <f:param name="careTeamPhoneNumber" value="#{careTeam.phoneNumber}"></f:param>
+									                <f:param name="careTeamEmail" value="#{careTeam.emailId}"></f:param>
+									                <f:param name="careTeamNpi" value="#{careTeam.npi}"></f:param>
+									         </p:commandLink>
+									          </td> 
+									         <td style="border:0;">
+									         <p:spacer width="10px;"></p:spacer>
+									         </td> 
+									          <td  style="border:0;"> 
+									          <p:commandLink actionListener="#{patientManageBean.selectRowIdFromCareTeamForDelete}" oncomplete="deletePhysician.show()"
+									          		rendered="#{!(careTeam.clinakosUser)}"	>
+									             <h:graphicImage value="./../../Images/delIcon.jpg" 
+									                   width="25px" height="20px" id="deletePhysician"/>
+									               <p:tooltip for="deletePhysician">
+									                   	<h:outputText value="#{msg.delete}" />
+									               </p:tooltip>
+									            <f:param name="careTeamRowId" value="#{careTeam.id}"></f:param>
+									        </p:commandLink>
+									         </td>
+									        </tr>
+									        
+									        </table> 
+									        
+									      
+									</div>
+								</p:column>
+							</p:dataTable>
+							<!-- <table>
+							 <tr>
+							    <td>
+							     <p:commandButton value="TestFormulary" actionListener="#{patientMedicineManageBean.duplicateshowViewRXforoverviewfilter}"/>
+							    </td>
+							   </tr>
+							</table> -->
+							
+							<!-- <p:commandButton value="Test Proc " actionListener="#{validicRestManagedBean.testProcedure}"></p:commandButton> -->
+				</h:form>
+
+
+<!-- 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>pop up for add doctor in care team>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+			
+					<p:dialog id="dialog_addPhysician" header="#{msg.addphysician}" widgetVar="addPhysicianPopUp" modal="true" appendTo="@(body)" hideEffect="fold" resizable="true"
+							dynamic="true" width="600" height="auto" position="300,100"  draggable="false">
+							<p:ajax event="close" update="dialog_addPhysician"></p:ajax>
+						 <h:form id="form_addPhysician">	
+							<table>
+							   <tr>
+							     <td colspan="4">
+							       <p:selectOneRadio id="radio_addPhysician" value="#{patientManageBean.addClinakosPhysician}" >
+										<f:selectItem itemLabel="Add new Physician" itemValue="1" />
+										<f:selectItem itemLabel="Add clinakos physician" itemValue="2" />
+										<p:ajax update="radio_addPhysician"></p:ajax>
+					   			   </p:selectOneRadio> 
+							     </td>
+							   </tr>
+							   <tr>
+							     <td colspan="3">
+							       <p:inputText id="inputTxt_serchClinakosDoc" value="#{patientManageBean.valueForSearchingClinakosDoc}" size="58"></p:inputText>
+							       <p:watermark value="Search Clinakos Doctor By Name" for="inputTxt_serchClinakosDoc"></p:watermark>
+							     </td>
+							     <td>
+							       <p:commandButton value="search" actionListener="#{patientManageBean.searchClinakosDocForCareTeam}" oncomplete="clinakosPhysicianList.show()"
+							        update=":form_clinakosPhysicianList:dataTable_clinakosPhysicianList"></p:commandButton>
+							     </td>
+							   </tr>
+							   <tr>
+							      <td>
+							        <h:outputText value="#{msg.firstname}"></h:outputText>
+							      </td>
+								      <td>
+								        <p:inputText value="#{patientManageBean.careTeam.doctorFirstName}"></p:inputText>
+								      </td>
+								      <td>
+								        <h:outputText value="#{msg.lastname}"></h:outputText>
+								         <!-- <h:outputText value="*" styleClass="mandatoryField"/> -->
+								      </td>
+							      <td>
+							        <p:inputText value="#{patientManageBean.careTeam.doctorLastName}"></p:inputText>
+							      </td>
+							   </tr>
+							   <tr>
+							      <td>
+							        <h:outputText value="Specialty"></h:outputText>
+							      </td>
+								      <td>
+								        <p:inputText value="#{patientManageBean.careTeam.specialty}"></p:inputText>
+								      </td>
+									    <td>
+									      <h:outputText value="Degree"></h:outputText>
+									   </td>
+									 <td>
+									    <p:inputText value="#{patientManageBean.careTeam.degree}"></p:inputText>
+								   </td>
+							    </tr>
+							    <tr>
+							      <td>
+							        <h:outputText value="Email"></h:outputText>
+							      </td>
+								      <td>
+								        <p:inputText value="#{patientManageBean.careTeam.email}"></p:inputText>
+								      </td>
+								      <td>
+								        <h:outputText value="Phone"></h:outputText>
+								      </td>
+							      <td>
+							        <p:inputText value="#{patientManageBean.careTeam.phoneNumber}"></p:inputText>
+							      </td>
+							   </tr>
+							   <tr>
+							      <td>
+							        <h:outputText value="Address"></h:outputText>
+							      </td>
+								      <td>
+								        <p:inputText value="#{patientManageBean.careTeam.address}"></p:inputText>
+								    </td>
+								      <td>
+								        <h:outputText value="NPI No"></h:outputText>
+								      </td>
+							       <td>
+							         <p:inputText value="#{patientManageBean.careTeam.npi}"></p:inputText>
+							      </td>
+							   </tr>
+							   <tr>
+							      <td  align="center" height="80%">
+							         <p:commandButton value="#{msg.save}" actionListener="#{patientManageBean.saveDocForCareTeam}" update=":form_careTeamDtl:dataTable_careTeam" oncomplete="addPhysicianPopUp.hide()" ></p:commandButton>
+							         <p:commandButton value="#{msg.cancel}" actionListener="#{patientManageBean.cancelDocForCareTeam}" oncomplete="addPhysicianPopUp.hide()"></p:commandButton> 
+							       
+							      </td>
+							   </tr>
+							</table>
+					     </h:form>	
+				   </p:dialog>
+
+        <!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> pop-up for delete doc from care team >>>>>>>>>>>>>>>>>>>>>>>>>> -->
+		
+				 <p:dialog widgetVar="deletePhysician" id="dialog_deletePhysician" header="#{msg.deletemsg}" message="#{msg.deletemsg}"
+		                    	dynamic="true" closable="false" width="300"  modal="true" appendTo="@(body)" hideEffect="fold" resizable="false">
+		                    	<p:ajax event="close" update="dialog_deletePhysician"></p:ajax>
+		                   <h:form id="form_deletePhysician">		 
+							  <h:panelGroup layout="block" style="text-align: center">
+							      <p:commandButton value="Yes"  actionListener="#{patientManageBean.deleteDoctorFromCareTeam}"  oncomplete="deletePhysician.hide();" update=":form_careTeamDtl:dataTable_careTeam" style="text-decoration:underline;"  ajax="false" />
+							      <p:commandButton value="No"  oncomplete="deletePhysician.hide();" />
+							  </h:panelGroup>
+						  </h:form>
+		   		 </p:dialog>
+		   		 
+	 <!-- 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>pop up for edit doctor in care team>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+			
+					<p:dialog id="dialog_editPhysician" header="Edit Physician" widgetVar="editPhysicianPopUp" modal="true" appendTo="@(body)" hideEffect="fold" resizable="true"
+							dynamic="true" width="600" height="auto" position="300,100"  draggable="false">
+						<p:ajax event="close" update="dialog_editPhysician"></p:ajax>
+						 <h:form id="form_editPhysician">	
+							<table>
+							   <tr>
+							      <td>
+							        <h:outputText value="#{msg.firstname}"></h:outputText>
+							      </td>
+								      <td>
+								        <p:inputText value="#{patientManageBean.careTeam.doctorFirstName}"></p:inputText>
+								      </td>
+								      <td>
+								        <h:outputText value="#{msg.lastname}"></h:outputText>
+								      </td>
+							      <td colspan="3">
+							        <p:inputText value="#{patientManageBean.careTeam.doctorLastName}"></p:inputText>
+							      </td>
+							   </tr>
+							   <tr>
+							      <td>
+							        <h:outputText value="Specialty"></h:outputText>
+							      </td>
+								      <td>
+								        <p:inputText value="#{patientManageBean.careTeam.specialty}"></p:inputText>
+								      </td>
+									      <td>
+									        <h:outputText value="Degree"></h:outputText>
+									      </td>
+									      <td>
+									         <p:inputText value="#{patientManageBean.careTeam.degree}"></p:inputText>
+									      </td>
+								      <td>
+								        <h:outputText value="NPI No"></h:outputText>
+								      </td>
+							      <td>
+							        <p:inputText value="#{patientManageBean.careTeam.npi}"></p:inputText>
+							      </td>
+							   </tr>
+							   <tr>
+							      <td>
+							        <h:outputText value="Email"></h:outputText>
+							      </td>
+								      <td>
+								        <p:inputText value="#{patientManageBean.careTeam.email}"></p:inputText>
+								      </td>
+								      <td>
+								        <h:outputText value="Phone"></h:outputText>
+								      </td>
+							      <td colspan="3">
+							        <p:inputText value="#{patientManageBean.careTeam.phoneNumber}"></p:inputText>
+							      </td>
+							   </tr>
+							   <tr>
+							      <td>
+							        <h:outputText value="Address"></h:outputText>
+							      </td>
+								      <td colspan="5">
+								        <p:inputText value="#{patientManageBean.careTeam.address}"></p:inputText>
+								    </td>
+							   </tr>
+							   <tr>
+							      <td colspan="4" align="center" height="80%">
+							         <p:commandButton value="#{msg.save}" actionListener="#{patientManageBean.editDoctorFromCareTeam}" update=":form_careTeamDtl:dataTable_careTeam" oncomplete="editPhysicianPopUp.hide()"></p:commandButton>
+							         <p:commandButton value="#{msg.cancel}" actionListener="#{patientManageBean.cancelDocForCareTeam}" oncomplete="editPhysicianPopUp.hide()"></p:commandButton>
+							      </td>
+							   </tr>
+							   
+							</table>
+					     </h:form>	
+				   </p:dialog>
+				   
+		 <!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> pop-up for searching clinakos doc to add in care team >>>>>>>>>>>>>>>>>>>>>>>>>> -->
+		
+				 <p:dialog widgetVar="clinakosPhysicianList" id="dialog_clinakosPhysicianList" header="clinakosPhysicianList" message="clinakosPhysicianList"
+		                    	dynamic="true" closable="true" width="600"  modal="true" appendTo="@(body)" hideEffect="fold" resizable="false">
+		                   <p:ajax event="close" update="dialog_clinakosPhysicianList"></p:ajax>
+		                   <h:form id="form_clinakosPhysicianList">		 
+							  <p:dataTable emptyMessage="#{msg.nodataavailable}" id="dataTable_clinakosPhysicianList"
+								value="#{patientManageBean.empProviderLocationList}" var="epl"
+								scrollable="true">
+								     <p:column headerText="#{msg.username}" styleClass="contentPan" width="14%">
+										<div align="left" style="padding-left: 10px;">
+										  <h:inputHidden value="#{epl.lsId}" />
+										      <p:commandLink value="#{epl.firstName}" actionListener="#{patientManageBean.addClinakosDoctorIncareTeam}" ajax="false" 
+										          style="font-weight: bold;text-decoration:underline;">
+										        <f:param name="clinakosDoctorId" value="#{epl.lsId}"></f:param>  
+										       </p:commandLink> &nbsp;
+										     <h:outputText value="#{epl.middleName}" />&nbsp;
+										     <h:outputText value="#{epl.lastName}" />
+										  </div>
+									</p:column>
+								    <p:column headerText="Address" styleClass="contentPan" width="20%">
+		           							 <div align="left" style="padding-left: 10px;">
+		           							    <h:outputText value="#{epl.addressFirstLine}" /> &nbsp;
+										    	  <h:outputText value="#{epl.addressSecondLine}" />
+										     </div>
+		       						 </p:column>
+							  </p:dataTable>
+						  </h:form>
+		   		 </p:dialog>
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CENTER LAYOUT ENDS  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
+    
+      </p:layoutUnit>
+		</p:layout>
+
+	</f:view>
+
+</h:body>
+</html>

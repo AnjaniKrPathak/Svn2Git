@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+ <h:head>
+ <style>.red a:hover{
+color:red;
+}
+ 
+ </style>
+
+ 
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<title><h:outputText value="#{msg.clinakos}" /></title>
+	</f:facet>
+
+	<link type="text/css" rel="stylesheet" href="../../CSS/style.css" />
+	<script type="text/javascript" src="../js/basicMethod.js"></script>
+
+</h:head>
+<h:body> 
+<h:form id="patientMenu">
+	<!--<p:accordionPanel dynamic="true"
+		activeIndex="#{dashBoardManageBean.accPanelIndex}">
+		<p:ajax event="tabChange"
+			listener="#{dashBoardManageBean.menuGroupChange}" />-->
+		<!--  <p:tab title="Home" id="docHome">
+			<div class="menubtn">
+				<p:commandButton icon="ui-icon-home" value="#{msg.home}"
+					styleClass="btnLink" actionListener="#{dashBoardManageBean.goHome}" />
+			</div>
+		</p:tab>-->
+		<!--<p:tab title="Patient" id="docPatient">-->
+			<div style="background-color: #FFFFFF;">
+				<!--<p:commandButton icon="ui-icon-arrow-1-e" value="#{msg.overview}" styleClass="btnLink"
+					action="#{dashBoardManageBean.setOverviewIndex}" disabled="#{dashBoardManageBean.showPatientSubmenu}" />-->
+				
+				<!--<p:commandButton value="#{msg.medication}" styleClass="ui-priority-primary"
+					action="#{dashBoardManageBean.setMedicationIndex}" disabled="#{dashBoardManageBean.showPatientSubmenu}"/>-->
+					<p:menu style="width:140px;background: #FFFFFF;">
+					<!--<p:submenu label="Summary" icon=" ui-icon-star">-->
+					<p:menuitem value="Summary" style="background:#E1EFF8;font-weight: bold;"/>
+					<p:menuitem value="DrugPrice Optimizer" action="#{dashBoardManageBean.setDPOptimizerIndex}" styleClass="ui-priority-primary" style="background:#53B4E6;width:120px;"/>
+					<p:menuitem value="Other Help Tools" action="#{dashBoardManageBean.setOverviewIndex}" styleClass="ui-priority-primary" style="background:#53B4E6;width:120px;"/>
+            </p:menu>
+			</div>
+		<!--</p:tab>-->
+
+		<!--  <p:tab title="Virtual Clinic" id="docVC">
+			 rendered="#{dashBoardManageBean.showPatientMenu}">
+			<div class="menubtn">
+				<p:commandButton icon="ui-icon-arrow-1-e" value="#{msg.home}"
+					action="#{dashBoardManageBean.goVCHome}" styleClass="btnLink" />
+				<br></br>
+				<p:commandButton icon="ui-icon-arrow-1-e"
+					value="#{msg.med_review}" styleClass="btnLink" />
+				<p:commandButton icon="ui-icon-arrow-1-e" value="#{msg.anticoagulation}"
+					styleClass="btnLink" />
+				<br></br>
+			</div>
+		</p:tab>-->
+
+		<!--<p:tab title="Population Health" id="docPH">
+			 rendered="#{dashBoardManageBean.showPatientMenu}">
+			<div class="menubtn">
+				<p:commandButton icon="ui-icon-arrow-1-e" value="#{msg.overview}"
+					action="#{dashBoardManageBean.goPHOVerview}" styleClass="btnLink" />
+				<br></br>
+			</div>
+		</p:tab>-->
+	<!--</p:accordionPanel>-->
+
+</h:form>
+ </h:body> 
+</html>
+
+
+
+

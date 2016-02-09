@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.core.SecurityRolePrivilege" table="security_role_privilege">
+		<id name="id" type="int" column="id">
+			<generator class="increment" />
+		</id>
+		<!-- <property name="securityPrivillegeId">
+			<column name="security_privillege_id" />
+		</property> -->
+		<property name="roleId">
+			<column name="role_id" />
+		</property>
+		<property name="permission" type="boolean">
+			<column name="permission" />
+		</property>
+		<!-- <one-to-one name="securityPrivilege" class="com.clinakos.data.model.core.SecurityPrivilege"></one-to-one> -->
+		<many-to-one name="masterFunctionMenu" class="com.clinakos.data.model.core.MasterFunctionMenu" column="master_function_menu_id" unique="true" not-null="true" cascade="all"></many-to-one>
+	</class>
+</hibernate-mapping>

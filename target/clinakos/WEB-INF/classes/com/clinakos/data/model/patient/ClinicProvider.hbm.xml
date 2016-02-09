@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.clinakos.data.model.patient.ClinicProvider"
+		table="clinic_provider">
+		<id name="id" type="int" column="id">
+			<generator class="increment" />
+		</id>
+
+		<property name="providerId" type="int">
+			<column name="provider_id" />
+		</property>
+
+		<property name="clinicId" type="int">
+			<column name="clinic_id" />
+		</property>
+
+<property name="providerLocationId" type="int">
+			<column name="provider_location_id" />
+		</property>
+
+
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 18, 2014 11:53:16 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.clinakos.data.model.patient.SpecialityDrugCategory" table="vw_speciality_drug_detail">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="medCountForDrugCategory" type="int">
+            <column name="med_count" />
+        </property>
+        <property name="drugCategory" type="java.lang.String">
+          <column name="drug_type"></column>
+        </property>
+    </class>
+</hibernate-mapping>
